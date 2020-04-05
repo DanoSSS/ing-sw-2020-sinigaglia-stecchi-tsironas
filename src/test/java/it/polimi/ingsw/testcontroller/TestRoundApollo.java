@@ -4,10 +4,10 @@ import it.polimi.ingsw.controller.RoundApollo;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Player;
-import junit.framework.TestCase;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 
-public class TestRoundApollo extends TestCase {
+public class TestRoundApollo {
     private Board board;
     private Player player;
     Cell cell1 = new Cell();

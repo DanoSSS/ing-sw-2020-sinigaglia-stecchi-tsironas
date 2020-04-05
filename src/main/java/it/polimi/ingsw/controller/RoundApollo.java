@@ -18,19 +18,20 @@ public class RoundApollo implements Round{
 
 
     @Override
-    public boolean ExecuteRound(boolean Gameover) {
-        boolean GameStatus;
-        GameStatus=domove(/*cell*/,Gameover);                           //da rivedere paramatri interazione view
-        dobuild(/*cell*/);
-        return GameStatus;
+    public  boolean ExecuteRound(boolean Gameover) {
+    //    boolean GameStatus;
+     //   GameStatus=domove(/*cell*/,Gameover);                           //da rivedere paramatri interazione view
+     //   dobuild(/*cell*/);
+     //   return GameStatus;
+        return false;
     }
 
     public boolean domove(Cell cell, boolean Gameover){
         Cell oldCell;
         if (player.getWorker1().isActiveWorker()){      //per togliere gli if si può passare activeworker come parametro
-            try {
+/*            try {
                 if (cell.isDome());
-            }catch(impossibleMoveException e){};
+            }catch(impossibleMoveException e){};*/
             oldCell=player.getWorker1().getCell();
             if(cell.isOccupied()){
                 cell.getWorker().setCell(oldCell);
@@ -45,9 +46,9 @@ public class RoundApollo implements Round{
                 }
             }
         }else if (player.getWorker2().isActiveWorker()){
-            try {
+/*            try {
                 if (cell.isDome());
-            }catch(impossibleMoveException e){};
+            }catch(impossibleMoveException e){};*/
             oldCell=player.getWorker2().getCell();
             if(cell.isOccupied()){
                 cell.getWorker().setCell(oldCell);
@@ -68,9 +69,9 @@ public class RoundApollo implements Round{
     public void dobuild(Cell cell){
         int level;
         if (player.getWorker1().isActiveWorker()){
-            try{
+/*            try{
                 if(cell.isOccupied() || cell.isDome());
-            }catch (impossiblebuildexception e){};
+            }catch (impossiblebuildexception e){};*/
             level=cell.getLevel();
             level++;
             if(level==4){
@@ -78,9 +79,9 @@ public class RoundApollo implements Round{
             }
 
         }else if (player.getWorker2().isActiveWorker()) {
-            try {
+/*            try {
                 if (cell.isOccupied() || cell.isDome()) ;
-            } catch (impossiblebuildexception e) {
+            } catch (impossiblebuildexception e) {*/
             }
             ;
             level = cell.getLevel();
@@ -91,6 +92,6 @@ public class RoundApollo implements Round{
         }
 
 
-    }
-
 }
+
+

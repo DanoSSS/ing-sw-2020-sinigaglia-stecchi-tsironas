@@ -2,7 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.Game;
 
-public class Board {
+public class Board{
     private static final int HEIGHT = 5;
     private static final int WIDTH = 5;
     private Cell [][] board;
