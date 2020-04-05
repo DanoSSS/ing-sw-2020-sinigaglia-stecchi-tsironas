@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.view.ObservableModel;
+
 public class Cell {
     private int x;
     private int y;
@@ -10,8 +12,7 @@ public class Cell {
     private Board board;
 
 
-    public boolean isOccupied() {
-        return IsOccupied;
+    public boolean isOccupied() { return IsOccupied;
     }
 
     public void setOccupied(boolean occupied) {
@@ -22,9 +23,7 @@ public class Cell {
         return IsDome;
     }
 
-    public void setDome(boolean dome) {
-        IsDome = dome;
-    }
+    public void setDome(boolean dome) { IsDome = dome; }
 
     public int getLevel() {
         return level;

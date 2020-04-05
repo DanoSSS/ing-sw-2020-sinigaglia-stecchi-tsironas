@@ -7,7 +7,10 @@ import it.polimi.ingsw.model.Worker;
 
 import java.util.Random;
 
-public class Game {
+public class
+
+
+Game {
     private int NumberOfPlayers;
     private Round CurrentRound;
     private Player player1,player2,player3;

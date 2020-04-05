@@ -19,6 +19,7 @@ public class Board {
                 board[j][i] = null;
             }
         }
+
     }
 
    /* public boolean CheckIfMoveIsPossible(Cell cell){
