@@ -14,10 +14,13 @@ Game {
     private int NumberOfPlayers;
     private Round CurrentRound;
     private Player player1,player2,player3;
-    private Worker worker1,worker2,worker3,worker4,worker5,worker6;
     private Board board;
     private Round roundP1,roundP2,roundP3;
     private boolean GameOver;
+
+    public Game(Board board){
+        this.board=board;
+    }
 
     public boolean isGameOver() {
         return GameOver;
@@ -30,6 +33,7 @@ Game {
     public void SelectChallenger (){
 
     }
+
 
     public void RoundCreationP1(Player player){
         if (player.getGod()== God.APOLLO) {
@@ -62,6 +66,7 @@ Game {
 
     }
 
+
     public void RoundCreationP2(Player player){
         if (player.getGod()== God.APOLLO) {
             roundP2 = new RoundApollo(board, player);
@@ -92,6 +97,7 @@ Game {
         }
 
     }
+
 
     public void RoundCreationP3(Player player){
         if (player.getGod()== God.APOLLO) {
@@ -124,6 +130,7 @@ Game {
 
     }
 
+    //engine that cycles rounds in the game until a player wins the game
     public void StartGameOperation () {
         RoundCreationP1(player1);
         RoundCreationP2(player2);
@@ -134,6 +141,7 @@ Game {
         }while(!GameOver);
     }
 
+    //function that select the current round and the first player randomly
     public Round SelectRound(Round currentRound){
         Random random = new Random();
         int RandomVar;
@@ -150,7 +158,13 @@ Game {
         }
         return null;
     }
+
     public void GodsSetup(){
         //deve chiedere al challenger di scegliere 3 gods e assegnarle all' attributo gods dei player
     }
+
+    public void GameSetup(){
+        //funzione per posizionare i rispettivi worker sulla board
+    }
 }
+

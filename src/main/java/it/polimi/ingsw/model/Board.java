@@ -16,8 +16,9 @@ public class Board{
         board = new Cell[HEIGHT][WIDTH];
         for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < HEIGHT; j++) {
-                board[j][i] = null;
+                board[j][i] = new Cell(j,i);
             }
+
         }
 
     }

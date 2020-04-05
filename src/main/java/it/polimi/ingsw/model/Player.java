@@ -14,11 +14,13 @@ public class Player {
     private Worker activeworker;
 
 
+
+
     public Worker getWorker2() {
         return worker2;
     }
 
-    public void setWorker2(Worker worker2) {
+    public void setWorker(Worker worker2) {
         this.worker2 = worker2;
     }
 

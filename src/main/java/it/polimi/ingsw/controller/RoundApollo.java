@@ -26,7 +26,7 @@ public class RoundApollo implements Round{
         return false;
     }
 
-    public boolean domove(Cell cell, boolean Gameover){
+    public boolean domove(Cell cell, boolean Gameover){  //aggiungere controllo worker senza mosse possibili
         Cell oldCell;
         if (player.getWorker1().isActiveWorker()){      //per togliere gli if si può passare activeworker come parametro
 /*            try {
@@ -34,10 +34,14 @@ public class RoundApollo implements Round{
             }catch(impossibleMoveException e){};*/
             oldCell=player.getWorker1().getCell();
             if(cell.isOccupied()){
-                cell.getWorker().setCell(oldCell);
-                player.getWorker1().setCell(cell);
-                if(cell.getLevel()==3 && oldCell.getLevel()==2){
-                    Gameover=true;
+                if(cell.getWorker().getPlayer()!=player) {
+                    cell.getWorker().setCell(oldCell);
+                    player.getWorker1().setCell(cell);
+                    if (cell.getLevel() == 3 && oldCell.getLevel() == 2) {
+                        Gameover = true;
+                    }
+                }else {
+                    //chiedere nuova mossa
                 }
             }else {
                 player.getWorker1().setCell(cell);
@@ -51,10 +55,14 @@ public class RoundApollo implements Round{
             }catch(impossibleMoveException e){};*/
             oldCell=player.getWorker2().getCell();
             if(cell.isOccupied()){
-                cell.getWorker().setCell(oldCell);
-                player.getWorker2().setCell(cell);
-                if(cell.getLevel()==3 && oldCell.getLevel()==2){
-                    Gameover=true;
+                if(cell.getWorker().getPlayer()!=player) {
+                    cell.getWorker().setCell(oldCell);
+                    player.getWorker2().setCell(cell);
+                    if (cell.getLevel() == 3 && oldCell.getLevel() == 2) {
+                        Gameover = true;
+                    }
+                }else {
+                    //chiedere nuova mossa
                 }
             }else {
                 player.getWorker2().setCell(cell);
@@ -68,27 +76,29 @@ public class RoundApollo implements Round{
 
     public void dobuild(Cell cell){
         int level;
-        if (player.getWorker1().isActiveWorker()){
-/*            try{
+/*        if (player.getWorker1().isActiveWorker()){
+            try{
                 if(cell.isOccupied() || cell.isDome());
             }catch (impossiblebuildexception e){};*/
             level=cell.getLevel();
             level++;
+            cell.setLevel(level);
             if(level==4){
                 cell.setDome(true);
             }
 
-        }else if (player.getWorker2().isActiveWorker()) {
-/*            try {
+/*        }else if (player.getWorker2().isActiveWorker()) {
+            try {
                 if (cell.isOccupied() || cell.isDome()) ;
-            } catch (impossiblebuildexception e) {*/
+            } catch (impossiblebuildexception e) {
             }
             ;
             level = cell.getLevel();
             level++;
+            cell.setLevel(level);
             if (level == 4) {
                 cell.setDome(true);
-            }
+            }*/
         }
 
 

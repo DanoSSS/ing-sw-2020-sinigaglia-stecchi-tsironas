@@ -9,8 +9,11 @@ public class Cell {
     private boolean IsOccupied;
     private boolean IsDome;
     private Worker worker;
-    private Board board;
 
+    public Cell(int x,int y){
+        this.x=x;
+        this.y=y;
+    }
 
     public boolean isOccupied() { return IsOccupied;
     }
