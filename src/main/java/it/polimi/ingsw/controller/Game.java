@@ -11,12 +11,12 @@ public class
 
 
 Game {
-    private int NumberOfPlayers;
     private Round CurrentRound;
     private Player player1,player2,player3;
     private Board board;
     private Round roundP1,roundP2,roundP3;
     private boolean GameOver;
+
 
     public Game(Board board){
         this.board=board;
@@ -43,7 +43,7 @@ Game {
             roundP1 = new RoundArtemis();
         }
         if (player.getGod()== God.ATHENA){
-            roundP1 = new RoundAthena();
+            roundP1 = new RoundAthena(board,player);
         }
         if (player.getGod()== God.ATLAS){
             roundP1 = new RoundAtlas();
@@ -75,7 +75,7 @@ Game {
             roundP2 = new RoundArtemis();
         }
         if (player.getGod()== God.ATHENA){
-            roundP2 = new RoundAthena();
+            roundP2 = new RoundAthena(board,player);
         }
         if (player.getGod()== God.ATLAS){
             roundP2 = new RoundAtlas();
@@ -107,7 +107,7 @@ Game {
             roundP3 = new RoundArtemis();
         }
         if (player.getGod()== God.ATHENA){
-            roundP3 = new RoundAthena();
+            roundP3 = new RoundAthena(board,player);
         }
         if (player.getGod()== God.ATLAS){
             roundP3 = new RoundAtlas();
