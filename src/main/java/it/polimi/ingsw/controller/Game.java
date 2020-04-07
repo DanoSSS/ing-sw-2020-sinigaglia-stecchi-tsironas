@@ -58,7 +58,7 @@ Game {
             roundP1 = new RoundMinotaur();
         }
         if (player.getGod()== God.PAN){
-            roundP1 = new RoundPan();
+            roundP1 = new RoundPan(board,player);
         }
         if (player.getGod()== God.PROMETHEUS){
             roundP1 = new RoundPrometheus();
@@ -90,7 +90,7 @@ Game {
             roundP2 = new RoundMinotaur();
         }
         if (player.getGod()== God.PAN){
-            roundP2 = new RoundPan();
+            roundP2 = new RoundPan(board,player);
         }
         if (player.getGod()== God.PROMETHEUS){
             roundP2 = new RoundPrometheus();
@@ -122,7 +122,7 @@ Game {
             roundP3 = new RoundMinotaur();
         }
         if (player.getGod()== God.PAN){
-            roundP3 = new RoundPan();
+            roundP3 = new RoundPan(board,player);
         }
         if (player.getGod()== God.PROMETHEUS){
             roundP3 = new RoundPrometheus();
