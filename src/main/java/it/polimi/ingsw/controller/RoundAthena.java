@@ -37,9 +37,15 @@ public class RoundAthena implements Round {
             count = board.getNumberOfPlayers();
             board.setNround(count - 1);
             player.getWorker1().setCell(cell);
+            if (cell.getLevel() == 3 && oldCell.getLevel() == 2) {
+                Gameover = true;
+            }
         }
-        if (cell.getLevel() == 3 && oldCell.getLevel() == 2) {
-            Gameover = true;
+        else{
+            player.getWorker1().setCell(cell);
+            if (cell.getLevel() == 3 && oldCell.getLevel() == 2) {
+                Gameover = true;
+            }
         }
         return Gameover;
     }

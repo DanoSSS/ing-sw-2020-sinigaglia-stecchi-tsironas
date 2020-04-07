@@ -21,14 +21,12 @@ public class ObservableModel implements Observable {
         Observers.remove(observer);
     }
 
+    @Override
+    public void Notify() {
+
+    }
     public Board getBoard() {
         return board;
     }
-
-    public static void Notify(){
-
-    }
-
-
 
 }
