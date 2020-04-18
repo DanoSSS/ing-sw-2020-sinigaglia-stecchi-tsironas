@@ -9,9 +9,9 @@ public class Board{
     private static final int WIDTH = 5;
     private Cell [][] board;
     private Game game;
-    private Player player1,player2,player3;
+    private Player player1,player2,player3;     //non dovrebbero servire
     private Worker worker1,worker2,worker3,worker4,worker5,worker6;
-    private int nround;
+    private int nround=0;
     private ObservableModel observableModel;
 
     public Board(Worker worker /*vanno passati tutti gli worker(forse anche i player) e l observableModel*/) {

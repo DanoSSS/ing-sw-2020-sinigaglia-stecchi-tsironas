@@ -49,13 +49,14 @@ public class RoundApollo implements Round{
                 y=askY();
             }
             if (board.isOccupied(x,y)) {
-                board.moveWorker(oldX, oldY, board.getWorker(x, y));
-                board.moveWorker(x, y, activeWorker);
+                board.moveWorker(oldX,oldY, board.getWorker(x,y));
+                board.moveWorker(x, y,activeWorker);
                 if (board.getLevel(x,y) == 3 && board.getLevel(oldX, oldY) == 2) {
                     Gameover = true;
                 }
             } else {
                 board.moveWorker(x,y,activeWorker);
+                board.freeCellFromWorker(oldX,oldY);
                 if (board.getLevel(x,y) == 3 && board.getLevel(oldX, oldY) == 2) {
                     Gameover = true;
                 }
@@ -73,6 +74,7 @@ public class RoundApollo implements Round{
                 }
             } else {
                 board.moveWorker(x,y,activeWorker);
+                board.freeCellFromWorker(oldX,oldY);
                 if (board.getLevel(x,y) == 3 && board.getLevel(oldX, oldY) == 2) {
                     Gameover = true;
                 }

@@ -3,12 +3,11 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Worker;
 
 public class RoundPan implements Round {
     private Board board;
     private Player player;
-    private Game game;
-//    private Cell  cell;
 
     public RoundPan(Board board, Player player){
         this.board = board;
@@ -17,46 +16,71 @@ public class RoundPan implements Round {
 
     @Override
     public boolean ExecuteRound(boolean Gameover) {
-        //    boolean GameStatus;
-        //   GameStatus=domove(/*cell*/,Gameover);                           //da rivedere paramatri interazione view
-        //   dobuild(/*cell*/);                                    //bisogna passare sia vecchia cella sia nuova cella
-        //   return GameStatus;
-        return false;
+        boolean GameStatus;
+        int x,y;
+        x = askX();
+        y = askY();
+        GameStatus = domove(x,y,Gameover);
+        x = askX();
+        y = askY();
+        dobuild(x,y);
+        return GameStatus;
     }
-    public boolean domove(Cell cell, boolean Gameover){
-        Cell OldCell;
-        OldCell = player.getWorker1().getCell();
+
+    public int askX(){
+        //chiede alla view la coordinata x
+        return x;
+    }
+
+    public int askY(){
+        //chiede alla view la coordinata y
+        return y;
+    }
+
+    public boolean domove(int x,int y, boolean Gameover){
+        int oldX,oldY;
+        Worker activeWorker;
+        activeWorker = askActiveWorker();
+        oldX = activeWorker.getXcoordinate();
+        oldY = activeWorker.getYcoordinate();
         if (board.getNround() == 0) {
-            /*try {
-                if (cell.isDome() || cell.isOccupied() || (cell.getLevel()- oldCell.getLevel())>1);
-            }catch(impossibleMoveException e){};*/
-            player.getWorker1().setCell(cell);
-            if ((cell.getLevel() == 3 && OldCell.getLevel() == 2) || (cell.getLevel() == 0 && OldCell.getLevel() == 2) || (cell.getLevel() == 1 && OldCell.getLevel() == 3) || (cell.getLevel() == 0 && OldCell.getLevel() == 3)) {
+            while(board.isDome(x,y) || board.isOccupied(x,y) || (board.getLevel(x,y)- board.getLevel(oldX,oldY))>1){
+                x=askX();
+                y=askY();
+            }
+            board.moveWorker(x, y,activeWorker);
+            board.freeCellFromWorker(oldX,oldY);
+            if ((board.getLevel(x,y) == 3 && board.getLevel(oldX,oldY) == 2) || (board.getLevel(x,y) == 0 && board.getLevel(oldX,oldY) == 2) || (board.getLevel(x,y) == 1 && board.getLevel(oldX,oldY) == 3) || (board.getLevel(x,y) == 0 && board.getLevel(oldX,oldY) == 3)) {
                 Gameover = true;
             }
         }
         else {
-            /*try {
-                if (cell.isDome() || cell.isOccupied() || (cell.getLevel()- oldCell.getLevel())>0);
-            }catch(impossibleMoveException e){};*/
-            player.getWorker1().setCell(cell);
-            if ((cell.getLevel() == 3 && OldCell.getLevel() == 2) || (cell.getLevel() == 0 && OldCell.getLevel() == 2) || (cell.getLevel() == 1 && OldCell.getLevel() == 3) || (cell.getLevel() == 0 && OldCell.getLevel() == 3)) {
+            while(board.isDome(x,y) || board.isOccupied(x,y) || (board.getLevel(x,y)- board.getLevel(oldX,oldY))>0){
+                x=askX();
+                y=askY();
+            }
+            board.moveWorker(x, y,activeWorker);
+            board.freeCellFromWorker(oldX,oldY);
+            if ((board.getLevel(x,y) == 3 && board.getLevel(oldX,oldY) == 2) || (board.getLevel(x,y) == 0 && board.getLevel(oldX,oldY) == 2) || (board.getLevel(x,y) == 1 && board.getLevel(oldX,oldY) == 3) || (board.getLevel(x,y) == 0 && board.getLevel(oldX,oldY) == 3)) {
                 Gameover = true;
             }
         }
         return Gameover;
     }
 
-    public void dobuild(Cell cell) {
-        int level;
-        /*try{
-            if(cell.isOccupied() || cell.isDome());
-        }catch (impossiblebuildexception e){};*/
-        level = cell.getLevel();
-        level++;
-        cell.setLevel(level);
-        if (level == 4) {
-            cell.setDome(true);
+    public void dobuild(int x,int y) {
+        while(board.isOccupied(x,y) || board.isDome(x,y)){
+            x = askX();
+            y = askY();
         }
+        board.setLevel(x,y);
+        if(board.getLevel(x,y)==4) {
+            board.setDome(x,y);
+        }
+    }
+    public Worker askActiveWorker(){
+        Worker worker;
+        //chiedere activeWorker alla view
+        return worker;
     }
 }
