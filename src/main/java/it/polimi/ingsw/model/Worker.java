@@ -4,7 +4,8 @@ public class Worker {
     private int IdWorker;
     private boolean ActiveWorker=false;
     private String Color;
-    private Cell cell;
+    private int x;
+    private int y;
     private Player player;
 
     public Player getPlayer() {
@@ -24,13 +25,14 @@ public class Worker {
         ActiveWorker = activeWorker;
     }
 
+    //get the worker's coordinates
+    public int getXcoordinate() { return x; }
+    public int getYcoordinate() { return y; }
 
-    public Cell getCell() {
-        return cell;
-    }
-
-    public void setCell(Cell cell) { // uguale alla locateworker
-        this.cell = cell;
+    //change the worker's coordinates
+    public void setCell(int x, int y) { // uguale alla locateworker
+        this.x = x;
+        this.y = y;
     }
 
 }

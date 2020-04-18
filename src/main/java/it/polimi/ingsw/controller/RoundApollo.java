@@ -3,128 +3,101 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Worker;
 
 public class RoundApollo implements Round{
     private Board board;
     private Player player;
-    private Game game;
-//    private Cell  cell;
 
     public RoundApollo(Board board, Player player){
         this.board = board;
         this.player = player;
     }
 
-
-
     @Override
     public  boolean ExecuteRound(boolean Gameover) {
-    //    boolean GameStatus;
-     //   GameStatus=domove(/*cell*/,Gameover);                           //da rivedere paramatri interazione view
-     //   dobuild(/*cell*/);                                    //bisogna passare sia vecchia cella sia nuova cella
-     //   return GameStatus;
-        return false;
+        boolean GameStatus;
+        int x,y;
+        x = askX();
+        y = askY();
+        GameStatus = domove(x,y,Gameover);
+        x = askX();
+        y = askY();
+        dobuild(x,y);
+        return GameStatus;
     }
 
-    public boolean domove(Cell cell, boolean Gameover){  //aggiungere controllo worker senza mosse possibili
-        Cell oldCell;
-        if (player.getWorker1().isActiveWorker()){//per togliere gli if si può passare activeworker come parametro
-            oldCell=player.getWorker1().getCell();
-            if(board.getNround()==0) {
-/*              try {
-                    if (cell.isDome() || (cell.getLevel()- oldCell.getLevel())>1);
-                }catch(impossibleMoveException e){};*/
-                if (cell.isOccupied()) {
-                    if (cell.getWorker().getPlayer() != player) {
-                        cell.getWorker().setCell(oldCell);
-                        player.getWorker1().setCell(cell);
-                        if (cell.getLevel() == 3 && oldCell.getLevel() == 2) {
-                            Gameover = true;
-                        }
-                    } else {
-                        //chiedere nuova mossa
-                    }
-                } else {
-                    player.getWorker1().setCell(cell);
-                    if (cell.getLevel() == 3 && oldCell.getLevel() == 2) {
-                        Gameover = true;
-                    }
-                }
-            }else{
-                /*try {
-                    if (cell.isDome() || (cell.getLevel()- oldCell.getLevel())>0);
-                }catch(impossibleMoveException e){};*/
-                if (cell.isOccupied()) {
-                    if (cell.getWorker().getPlayer() != player) {
-                        cell.getWorker().setCell(oldCell);
-                        player.getWorker1().setCell(cell);
-                        if (cell.getLevel() == 3 && oldCell.getLevel() == 2) {
-                            Gameover = true;
-                        }
-                    } else {
-                        //chiedere nuova mossa
-                    }
-                } else {
-                    player.getWorker1().setCell(cell);
-                    if (cell.getLevel() == 3 && oldCell.getLevel() == 2) {
-                        Gameover = true;
-                    }
-                }
+    public int askX(){
+        //chiede alla view la coordinata x
+        return x;
+    }
 
+    public int askY(){
+        //chiede alla view la coordinata y
+        return y;
+    }
+
+    public boolean domove(int x, int y, boolean Gameover){  //aggiungere controllo worker senza mosse possibili
+        int oldX,oldY;
+        Worker activeWorker;
+        activeWorker = askActiveWorker();
+        oldX = activeWorker.getXcoordinate();
+        oldY = activeWorker.getYcoordinate();
+        if(board.getNround()==0) {
+            while (board.isDome(x,y) || (board.getLevel(x,y)- board.getLevel(oldX,oldY))>1 || board.getWorker(x,y).getPlayer() == player){
+                x=askX();
+                y=askY();
             }
-            }else if (player.getWorker2().isActiveWorker()){
-/*            try {
-                if (cell.isDome());
-            }catch(impossibleMoveException e){};*/
-            oldCell=player.getWorker2().getCell();
-            if(cell.isOccupied()){
-                if(cell.getWorker().getPlayer()!=player) {
-                    cell.getWorker().setCell(oldCell);
-                    player.getWorker2().setCell(cell);
-                    if (cell.getLevel() == 3 && oldCell.getLevel() == 2) {
-                        Gameover = true;
-                    }
-                }else {
-                    //chiedere nuova mossa
+            if (board.isOccupied(x,y)) {
+                board.moveWorker(oldX, oldY, board.getWorker(x, y));
+                board.moveWorker(x, y, activeWorker);
+                if (board.getLevel(x,y) == 3 && board.getLevel(oldX, oldY) == 2) {
+                    Gameover = true;
                 }
-            }else {
-                player.getWorker2().setCell(cell);
-                if (cell.getLevel() == 3 && oldCell.getLevel() == 2) {
-                    Gameover=true;
+            } else {
+                board.moveWorker(x,y,activeWorker);
+                if (board.getLevel(x,y) == 3 && board.getLevel(oldX, oldY) == 2) {
+                    Gameover = true;
                 }
             }
+        }else{
+            while (board.isDome(x,y) || (board.getLevel(x,y)- board.getLevel(oldX,oldY))>0 || board.getWorker(x,y).getPlayer() == player){
+                x=askX();
+                y=askY();
+            }
+            if (board.isOccupied(x,y)) {
+                board.moveWorker(oldX, oldY, board.getWorker(x, y));
+                board.moveWorker(x, y, activeWorker);
+                if (board.getLevel(x,y) == 3 && board.getLevel(oldX, oldY) == 2) {
+                    Gameover = true;
+                }
+            } else {
+                board.moveWorker(x,y,activeWorker);
+                if (board.getLevel(x,y) == 3 && board.getLevel(oldX, oldY) == 2) {
+                    Gameover = true;
+                }
+            }
+
         }
         return Gameover;
     }
 
-    public void dobuild(Cell cell){
-        int level;
-/*        if (player.getWorker1().isActiveWorker()){
-            try{
-                if(cell.isOccupied() || cell.isDome());
-            }catch (impossiblebuildexception e){};*/
-            level=cell.getLevel();
-            level++;
-            cell.setLevel(level);
-            if(level==4){
-                cell.setDome(true);
-            }
-
-/*        }else if (player.getWorker2().isActiveWorker()) {
-            try {
-                if (cell.isOccupied() || cell.isDome()) ;
-            } catch (impossiblebuildexception e) {
-            }
-            ;
-            level = cell.getLevel();
-            level++;
-            cell.setLevel(level);
-            if (level == 4) {
-                cell.setDome(true);
-            }*/
+    public void dobuild(int x,int y){
+        while(board.isOccupied(x,y) || board.isDome(x,y)){
+            x = askX();
+            y = askY();
         }
+        board.setLevel(x,y);
+        if(board.getLevel(x,y)==4) {
+                board.setDome(x,y);
+        }
+    }
 
-
+    public Worker askActiveWorker(){
+        Worker worker;
+            //chiedere activeWorker alla view
+        return worker;
+    }
 }
 
 
