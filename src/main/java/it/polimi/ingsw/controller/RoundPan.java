@@ -1,86 +1,137 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.model.Board;
-import it.polimi.ingsw.model.Cell;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.model.*;
+
+import java.util.ArrayList;
 
 public class RoundPan implements Round {
     private Board board;
     private Player player;
 
-    public RoundPan(Board board, Player player){
+    public RoundPan(Board board, Player player) {
         this.board = board;
         this.player = player;
     }
 
     @Override
     public boolean ExecuteRound(boolean Gameover) {
-        boolean GameStatus;
-        int x,y;
-        x = askX();
-        y = askY();
-        GameStatus = domove(x,y,Gameover);
-        x = askX();
-        y = askY();
-        dobuild(x,y);
-        return GameStatus;
-    }
-
-    public int askX(){
-        //chiede alla view la coordinata x
-        return x;
-    }
-
-    public int askY(){
-        //chiede alla view la coordinata y
-        return y;
-    }
-
-    public boolean domove(int x,int y, boolean Gameover){
-        int oldX,oldY;
-        Worker activeWorker;
+        boolean gamestatus;
+        int i;
+        Worker activeWorker,newActiveWorker;
+        ArrayList<Coordinates> possibleMoves,possibleBuilds;
+        Coordinates moveCoordinates,buildCoordinates;
         activeWorker = askActiveWorker();
-        oldX = activeWorker.getXcoordinate();
-        oldY = activeWorker.getYcoordinate();
-        if (board.getNround() == 0) {
-            while(board.isDome(x,y) || board.isOccupied(x,y) || (board.getLevel(x,y)- board.getLevel(oldX,oldY))>1){
-                x=askX();
-                y=askY();
-            }
-            board.moveWorker(x, y,activeWorker);
-            board.freeCellFromWorker(oldX,oldY);
-            if ((board.getLevel(x,y) == 3 && board.getLevel(oldX,oldY) == 2) || (board.getLevel(x,y) == 0 && board.getLevel(oldX,oldY) == 2) || (board.getLevel(x,y) == 1 && board.getLevel(oldX,oldY) == 3) || (board.getLevel(x,y) == 0 && board.getLevel(oldX,oldY) == 3)) {
-                Gameover = true;
+        possibleMoves=canMove(activeWorker);        //arraylist of possible coordinates where worker can move(da passare alla view)
+        if(possibleMoves.size()==0){
+            do{
+                newActiveWorker=askOtherWorker();
+            }while(newActiveWorker!=activeWorker);
+            activeWorker=newActiveWorker;
+            possibleMoves=canMove(activeWorker);
+            if(possibleMoves.size()==0){
+                return false;       // se ci sono due giocatori vince l'altro, se sono in tre eliminare il giocatore
             }
         }
-        else {
-            while(board.isDome(x,y) || board.isOccupied(x,y) || (board.getLevel(x,y)- board.getLevel(oldX,oldY))>0){
-                x=askX();
-                y=askY();
-            }
-            board.moveWorker(x, y,activeWorker);
-            board.freeCellFromWorker(oldX,oldY);
-            if ((board.getLevel(x,y) == 3 && board.getLevel(oldX,oldY) == 2) || (board.getLevel(x,y) == 0 && board.getLevel(oldX,oldY) == 2) || (board.getLevel(x,y) == 1 && board.getLevel(oldX,oldY) == 3) || (board.getLevel(x,y) == 0 && board.getLevel(oldX,oldY) == 3)) {
-                Gameover = true;
-            }
+        moveCoordinates=askCoordinatesToMove(possibleMoves);
+        gamestatus=doMove(moveCoordinates,Gameover,activeWorker);
+        possibleBuilds = canBuild(activeWorker);        //arraylist of possible coordinates where worker can build(da passare alla view)
+        if(possibleBuilds.size()==0){
+            return false;       // se ci sono due giocatori vince l'altro, se sono in tre eliminare il giocatore
         }
-        return Gameover;
+        buildCoordinates = askCoordinatesToBuild(possibleBuilds);
+        doBuild(buildCoordinates);
+        i=board.getNround();
+        i--;
+        board.setNround(i);
+        return gamestatus;
     }
 
-    public void dobuild(int x,int y) {
-        while(board.isOccupied(x,y) || board.isDome(x,y)){
-            x = askX();
-            y = askY();
-        }
-        board.setLevel(x,y);
-        if(board.getLevel(x,y)==4) {
-            board.setDome(x,y);
-        }
-    }
-    public Worker askActiveWorker(){
-        Worker worker;
-        //chiedere activeWorker alla view
+    public Worker askActiveWorker() {
+        //chiede alla view di selezionare un worker
         return worker;
     }
+
+    public Worker askOtherWorker() {
+        //chiede alla view di selezionare l'altro worker
+        return worker;
+    }
+
+
+    public ArrayList<Coordinates> canMove(Worker worker) {
+        Coordinates coordinates, newCoordinates;
+        int x, y;
+        ArrayList<Coordinates> possiblesMovesCoordinates = new ArrayList<Coordinates>();
+        coordinates = worker.getCoordinates();
+        x = coordinates.getX();
+        y = coordinates.getY();
+        for (int i = x - 1; i <= x + 1; i++) {
+            for (int j = y - 1; j <= y + 1; j++) {
+                if (i >= 0 && i <= 4 && j >= 0 && j <= 4) {
+                    newCoordinates = new Coordinates(i, j);
+                    if (board.getNround() == 0) {
+                        if (!board.isDome(newCoordinates) && (board.getLevel(newCoordinates) - board.getLevel(coordinates)) <= 1 && !board.isOccupied(newCoordinates)) {
+                            possiblesMovesCoordinates.add(newCoordinates);
+                        }
+                    } else {
+                        if (!board.isDome(newCoordinates) && (board.getLevel(newCoordinates) - board.getLevel(coordinates)) == 0 && !board.isOccupied(newCoordinates)) {
+                            possiblesMovesCoordinates.add(newCoordinates);
+                        }
+                    }
+                }
+            }
+        }
+        return possiblesMovesCoordinates;
+    }
+
+    public Coordinates askCoordinatesToMove(ArrayList<Coordinates> possibleCoordinates){
+        //dare alla view arraylist e chiedere al player dove vuole andare se non si può passare da controller si fa
+        //un currentlypossiblemove in board
+        return coordinates;
+    }
+
+    public boolean doMove(Coordinates moveCoordinates,boolean GameOver,Worker activeWorker){
+        Coordinates oldCoordinates;
+        oldCoordinates=activeWorker.getCoordinates();
+        board.freeCellFromWorker(oldCoordinates);
+        board.moveWorker(moveCoordinates,activeWorker);
+        if ((board.getLevel(moveCoordinates) == 3 && board.getLevel(oldCoordinates) == 2) || (board.getLevel(moveCoordinates) == 0 && board.getLevel(oldCoordinates) == 2) || (board.getLevel(moveCoordinates) == 1 && board.getLevel(oldCoordinates) == 3) || (board.getLevel(moveCoordinates) == 0 && board.getLevel(oldCoordinates) == 3)) {
+            GameOver = true;
+        }
+        return GameOver;
+    }
+
+    public ArrayList<Coordinates> canBuild(Worker worker) {
+        Coordinates coordinates, newCoordinates;
+        int x, y;
+        ArrayList<Coordinates> possiblesBuildsCoordinates = new ArrayList<Coordinates>();
+        coordinates = worker.getCoordinates();
+        x = coordinates.getX();
+        y = coordinates.getY();
+        for (int i = x - 1; i <= x + 1; i++) {
+            for (int j = y - 1; j <= y + 1; j++) {
+                if (i >= 0 && i <= 4 && j >= 0 && j <= 4) {
+                    newCoordinates = new Coordinates(i, j);
+                    if (!board.isOccupied(newCoordinates) && !board.isDome(newCoordinates)) {
+                        possiblesBuildsCoordinates.add(newCoordinates);
+                    }
+                }
+            }
+        }
+        return possiblesBuildsCoordinates;
+    }
+
+    public Coordinates askCoordinatesToBuild(ArrayList<Coordinates> possibleCoordinates){
+        //dare alla view arraylist e chiedere al player dove vuole costruire se non si può passare da controller si fa
+        //un currentlypossiblebuild in board
+        return coordinates;
+    }
+
+    public void doBuild(Coordinates buildCoordinate){
+        board.setLevel(buildCoordinate);
+        if(board.getLevel(buildCoordinate)==4) {
+            board.setDome(buildCoordinate);
+        }
+    }
+
+
 }

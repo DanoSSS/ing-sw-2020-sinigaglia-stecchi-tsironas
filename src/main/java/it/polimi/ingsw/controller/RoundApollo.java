@@ -1,9 +1,8 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.model.Board;
-import it.polimi.ingsw.model.Cell;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.model.*;
+
+import java.util.ArrayList;
 
 public class RoundApollo implements Round{
     private Board board;
@@ -17,24 +16,59 @@ public class RoundApollo implements Round{
     @Override
     public  boolean ExecuteRound(boolean Gameover) {
         boolean GameStatus;
-        int x,y;
-        x = askX();
-        y = askY();
-        GameStatus = domove(x,y,Gameover);
-        x = askX();
-        y = askY();
+        Coordinates coordinates;
+        coordinates = askCoordinatesMove;
+        GameStatus = domove(coordinates,Gameover);
+        coordinates = askCoordinatesBuild;
         dobuild(x,y);
         return GameStatus;
     }
 
-    public int askX(){
-        //chiede alla view la coordinata x
-        return x;
+    public ArrayList<Coordinates> possiblesApolloMoves(Coordinates coordinates){
+        ArrayList<Coordinates> possibleCoordinates = new ArrayList<Coordinates>();
+        Coordinates newCoordinates;
+        int x;
+        int y;
+        x = coordinates.getX();
+        y = coordinates.getY();
+        for (int i=x-1;i<=x+1;x++){
+            for(int j=y-1;j<=y+1;y++){
+                if((i>=0 && i<=4)&&(j>=0 && j<=4){
+                    newCoordinates = new Coordinates(i,j);
+                }
+                if(board.getNround()==0) {
+                    if (board.isDome(newCoordinates) || (board.getLevel(newCoordinates) - board.getLevel(coordinates)) > 1 || board.getWorker(newCoordinates).getPlayer() == player) {
+                        possibleCoordinates.add(newCoordinates);
+                    }
+                }
+                else{
+                    if (board.isDome(newCoordinates) || (board.getLevel(newCoordinates) - board.getLevel(coordinates)) > 0 || board.getWorker(newCoordinates).getPlayer() == player){
+                    possibleCoordinates.add(newCoordinates);
+                    }
+                }
+            }
+        }
     }
 
-    public int askY(){
-        //chiede alla view la coordinata y
-        return y;
+
+
+    public Coordinates askCoordinatesMove(){
+        Coordinates oldCoordinates;
+        Coordinates coordinates;
+        ArrayList<Coordinates> possibleCoordinates;
+        Worker activeWorker;
+        activeWorker = askActiveWorker();
+        oldCoordinates = activeWorker.getCoordinates();
+        possibleCoordinates=possiblesApolloMoves(oldCoordinates);
+
+        //chiede alla view una coordinata tra quelle possibili
+
+        return coordinates;
+    }
+
+    public int askCoordinatesBuild(){
+
+        return ;
     }
 
     public boolean domove(int x, int y, boolean Gameover){  //aggiungere controllo worker senza mosse possibili

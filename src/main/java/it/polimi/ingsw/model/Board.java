@@ -5,8 +5,8 @@ import it.polimi.ingsw.view.ObservableModel;
 
 public class Board{
     private int NumberOfPlayers;
-    private static final int HEIGHT = 5;
-    private static final int WIDTH = 5;
+    private static final int HEIGHT = 4;
+    private static final int WIDTH = 4;
     private Cell [][] board;
     private Game game;
     private Player player1,player2,player3;     //non dovrebbero servire
@@ -17,10 +17,10 @@ public class Board{
     public Board(Worker worker /*vanno passati tutti gli worker(forse anche i player) e l observableModel*/) {
         this.worker1 = worker;
 
-        board = new Cell[HEIGHT][WIDTH];
+        board = new Cell[HEIGHT][WIDTH];                        //i==row && j==col
         for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < HEIGHT; j++) {
-                board[j][i] = new Cell(j,i);
+                board[i][j] = new Cell(i,j);
             }
 
         }
@@ -44,47 +44,49 @@ public class Board{
     }
 
     //method to build a dome in the cell x,y
-    public void setDome(int x,int y){
-        board[x][y].setDome();
+    public void setDome(Coordinates coordinates){
+        board[coordinates.getX()][coordinates.getY()].setDome();
         observableModel.Notify();
     }
 
     //method to know if there is a dome in the cell x,y
-    public boolean isDome(int x,int y){
-        return board[x][y].isDome();
+    public boolean isDome(Coordinates coordinates){
+        return board[coordinates.getX()][coordinates.getY()].isDome();
     }
 
     //method to know if the cell x,y is occupied by a worker
-    public boolean isOccupied(int x,int y){
-        return board[x][y].isOccupied();
+    public boolean isOccupied(Coordinates coordinates){
+        return board[coordinates.getX()][coordinates.getY()].isOccupied();
     }
 
     //method to know the level of the cell x,y
-    public int getLevel(int x, int y){
-        return board[x][y].getLevel();
+    public int getLevel(Coordinates coordinates){
+        return board[coordinates.getX()][coordinates.getY()].getLevel();
     }
 
     //method to build in the cell x,y
-    public void setLevel(int x, int y) {
-        board[x][y].setLevel();
+    public void setLevel(Coordinates coordinates) {
+        board[coordinates.getX()][coordinates.getY()].setLevel();
         observableModel.Notify();
     }
 
     //method to move the worker
-    public void moveWorker(int x,int y,Worker worker){
-        worker.setCell(x,y);
-        board[x][y].setWorker(worker);
+    public void moveWorker(Coordinates coordinates,Worker worker){
+        worker.setCell(coordinates.getX(),coordinates.getY());
+        board[coordinates.getX()][coordinates.getY()].setWorker(worker);
+        board[coordinates.getX()][coordinates.getY()].setOccupied(true);
         observableModel.Notify();
     }
 
     //method to know which worker is in the cell x,y
-    public Worker getWorker(int x,int y){
-        return board[x][y].getWorker();
+    public Worker getWorker(Coordinates coordinates){
+        return board[coordinates.getY()][coordinates.getY()].getWorker();
     }
 
     //method to remove a worker from a cell when it's moved
-    public void freeCellFromWorker(int x,int y){
-        board[x][y].setWorker(null);
+    public void freeCellFromWorker(Coordinates coordinates){
+        board[coordinates.getX()][coordinates.getY()].setWorker(null);
+        board[coordinates.getX()][coordinates.getY()].setOccupied(false);
         observableModel.Notify();
     }
 

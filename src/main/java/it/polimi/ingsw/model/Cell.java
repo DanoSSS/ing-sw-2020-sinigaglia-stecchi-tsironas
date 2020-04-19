@@ -3,23 +3,22 @@ package it.polimi.ingsw.model;
 
 
 public class Cell {
-    private int x;
-    private int y;
+    private Coordinates coordinates;
     private int level;
     private boolean IsOccupied;
     private boolean IsDome;
     private Worker worker;
 
-    public Cell(int x,int y){
-        this.x=x;
-        this.y=y;
+    public Cell(int x,int y){    //MODIFICATO DA CONTROLLARE ANCHE COSTRUTTORE BOARD DELLA MATRICE
+        coordinates.setX(x);
+        coordinates.setY(y);
     }
 
     public boolean isOccupied() { return IsOccupied; }
 
-    //public void setOccupied(boolean occupied) {        probabilmente da cancellare
-    //    IsOccupied = occupied;
-    //}
+    public void setOccupied(boolean occupied) {
+        IsOccupied = occupied;
+    }
 
     public boolean isDome() { return IsDome; }
 
