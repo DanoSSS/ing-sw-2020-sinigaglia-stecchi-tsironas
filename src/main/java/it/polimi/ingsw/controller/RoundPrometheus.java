@@ -46,7 +46,7 @@ public class RoundPrometheus implements Round {
             }
         }
         moveCoordinates=askCoordinatesToMove(possibleMoves);
-        gamestatus=doMove(moveCoordinates,Gameover,activeWorker,);
+        gamestatus=doMove(moveCoordinates,Gameover,activeWorker);
         possibleBuilds = canBuild(activeWorker);        //arraylist of possible coordinates where worker can build(da passare alla view)
         if(possibleBuilds.size()==0){
             return false;       // se ci sono due giocatori vince l'altro, se sono in tre eliminare il giocatore
