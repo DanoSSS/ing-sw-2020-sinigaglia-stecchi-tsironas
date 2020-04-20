@@ -40,9 +40,11 @@ public class RoundApollo implements Round {
         }
         buildCoordinates = askCoordinatesToBuild(possibleBuilds);
         doBuild(buildCoordinates);
-        i = board.getNround();
-        i--;
-        board.setNround(i);
+        if(board.getNround()!=0) {
+            i = board.getNround();
+            i--;
+            board.setNround(i);
+        }
         return GameStatus;
     }
 
