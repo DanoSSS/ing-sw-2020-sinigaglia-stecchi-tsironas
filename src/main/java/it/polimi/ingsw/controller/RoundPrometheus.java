@@ -27,7 +27,7 @@ public class RoundPrometheus implements Round {
         activeWorker = askActiveWorker();
         buildBefore = askIfWantBuildBefore();
         if(buildBefore){
-            possibleBuilds = canBuild(activeWorker);        //arraylist of possible coordinates where worker can build(da passare alla view)
+            possibleBuilds =  canBuild(activeWorker);        //arraylist of possible coordinates where worker can build(da passare alla view)
             if(possibleBuilds.size()==0){
                 do {
                     newActiveWorker = askOtherWorker();
