@@ -1,5 +1,4 @@
 package it.polimi.ingsw.view;
-
 import it.polimi.ingsw.model.Board;
 
 import java.util.ArrayList;
@@ -28,5 +27,4 @@ public class ObservableModel implements Observable {
     public Board getBoard() {
         return board;
     }
-
 }

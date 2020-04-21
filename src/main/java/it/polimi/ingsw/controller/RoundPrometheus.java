@@ -27,6 +27,19 @@ public class RoundPrometheus implements Round {
         activeWorker = askActiveWorker();
         buildBefore = askIfWantBuildBefore();
         if(buildBefore){
+            possibleBuilds = canBuild(activeWorker);        //arraylist of possible coordinates where worker can build(da passare alla view)
+            if(possibleBuilds.size()==0){
+                do {
+                    newActiveWorker = askOtherWorker();
+                } while (newActiveWorker != activeWorker);
+                activeWorker = newActiveWorker;
+                possibleBuilds = canBuild(activeWorker);        //arraylist of possible coordinates where worker can build(da passare alla view)
+                if(possibleBuilds.size()==0){
+                    return false;        //bisogna vedere se il giocatore perde in questo caso, se non perde mettere i controlli prima dell if(buildBefore))
+                }
+            }
+            buildCoordinates = askCoordinatesToBuild(possibleBuilds);
+            doBuild(buildCoordinates);
             possibleMoves=canMoveAfterBuild(activeWorker,buildBefore);
             if(possibleMoves.size()==0){
                 return false;       // se non ci sono mosse possibili dopo costruzione speciale il giocatore perde??

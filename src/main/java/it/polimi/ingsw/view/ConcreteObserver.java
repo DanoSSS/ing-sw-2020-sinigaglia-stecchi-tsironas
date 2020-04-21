@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.model.Coordinates;
 
 public class ConcreteObserver implements Observer {
     public ObservableModel subject;
@@ -10,7 +11,8 @@ public class ConcreteObserver implements Observer {
    }
     @Override
     public void update() {
-        //board = subject.getBoard();
+         //subject.getLevel(coordinates);
         /*devo aggiornare la board della view attraverso il metodo getBoard di ObservableModel*/
     }
+
 }
