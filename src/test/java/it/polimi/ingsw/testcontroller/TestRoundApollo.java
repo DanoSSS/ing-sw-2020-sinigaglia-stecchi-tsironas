@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 public class TestRoundApollo {
-    private Board board= new Board();
+    private Board board=new Board();
     private Player player;
     Coordinates coordinates = new Coordinates(2,1);
 

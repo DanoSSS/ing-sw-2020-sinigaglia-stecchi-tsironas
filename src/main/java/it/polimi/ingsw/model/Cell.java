@@ -3,15 +3,14 @@ package it.polimi.ingsw.model;
 
 
 public class Cell {
-    private Coordinates coordinates= new Coordinates(0,0);
+    private Coordinates coordinates;
     private int level;
     private boolean IsOccupied;
     private boolean IsDome;
     private Worker worker;
 
     public Cell(int x,int y){    //MODIFICATO DA CONTROLLARE ANCHE COSTRUTTORE BOARD DELLA MATRICE
-        coordinates.setX(x);
-        coordinates.setY(y);
+        coordinates= new Coordinates(x,y);
     }
 
     public boolean isOccupied() { return IsOccupied; }
