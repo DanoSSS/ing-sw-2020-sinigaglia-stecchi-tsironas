@@ -75,16 +75,19 @@ public class RoundPrometheus implements Round {
     }
 
     public Worker askActiveWorker() {
+        Worker worker=null;
         //chiede alla view di selezionare un worker
         return worker;
     }
 
     public boolean askIfWantBuildBefore(){
+        boolean buildBefore=true;
         //chiede se vuole costruire prima di muovere sapendo di non poter salire
         return buildBefore;
     }
 
     public Worker askOtherWorker() {
+        Worker worker=null;
         //chiede alla view di selezionare l'altro worker
         return worker;
     }
@@ -136,6 +139,7 @@ public class RoundPrometheus implements Round {
     }
 
     public Coordinates askCoordinatesToMove(ArrayList<Coordinates> possibleCoordinates){
+        Coordinates coordinates=null;
         //dare alla view arraylist e chiedere al player dove vuole andare se non si può passare da controller si fa
         //un currentlypossiblemove in board
         return coordinates;
@@ -173,6 +177,7 @@ public class RoundPrometheus implements Round {
     }
 
     public Coordinates askCoordinatesToBuild(ArrayList<Coordinates> possibleCoordinates){
+        Coordinates coordinates=null;
         //dare alla view arraylist e chiedere al player dove vuole costruire se non si può passare da controller si fa
         //un currentlypossiblebuild in board
         return coordinates;

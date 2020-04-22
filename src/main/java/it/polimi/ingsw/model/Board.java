@@ -14,8 +14,8 @@ public class Board{
     private int nround=0;
     private ObservableModel observableModel;
 
-    public Board(Worker worker /*vanno passati tutti gli worker(forse anche i player) e l observableModel*/) {
-        this.worker1 = worker;
+    public Board(/*Worker worker /*vanno passati tutti gli worker(forse anche i player) e l observableModel*/) {
+       // this.worker1 = worker;
 
         board = new Cell[HEIGHT][WIDTH];                        //i==row && j==col
         for (int i = 0; i < WIDTH; i++) {
@@ -67,7 +67,7 @@ public class Board{
     //method to build in the cell x,y
     public void setLevel(Coordinates coordinates) {
         board[coordinates.getX()][coordinates.getY()].setLevel();
-        observableModel.Notify();
+        //observableModel.Notify();          commento da togliere messo solo per i test
     }
 
     //method to move the worker

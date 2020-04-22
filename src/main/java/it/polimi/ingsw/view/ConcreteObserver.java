@@ -5,7 +5,6 @@ import it.polimi.ingsw.model.Coordinates;
 
 public class ConcreteObserver implements Observer {
     public ObservableModel subject;
-    public Board board;
     public ConcreteObserver(ObservableModel subject){
         this.subject=subject;
    }

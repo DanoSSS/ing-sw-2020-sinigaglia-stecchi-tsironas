@@ -58,11 +58,13 @@ public class RoundEphaestus implements Round {
     }
 
     public Worker askActiveWorker() {
+        Worker worker=null;
         //chiede alla view di selezionare un worker
         return worker;
     }
 
     public Worker askOtherWorker() {
+        Worker worker=null;
         //chiede alla view di selezionare l'altro worker
         return worker;
     }
@@ -95,6 +97,7 @@ public class RoundEphaestus implements Round {
     }
 
     public Coordinates askCoordinatesToMove(ArrayList<Coordinates> possibleCoordinates){
+        Coordinates coordinates=null;
         //dare alla view arraylist e chiedere al player dove vuole andare se non si può passare da controller si fa
         //un currentlypossiblemove in board
         return coordinates;
@@ -132,6 +135,7 @@ public class RoundEphaestus implements Round {
     }
 
     public Coordinates askCoordinatesToBuild(ArrayList<Coordinates> possibleCoordinates){
+        Coordinates coordinates=null;
         //dare alla view arraylist e chiedere al player dove vuole costruire se non si può passare da controller si fa
         //un currentlypossiblebuild in board
         return coordinates;
@@ -145,6 +149,7 @@ public class RoundEphaestus implements Round {
     }
 
     public boolean askIfBUildSecond(){
+        boolean buildSecond=true;
         //chiedere se si vuole costruire una seconda volta nello stesso posto a patto che non sia una cupola come da potere
         return buildSecond;
     }

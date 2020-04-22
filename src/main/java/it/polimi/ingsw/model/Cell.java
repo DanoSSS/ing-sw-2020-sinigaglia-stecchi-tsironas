@@ -3,7 +3,7 @@ package it.polimi.ingsw.model;
 
 
 public class Cell {
-    private Coordinates coordinates;
+    private Coordinates coordinates= new Coordinates(0,0);
     private int level;
     private boolean IsOccupied;
     private boolean IsDome;

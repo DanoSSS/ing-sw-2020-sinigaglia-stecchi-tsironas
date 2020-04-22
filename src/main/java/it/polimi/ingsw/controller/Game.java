@@ -22,9 +22,7 @@ Game {
         this.board=board;
     }
 
-    public boolean isGameOver() {
-        return GameOver;
-    }
+    public boolean isGameOver() { return GameOver; }
 
     public void setGameOver(boolean gameOver) {
         GameOver = gameOver;
@@ -40,19 +38,19 @@ Game {
             roundP1 = new RoundApollo(board,player);
         }
         if (player.getGod()== God.ARTEMIS){
-            roundP1 = new RoundArtemis();
+            roundP1 = new RoundArtemis(board,player);
         }
         if (player.getGod()== God.ATHENA){
             roundP1 = new RoundAthena(board,player);
         }
         if (player.getGod()== God.ATLAS){
-            roundP1 = new RoundAtlas();
+            roundP1 = new RoundAtlas(board,player);
         }
         if (player.getGod()== God.DEMETER){
-            roundP1 = new RoundDemeter();
+            roundP1 = new RoundDemeter(board,player);
         }
         if (player.getGod()== God.EPHEASTUS){
-            roundP1 = new RoundEphaestus();
+            roundP1 = new RoundEphaestus(board,player);
         }
         if (player.getGod()== God.MINOTAUR){
             roundP1 = new RoundMinotaur();
@@ -61,7 +59,7 @@ Game {
             roundP1 = new RoundPan(board,player);
         }
         if (player.getGod()== God.PROMETHEUS){
-            roundP1 = new RoundPrometheus();
+            roundP1 = new RoundPrometheus(board,player);
         }
 
     }
@@ -72,19 +70,19 @@ Game {
             roundP2 = new RoundApollo(board, player);
         }
         if (player.getGod()== God.ARTEMIS){
-            roundP2 = new RoundArtemis();
+            roundP2 = new RoundArtemis(board,player);
         }
         if (player.getGod()== God.ATHENA){
             roundP2 = new RoundAthena(board,player);
         }
         if (player.getGod()== God.ATLAS){
-            roundP2 = new RoundAtlas();
+            roundP2 = new RoundAtlas(board,player);
         }
         if (player.getGod()== God.DEMETER){
-            roundP2 = new RoundDemeter();
+            roundP2 = new RoundDemeter(board,player);
         }
         if (player.getGod()== God.EPHEASTUS){
-            roundP2 = new RoundEphaestus();
+            roundP2 = new RoundEphaestus(board,player);
         }
         if (player.getGod()== God.MINOTAUR){
             roundP2 = new RoundMinotaur();
@@ -93,7 +91,7 @@ Game {
             roundP2 = new RoundPan(board,player);
         }
         if (player.getGod()== God.PROMETHEUS){
-            roundP2 = new RoundPrometheus();
+            roundP2 = new RoundPrometheus(board,player);
         }
 
     }
@@ -104,19 +102,19 @@ Game {
             roundP3 = new RoundApollo(board,player);
         }
         if (player.getGod()== God.ARTEMIS){
-            roundP3 = new RoundArtemis();
+            roundP3 = new RoundArtemis(board,player);
         }
         if (player.getGod()== God.ATHENA){
             roundP3 = new RoundAthena(board,player);
         }
         if (player.getGod()== God.ATLAS){
-            roundP3 = new RoundAtlas();
+            roundP3 = new RoundAtlas(board,player);
         }
         if (player.getGod()== God.DEMETER){
-            roundP3 = new RoundDemeter();
+            roundP3 = new RoundDemeter(board,player);
         }
         if (player.getGod()== God.EPHEASTUS){
-            roundP3 = new RoundEphaestus();
+            roundP3 = new RoundEphaestus(board,player);
         }
         if (player.getGod()== God.MINOTAUR){
             roundP3 = new RoundMinotaur();
@@ -125,7 +123,7 @@ Game {
             roundP3 = new RoundPan(board,player);
         }
         if (player.getGod()== God.PROMETHEUS){
-            roundP3 = new RoundPrometheus();
+            roundP3 = new RoundPrometheus(board,player);
         }
 
     }
