@@ -16,6 +16,7 @@ Game {
     private Board board;
     private Round roundP1,roundP2,roundP3;
     private boolean GameOver;
+    private int NumberOfPlayers;
 
 
     public Game(Board board){

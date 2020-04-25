@@ -1,6 +1,4 @@
-package it.polimi.ingsw.view;
-
-import it.polimi.ingsw.model.Coordinates;
+package it.polimi.ingsw.observer;
 
 public interface Observable {
     public void AddObserver(Observer observer);

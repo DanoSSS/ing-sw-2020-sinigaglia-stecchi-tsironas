@@ -18,11 +18,11 @@ public class Worker {
 
     public boolean isActiveWorker() {
         return ActiveWorker;
-    }
+    }     //da spostare in board
 
     public void setActiveWorker(boolean activeWorker) {
         ActiveWorker = activeWorker;
-    }
+    }    //da spostare in board
 
     //get the worker's coordinates  MODIFICATO DA CONTROLLARE
     public Coordinates getCoordinates() { return coordinates; }
