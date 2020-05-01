@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.Game;
-import it.polimi.ingsw.observer.ObservableModel;
 
 public class Board{
     private int NumberOfPlayers;

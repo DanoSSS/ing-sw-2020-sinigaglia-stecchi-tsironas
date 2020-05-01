@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.observer.ConcreteObserver;
 import it.polimi.ingsw.observer.Observer;
 
 public interface ClientConnection {

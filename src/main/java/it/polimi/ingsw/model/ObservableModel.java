@@ -1,5 +1,6 @@
-package it.polimi.ingsw.observer;
-import it.polimi.ingsw.model.Board;
+package it.polimi.ingsw.model;
+import it.polimi.ingsw.observer.Observable;
+import it.polimi.ingsw.observer.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
