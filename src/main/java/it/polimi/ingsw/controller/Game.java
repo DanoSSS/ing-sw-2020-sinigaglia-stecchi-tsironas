@@ -54,7 +54,7 @@ Game {
             roundP1 = new RoundEphaestus(board,player);
         }
         if (player.getGod()== God.MINOTAUR){
-            roundP1 = new RoundMinotaur();
+            roundP1 = new RoundMinotaur(board,player);
         }
         if (player.getGod()== God.PAN){
             roundP1 = new RoundPan(board,player);
@@ -86,7 +86,7 @@ Game {
             roundP2 = new RoundEphaestus(board,player);
         }
         if (player.getGod()== God.MINOTAUR){
-            roundP2 = new RoundMinotaur();
+            roundP2 = new RoundMinotaur(board,player);
         }
         if (player.getGod()== God.PAN){
             roundP2 = new RoundPan(board,player);
@@ -118,7 +118,7 @@ Game {
             roundP3 = new RoundEphaestus(board,player);
         }
         if (player.getGod()== God.MINOTAUR){
-            roundP3 = new RoundMinotaur();
+            roundP3 = new RoundMinotaur(board,player);
         }
         if (player.getGod()== God.PAN){
             roundP3 = new RoundPan(board,player);

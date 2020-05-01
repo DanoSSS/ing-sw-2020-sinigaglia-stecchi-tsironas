@@ -73,12 +73,20 @@ public class RoundApollo implements Round {
                 if (i >= 0 && i <= 4 && j >= 0 && j <= 4) {
                     newCoordinates = new Coordinates(i, j);
                     if (board.getNround() == 0) {
-                        if (!board.isDome(newCoordinates) && (board.getLevel(newCoordinates) - board.getLevel(coordinates)) <= 1 && (board.getWorker(newCoordinates).getPlayer() != player)) {
-                            possiblesMovesCoordinates.add(newCoordinates);
+                        if (!board.isDome(newCoordinates) && (board.getLevel(newCoordinates) - board.getLevel(coordinates)) <= 1) {
+                            if(!board.isOccupied(newCoordinates)) {
+                                possiblesMovesCoordinates.add(newCoordinates);
+                            }else if(board.getWorker(newCoordinates).getPlayer() != player){
+                                possiblesMovesCoordinates.add(newCoordinates);
+                            }
                         }
                     } else {
-                        if (!board.isDome(newCoordinates) && (board.getLevel(newCoordinates) - board.getLevel(coordinates)) == 0 && (board.getWorker(newCoordinates).getPlayer() != player)) {
-                            possiblesMovesCoordinates.add(newCoordinates);
+                        if (!board.isDome(newCoordinates) && (board.getLevel(newCoordinates) - board.getLevel(coordinates)) == 0) {
+                            if(!board.isOccupied(newCoordinates)) {
+                                possiblesMovesCoordinates.add(newCoordinates);
+                            }else if(board.getWorker(newCoordinates).getPlayer() != player){
+                                possiblesMovesCoordinates.add(newCoordinates);
+                            }
                         }
                     }
                 }
