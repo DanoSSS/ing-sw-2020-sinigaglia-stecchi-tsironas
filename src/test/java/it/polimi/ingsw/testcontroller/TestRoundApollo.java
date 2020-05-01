@@ -16,19 +16,16 @@ public class TestRoundApollo {
     @Test
     public void TestDoBuild() {
         int i;
+        boolean isDome;
         RoundApollo TestDoBuild = new RoundApollo(board,player);
         TestDoBuild.doBuild(coordinates);
         i = board.getLevel(coordinates);
         assertEquals(1,i);
+        TestDoBuild.doBuild(coordinates);
+        TestDoBuild.doBuild(coordinates);
+        TestDoBuild.doBuild(coordinates);
+        isDome = board.isDome(coordinates);
+        assertTrue(isDome);
     }
-
-  /*  @Test
-    public void TestIsDome(){
-        cell1.setLevel(3);
-        RoundApollo TestDoBuild = new RoundApollo(board,player);
-        TestDoBuild.dobuild(cell1);
-        assertTrue(cell1.isDome());
-
-    }   */
 
 }

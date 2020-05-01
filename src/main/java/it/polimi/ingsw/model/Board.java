@@ -46,7 +46,7 @@ public class Board{
     //method to build a dome in the cell x,y
     public void setDome(Coordinates coordinates){
         board[coordinates.getX()][coordinates.getY()].setDome();
-        observableModel.Notify();
+   //     observableModel.Notify();   commento da togliere messo solo per i test
     }
 
     //method to know if there is a dome in the cell x,y

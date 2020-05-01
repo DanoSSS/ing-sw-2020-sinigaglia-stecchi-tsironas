@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
+/* COMMENTATE PER I TEST
 public class Server {
     private static final int PORT=12345;
     private ServerSocket serverSocket;
@@ -40,8 +40,8 @@ public class Server {
     public synchronized void lobby(ClientConnection c, String name) {
         int nPlayers=2;
         waitingConnection.put(name, c);
-        if (waitingConnection.size() == nPlayers /*2 or 3*/) {
-            List<String> keys = new ArrayList<>(waitingConnection.keySet());
+        if (waitingConnection.size() == nPlayers /*2 or 3*///) {
+ /*COMMENTO PER I TEST           List<String> keys = new ArrayList<>(waitingConnection.keySet());
             ClientConnection c1 = waitingConnection.get(keys.get(0));
             ClientConnection c2 = waitingConnection.get(keys.get(1));
       /*      Player player1 = new Player(keys.get(0));
@@ -54,7 +54,7 @@ public class Server {
             model.addObserver(player2View);
             player1View.addObserver(controller);
             player2View.addObserver(controller);*/
-            playingConnection.put(c1, c2);
+/*COMMENTO PER I TEST            playingConnection.put(c1, c2);
             playingConnection.put(c2, c1);
             if (nPlayers == 3) {
                 ClientConnection c3 = waitingConnection.get(keys.get(2));
@@ -62,7 +62,7 @@ public class Server {
                 View player3View = new RemoteView(player2, player, c3);
                 player3View.addObserver(controller);
                 model.addObserver(player3View);     */
-                playingConnection.put(c3, c1);
+ /*COMMENTO PER I TEST               playingConnection.put(c3, c1);
                 playingConnection.put(c1, c3);
                 playingConnection.put(c3, c2);
                 playingConnection.put(c2, c3);
@@ -83,3 +83,4 @@ public class Server {
         }
     }
 }
+*/
