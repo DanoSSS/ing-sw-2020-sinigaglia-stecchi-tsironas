@@ -26,6 +26,13 @@ public class Board{
 
     }
 
+    // da cambiare, cretato solo per i test
+    public Board Board(Worker worker){
+        this.worker1=worker;
+        moveWorker(worker.getCoordinates(),worker);
+        return this;
+    }
+
     public int getNumberOfPlayers() {
         return NumberOfPlayers;
     }
@@ -74,7 +81,7 @@ public class Board{
         worker.setCell(coordinates.getX(),coordinates.getY());
         board[coordinates.getX()][coordinates.getY()].setWorker(worker);
         board[coordinates.getX()][coordinates.getY()].setOccupied(true);
-        observableModel.Notify();
+        // observableModel.Notify();        commento da togliere messo solo per i test
     }
 
     //method to know which worker is in the cell x,y
@@ -86,7 +93,7 @@ public class Board{
     public void freeCellFromWorker(Coordinates coordinates){
         board[coordinates.getX()][coordinates.getY()].setWorker(null);
         board[coordinates.getX()][coordinates.getY()].setOccupied(false);
-        observableModel.Notify();
+       // observableModel.Notify();    commento da togliere fatto solo per i test
     }
 
    /* public boolean CheckIfMoveIsPossible(Cell cell){

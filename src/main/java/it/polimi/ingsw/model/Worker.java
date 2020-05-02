@@ -4,7 +4,7 @@ public class Worker {
     private int IdWorker;
     private boolean ActiveWorker=false;
     private String Color;
-    private Coordinates coordinates;
+    private Coordinates coordinates= new Coordinates(0,0);
     private Player player;
 
     public Player getPlayer() {
