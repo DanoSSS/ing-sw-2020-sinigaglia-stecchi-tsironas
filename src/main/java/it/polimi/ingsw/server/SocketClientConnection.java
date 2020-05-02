@@ -8,7 +8,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-/* COMMENTATE PER I TEST
+
 public class SocketClientConnection implements ClientConnection,Runnable {
     private Socket socket;
     private Server server;
@@ -79,6 +79,6 @@ public class SocketClientConnection implements ClientConnection,Runnable {
             close();
         }
     }
-    }
+
 }
-*/
+

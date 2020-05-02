@@ -13,7 +13,12 @@ public class Player {
     private Game game;   //non dovrebbe servire
     private Worker activeworker;
 
-
+    public Player(String name,String color,int id1,int id2){
+        this.nickname=name;
+        this.color=color;
+        this.worker1 = new Worker(this,color,id1);
+        this.worker2 = new Worker(this,color,id2);
+    }
 
 
     public Worker getWorker2() {

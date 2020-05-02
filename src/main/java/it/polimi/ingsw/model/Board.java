@@ -4,8 +4,8 @@ import it.polimi.ingsw.controller.Game;
 
 public class Board{
     private int NumberOfPlayers;
-    private static final int HEIGHT = 4;
-    private static final int WIDTH = 4;
+    private static final int HEIGHT = 5;
+    private static final int WIDTH = 5;
     private Cell [][] board;
     private Game game;
     private Player player1,player2,player3;     //non dovrebbero servire
@@ -29,7 +29,7 @@ public class Board{
     // da cambiare, cretato solo per i test
     public Board Board(Worker worker){
         this.worker1=worker;
-        moveWorker(worker.getCoordinates(),worker);
+        //moveWorker(worker.getCoordinates(),worker);
         return this;
     }
 
@@ -86,12 +86,13 @@ public class Board{
 
     //method to know which worker is in the cell x,y
     public Worker getWorker(Coordinates coordinates){
-        return board[coordinates.getY()][coordinates.getY()].getWorker();
+        return board[coordinates.getX()][coordinates.getY()].getWorker();
     }
 
     //method to remove a worker from a cell when it's moved
     public void freeCellFromWorker(Coordinates coordinates){
         board[coordinates.getX()][coordinates.getY()].setWorker(null);
+
         board[coordinates.getX()][coordinates.getY()].setOccupied(false);
        // observableModel.Notify();    commento da togliere fatto solo per i test
     }

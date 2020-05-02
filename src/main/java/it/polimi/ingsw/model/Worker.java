@@ -3,9 +3,15 @@ package it.polimi.ingsw.model;
 public class Worker {
     private int IdWorker;
     private boolean ActiveWorker=false;
-    private String Color;
+    private String color;
     private Coordinates coordinates= new Coordinates(0,0);
     private Player player;
+
+    public Worker(Player player,String color,int id){
+        this.player=player;
+        this.color=color;
+        this.IdWorker=id;
+    }
 
     public Player getPlayer() {
         return player;
