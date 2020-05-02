@@ -1,36 +1,45 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.controller.Game;
-
 public class Board{
     private int NumberOfPlayers;
     private static final int HEIGHT = 5;
     private static final int WIDTH = 5;
     private Cell [][] board;
-    private Game game;
-    private Player player1,player2,player3;     //non dovrebbero servire
     private Worker worker1,worker2,worker3,worker4,worker5,worker6;
     private int nround=0;
     private ObservableModel observableModel;
 
-    public Board(/*Worker worker /*vanno passati tutti gli worker(forse anche i player) e l observableModel*/) {
-       // this.worker1 = worker;
+    public Board(Worker worker1, Worker worker2, Worker worker3, Worker worker4, int NPlayer) {
 
         board = new Cell[HEIGHT][WIDTH];                        //i==row && j==col
         for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < HEIGHT; j++) {
                 board[i][j] = new Cell(i,j);
             }
-
         }
+        this.worker1 = worker1;
+        this.worker2 = worker2;
+        this.worker3 = worker3;
+        this.worker4 = worker4;
+        this.observableModel = new ObservableModel(this);
 
     }
 
-    // da cambiare, cretato solo per i test
-    public Board Board(Worker worker){
-        this.worker1=worker;
-        //moveWorker(worker.getCoordinates(),worker);
-        return this;
+    public Board(Worker worker1, Worker worker2, Worker worker3, Worker worker4, Worker worker5, Worker worker6, int NPlayer) {
+
+        board = new Cell[HEIGHT][WIDTH];                        //i==row && j==col
+        for (int i = 0; i < WIDTH; i++) {
+            for (int j = 0; j < HEIGHT; j++) {
+                board[i][j] = new Cell(i,j);
+            }
+        }
+        this.worker1 = worker1;
+        this.worker2 = worker2;
+        this.worker3 = worker3;
+        this.worker4 = worker4;
+        this.worker5 = worker5;
+        this.worker6 = worker6;
+
     }
 
     public int getNumberOfPlayers() {
@@ -97,11 +106,7 @@ public class Board{
        // observableModel.Notify();    commento da togliere fatto solo per i test
     }
 
-   /* public boolean CheckIfMoveIsPossible(Cell cell){
-
+    public ObservableModel getObservableModel(){
+        return observableModel;
     }
-
-    public boolean CheckIfBuildIsPossible(Cell cell){
-
-    } */
 }

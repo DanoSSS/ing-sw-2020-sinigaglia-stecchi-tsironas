@@ -10,7 +10,6 @@ public class Player {
     private Worker worker1;
     private Worker worker2;
     private God god;
-    private Game game;   //non dovrebbe servire
     private Worker activeworker;
 
     public Player(String name,String color,int id1,int id2){

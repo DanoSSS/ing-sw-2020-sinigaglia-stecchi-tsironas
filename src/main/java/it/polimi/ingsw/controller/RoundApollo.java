@@ -104,7 +104,7 @@ public class RoundApollo implements Round {
 
     public boolean doMove(Coordinates moveCoordinates,boolean GameOver,Worker activeWorker) {
         Coordinates oldCoordinates;
-        int x=activeWorker.getCoordinates().getX();         //da cambiare in tutti i round
+        int x=activeWorker.getCoordinates().getX();
         int y=activeWorker.getCoordinates().getY();
         oldCoordinates = new Coordinates(x,y);
         if (board.isOccupied(moveCoordinates)) {

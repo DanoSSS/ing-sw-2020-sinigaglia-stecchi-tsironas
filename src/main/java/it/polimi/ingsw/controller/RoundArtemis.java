@@ -24,14 +24,18 @@ public class RoundArtemis implements Round {
         ArrayList<Coordinates> possibleMoves,possibleBuilds;
         Coordinates moveCoordinates,buildCoordinates,oldCoordinates;
         activeWorker = askActiveWorker();
-        oldCoordinates = activeWorker.getCoordinates();
+        int x=activeWorker.getCoordinates().getX();
+        int y=activeWorker.getCoordinates().getY();
+        oldCoordinates = new Coordinates(x,y);
         possibleMoves=canMove(activeWorker);        //arraylist of possible coordinates where worker can move(da passare alla view)
         if(possibleMoves.size()==0){
             do{
                 newActiveWorker=askOtherWorker();
             }while(newActiveWorker!=activeWorker);
             activeWorker=newActiveWorker;
-            oldCoordinates = activeWorker.getCoordinates();
+            x=activeWorker.getCoordinates().getX();
+            y=activeWorker.getCoordinates().getY();
+            oldCoordinates = new Coordinates(x,y);
             possibleMoves=canMove(activeWorker);
             if(possibleMoves.size()==0){
                 return false;       // se ci sono due giocatori vince l'altro, se sono in tre eliminare il giocatore
@@ -110,7 +114,9 @@ public class RoundArtemis implements Round {
 
     public boolean doMove(Coordinates moveCoordinates,boolean GameOver,Worker activeWorker){
         Coordinates oldCoordinates;
-        oldCoordinates=activeWorker.getCoordinates();
+        int x=activeWorker.getCoordinates().getX();
+        int y=activeWorker.getCoordinates().getY();
+        oldCoordinates = new Coordinates(x,y);
         board.freeCellFromWorker(oldCoordinates);
         board.moveWorker(moveCoordinates,activeWorker);
         if (board.getLevel(moveCoordinates) == 3 && board.getLevel(oldCoordinates) == 2) {

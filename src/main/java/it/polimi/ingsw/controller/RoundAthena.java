@@ -86,7 +86,9 @@ public class RoundAthena implements Round {
     public boolean doMove(Coordinates moveCoordinates,boolean GameOver,Worker activeWorker) {
         int count;
         Coordinates oldCoordinates;
-        oldCoordinates = activeWorker.getCoordinates();
+        int x=activeWorker.getCoordinates().getX();
+        int y=activeWorker.getCoordinates().getY();
+        oldCoordinates = new Coordinates(x,y);
         if ((board.getLevel(moveCoordinates) - board.getLevel(oldCoordinates)) == 1) {
             count = board.getNumberOfPlayers();
             board.setNround(count - 1);
