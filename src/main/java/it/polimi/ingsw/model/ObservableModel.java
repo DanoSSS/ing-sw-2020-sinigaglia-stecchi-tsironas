@@ -5,7 +5,7 @@ import it.polimi.ingsw.observer.Observer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ObservableModel extends Observable<String> {
+public class ObservableModel extends Observable<Object> {
 
     private Board board;
     private List<Observer> Observers = new ArrayList<>();

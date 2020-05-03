@@ -1,15 +1,12 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.model.Board;
-import it.polimi.ingsw.model.God;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 
 import java.util.Random;
 
-public class Game extends Observable<String> implements Observer<String> {
+public class Game extends Observable<Object> implements Observer<Object> {
     private Round CurrentRound;
     private Player player1,player2,player3;
     private Board board;
@@ -169,8 +166,12 @@ public class Game extends Observable<String> implements Observer<String> {
         //funzione per posizionare i rispettivi worker sulla board
     }
 
+
     @Override
-    public void update(String message) {
+    public void update(Object message) {
+        if(message instanceof GodChoice){
+
+        }
 
     }
 }

@@ -19,7 +19,7 @@ public class RemoteView extends View{
             System.out.println("Received: " + message);
             try{
                 String[] inputs = message.split(",");
-
+                handleGods(inputs[0],inputs[1]);
             }catch(IllegalArgumentException e){
                 clientConnection.asyncSend("Error!");
             }
@@ -35,7 +35,7 @@ public class RemoteView extends View{
     }
 
     @Override
-    public void update(String message) {
+    public void update(Object message) {
 
     }
 }
