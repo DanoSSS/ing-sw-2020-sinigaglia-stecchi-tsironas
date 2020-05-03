@@ -58,12 +58,21 @@ public class Server {
             Game game = new Game(board);
             board.getObservableModel().addObserver(player1View);
             board.getObservableModel().addObserver(player2View);
+            game.addObserver(player1View);
+            game.addObserver(player2View);
+            player1View.addObserver(game);
+            player2View.addObserver(game);
+            playingConnection.put(c1, c2);
+            playingConnection.put(c2, c1);
+            c1.asyncSend("\nYou are the challenger.Choose 2 gods(GOD1,GOD2): ");
+            c2.asyncSend("\nWait for the challenger to choose 2 gods");
+
+
             //qui far secgliere i god al challenger, distribuire i god ai player e
             //aggiungere come observer i relativi round di ciascun player alla rispettiva playerView
             //player1View.addObserver(controller);
             //player2View.addObserver(controller);
-            playingConnection.put(c1, c2);
-            playingConnection.put(c2, c1);
+
             /*if (nPlayers == 3) {
                 ClientConnection c3 = waitingConnection.get(keys.get(2));
                 Player player3 = new Player(args for constructor of class Player);
@@ -75,7 +84,8 @@ public class Server {
                 playingConnection.put(c3, c2);
                 playingConnection.put(c2, c3);
             }*/
-            waitingConnection.clear();
+            System.out.println("\nMatch created!");
+
         }
     }
 
@@ -90,5 +100,7 @@ public class Server {
             }
         }
     }
+
+
 }
 

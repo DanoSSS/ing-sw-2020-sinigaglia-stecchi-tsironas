@@ -4,20 +4,23 @@ import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.God;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.observer.Observable;
+import it.polimi.ingsw.observer.Observer;
 
 import java.util.Random;
 
-public class
-
-
-Game {
+public class Game extends Observable<String> implements Observer<String> {
     private Round CurrentRound;
     private Player player1,player2,player3;
     private Board board;
     private Round roundP1,roundP2,roundP3;
     private boolean GameOver;
     private int NumberOfPlayers;
+    private boolean isChallengerTurn=true;
 
+    public boolean isChallengerTurn() {
+        return isChallengerTurn;
+    }
 
     public Game(Board board){
         this.board=board;
@@ -164,6 +167,11 @@ Game {
 
     public void GameSetup(){
         //funzione per posizionare i rispettivi worker sulla board
+    }
+
+    @Override
+    public void update(String message) {
+
     }
 }
 

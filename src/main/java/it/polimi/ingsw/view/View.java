@@ -17,4 +17,8 @@ public abstract class View extends Observable implements Observer<String> {
         return player;
     }
 
+    public void handleGods(String god1,String god2){
+        notify(new GodChoice(player,god1,god2,this));
+    }
 }
+

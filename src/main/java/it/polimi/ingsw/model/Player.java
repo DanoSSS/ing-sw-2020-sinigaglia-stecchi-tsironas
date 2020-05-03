@@ -17,6 +17,9 @@ public class Player {
         this.color=color;
         this.worker1 = new Worker(this,color,id1);
         this.worker2 = new Worker(this,color,id2);
+        if(this.worker1.getIdWorker()==1){
+            this.IsChallenger = true;
+        }
     }
 
 
@@ -50,5 +53,9 @@ public class Player {
 
     public void setGod(God god) {
         this.god = god;
+    }
+
+    public boolean isChallenger() {
+        return IsChallenger;
     }
 }

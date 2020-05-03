@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.model.Coordinates;
+import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 
 import java.io.IOException;
@@ -9,7 +11,7 @@ import java.net.Socket;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class SocketClientConnection implements ClientConnection,Runnable {
+public class SocketClientConnection extends Observable<String> implements ClientConnection,Runnable {
     private Socket socket;
     private Server server;
     private ObjectOutputStream out;
@@ -51,6 +53,11 @@ public class SocketClientConnection implements ClientConnection,Runnable {
         active = false;
     }
 
+    @Override
+    public void asyncSend(Object message) {
+
+    }
+
     private void close() {
         closeConnection();
         System.out.println("Deregistering client...");
@@ -69,9 +76,11 @@ public class SocketClientConnection implements ClientConnection,Runnable {
             String read = in.nextLine();
             name = read;
             server.lobby(this, name);
+
             while(isActive()){
-       //         read = in.nextLine();             è quello che riceve il server
-         //       notify(read);
+                read = in.nextLine();
+                notify(read);
+
             }
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error!" + e.getMessage());

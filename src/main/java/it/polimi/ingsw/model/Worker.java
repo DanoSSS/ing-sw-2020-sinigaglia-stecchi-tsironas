@@ -41,4 +41,7 @@ public class Worker {
 
     }
 
+    public int getIdWorker() {
+        return IdWorker;
+    }
 }
