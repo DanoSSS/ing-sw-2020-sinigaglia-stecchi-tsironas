@@ -108,7 +108,9 @@ public class RoundDemeter implements Round {
 
     public boolean doMove(Coordinates moveCoordinates,boolean GameOver,Worker activeWorker){
         Coordinates oldCoordinates;
-        oldCoordinates=activeWorker.getCoordinates();
+        int x=activeWorker.getCoordinates().getX();
+        int y=activeWorker.getCoordinates().getY();
+        oldCoordinates = new Coordinates(x,y);
         board.freeCellFromWorker(oldCoordinates);
         board.moveWorker(moveCoordinates,activeWorker);
         if (board.getLevel(moveCoordinates) == 3 && board.getLevel(oldCoordinates) == 2) {

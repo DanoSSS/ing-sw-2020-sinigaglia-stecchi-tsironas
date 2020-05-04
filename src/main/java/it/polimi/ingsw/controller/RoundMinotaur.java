@@ -106,7 +106,9 @@ public class RoundMinotaur implements Round {
 
     public boolean doMove(Coordinates moveCoordinates,boolean GameOver,Worker activeWorker){
         Coordinates oldCoordinates;
-        oldCoordinates=activeWorker.getCoordinates();
+        int x=activeWorker.getCoordinates().getX();
+        int y=activeWorker.getCoordinates().getY();
+        oldCoordinates = new Coordinates(x,y);
         if(board.isOccupied(moveCoordinates)) {
             board.moveWorker(newOpponentCoordinate(oldCoordinates, moveCoordinates), board.getWorker(moveCoordinates));
         }

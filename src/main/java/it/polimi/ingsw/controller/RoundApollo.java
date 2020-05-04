@@ -48,7 +48,7 @@ public class RoundApollo implements Round {
         return GameStatus;
     }
 
-    public Worker askActiveWorker() {
+    public Worker askActiveWorker() {   //ricordarsi di controllare che il worker selezionato sia del player
         Worker worker=null;
         //chiede alla view di selezionare un worker
         return worker;
