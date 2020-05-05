@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestRoundPan {
     Player player1 = new Player("pippo", "RED", 1,2);
@@ -28,17 +28,17 @@ public class TestRoundPan {
         TestRoundPan.doBuild(coordinates00);
         board.moveWorker(coordinates00,worker1);
         gameover = TestRoundPan.doMove(coordinates10,gameover,worker1);
-        assertEquals(true,gameover);     //test player if win game when he moves from a level 2 to level 0
+        assertTrue(gameover);     //test player if win game when he moves from a level 2 to level 0
         TestRoundPan.doBuild(coordinates00);
         board.moveWorker(coordinates00,worker1);
         gameover = TestRoundPan.doMove(coordinates10,gameover,worker1);
-        assertEquals(true,gameover);     //test if player win game when he moves from a level 3 to level 0
+        assertTrue(gameover);     //test if player win game when he moves from a level 3 to level 0
         board.moveWorker(coordinates00,worker1);
         TestRoundPan.doBuild(coordinates10);
         gameover = TestRoundPan.doMove(coordinates10,gameover,worker1);
-        assertEquals(true,gameover);      //test if player win game when he moves from a level 3 to level 1
+        assertTrue(gameover);      //test if player win game when he moves from a level 3 to level 1
         TestRoundPan.doBuild(coordinates10);
         gameover = TestRoundPan.doMove(coordinates00,gameover,worker1);
-        assertEquals(true,gameover);        //test classical win move from level 2 to level 3
+        assertTrue(gameover);        //test classical win move from level 2 to level 3
     }
 }

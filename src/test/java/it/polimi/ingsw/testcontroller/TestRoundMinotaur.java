@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestRoundMinotaur {
     Player player1 = new Player("pippo", "RED", 1,2);
@@ -43,11 +43,11 @@ public class TestRoundMinotaur {
                 tag2 = true;
             }
         }
-        assertEquals(tag,false);    //test if player can move a worker in a cell where there is other player's worker
-        assertEquals(tag2,true);    //test if player can move a worker in a cell where there is an opponent's worker
+        assertFalse(tag);    //test if player can move a worker in a cell where there is other player's worker
+        assertTrue(tag2);    //test if player can move a worker in a cell where there is an opponent's worker
         TestRoundMinotaur.doMove(coordinates22,gameover,worker1);
-        assertEquals(board.isOccupied(coordinates22), true);
-        assertEquals(board.isOccupied(coordinates31), true);    //test forcing worker in his back cell
+        assertTrue(board.isOccupied(coordinates22));
+        assertTrue(board.isOccupied(coordinates31));    //test forcing worker in his back cell
         assertEquals(worker1,board.getWorker(coordinates22));
         assertEquals(worker4,board.getWorker(coordinates31));
         Coordinates coordinatesWorker1 = worker1.getCoordinates();
@@ -60,8 +60,8 @@ public class TestRoundMinotaur {
         int b=coordinatesWorker4.getY();
         assertEquals(3,a);
         assertEquals(1,b);
-        assertEquals(board.isOccupied(coordinates13), false);   //test initial cell free
-        assertEquals(null,board.getWorker(coordinates13));
+        assertFalse(board.isOccupied(coordinates13));   //test initial cell free
+        assertNull(board.getWorker(coordinates13));
     }
 
 }

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 public class TestRoundApollo {
     Player player1 = new Player("pippo", "RED", 1,2);
     Worker worker1 = new Worker(player1,"RED",1);
@@ -35,7 +36,7 @@ public class TestRoundApollo {
         TestRoundApollo.doBuild(coordinates);
         TestRoundApollo.doBuild(coordinates);
         isDome = board.isDome(coordinates);
-        assertEquals(isDome, true);
+        assertTrue(isDome);
     }
 
     @Test
@@ -43,7 +44,7 @@ public class TestRoundApollo {
         Coordinates coordinates = new Coordinates(2,1);
         boolean isDome;
         isDome = board.isDome(coordinates);
-        assertEquals(isDome, false);
+        assertFalse(isDome);
     }
 
     @Test
@@ -52,11 +53,11 @@ public class TestRoundApollo {
         board.moveWorker(coordinates11,worker1);
         boolean Gameover=false;
         Coordinates coordinates21 = new Coordinates(2,1);
-        assertEquals(board.isOccupied(coordinates11), true);
+        assertTrue(board.isOccupied(coordinates11));
         assertEquals(board.getWorker(coordinates11),worker1);
         TestRoundApollo.doMove(coordinates21,Gameover,worker1);
-        assertEquals(board.isOccupied(coordinates11), false);
-        assertEquals(board.isOccupied(coordinates21), true);
+        assertFalse(board.isOccupied(coordinates11));
+        assertTrue(board.isOccupied(coordinates21));
         Coordinates coordinatesWorker = worker1.getCoordinates();
         int x=coordinatesWorker.getX();
         int y=coordinatesWorker.getY();
@@ -86,11 +87,11 @@ public class TestRoundApollo {
                 tag2 = true;
             }
         }
-        assertEquals(tag,false);
-        assertEquals(tag2,true);
+        assertFalse(tag);
+        assertTrue(tag2);
         TestRoundApollo.doMove(coordinates11,gameover,worker1);
-        assertEquals(board.isOccupied(coordinates11), true);
-        assertEquals(board.isOccupied(coordinates21), true);
+        assertTrue(board.isOccupied(coordinates11));
+        assertTrue(board.isOccupied(coordinates21));
         assertEquals(worker1,board.getWorker(coordinates11));
         assertEquals(worker3,board.getWorker(coordinates21));
         Coordinates coordinatesWorker1 = worker1.getCoordinates();
@@ -125,10 +126,10 @@ public class TestRoundApollo {
                 tag = true;
             }
         }
-        assertEquals(tag,false);
+        assertFalse(tag);
         TestRoundApollo.doMove(coordinates21,gameover,worker1);
         gameover=TestRoundApollo.doMove(coordinates11,gameover,worker1);
-        assertEquals(gameover,true);
+        assertTrue(gameover);
     }
 
     @Test
@@ -152,8 +153,8 @@ public class TestRoundApollo {
                 tag2 = true;
             }
         }
-        assertEquals(tag,false);
-        assertEquals(tag2,true);
+        assertFalse(tag);
+        assertTrue(tag2);
     }
 
 }
