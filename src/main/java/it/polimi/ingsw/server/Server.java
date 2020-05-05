@@ -2,6 +2,7 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.controller.Game;
 import it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.model.God;
 import it.polimi.ingsw.model.ObservableModel;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.view.RemoteView;
@@ -22,6 +23,8 @@ public class Server {
     private Map<ClientConnection, ClientConnection> playingConnection = new HashMap<>();
     private enum color {BLUE,GREEN,RED};
     int nPlayers=0;
+    private int nPlayersConnected = 0;
+    private ArrayList<God> gods = new ArrayList<God>();
 
     public Server() throws IOException {
         this.serverSocket = new ServerSocket(PORT);
@@ -89,11 +92,24 @@ public class Server {
         }
     }
 
+    public void setGods(String god){
+        gods.add(God.valueOf(god));
+    }
+
+    public String getGods(int i){
+        return gods.get(i).toString();
+    }
+
+    public void removeGods(String god){
+        gods.remove(God.valueOf(god));
+    }
+
     public void run(){
         while(true){
             try {
                 Socket newSocket = serverSocket.accept();
-                SocketClientConnection socketConnection = new SocketClientConnection(newSocket, this);
+                nPlayersConnected++;
+                SocketClientConnection socketConnection = new SocketClientConnection(newSocket, this, nPlayersConnected);
                 executor.submit(socketConnection);
             } catch (IOException e) {
                 System.out.println("Connection Error!");

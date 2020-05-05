@@ -16,10 +16,12 @@ public class SocketClientConnection extends Observable<String> implements Client
     private Server server;
     private ObjectOutputStream out;
     private boolean active = true;
+    private int playerNumber;
 
-    public SocketClientConnection(Socket socket,Server server){
+    public SocketClientConnection(Socket socket,Server server,int playerNumber){
         this.socket = socket;
         this.server = server;
+        this.playerNumber = playerNumber;
     }
 
     private synchronized boolean isActive(){
@@ -69,14 +71,38 @@ public class SocketClientConnection extends Observable<String> implements Client
     public void run() {
         Scanner in;
         String name;
+        int nplayers = 0;
         try{
             in = new Scanner(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
             send("Welcome!\nWhat is your name?");
             String read = in.nextLine();
             name = read;
-            server.lobby(this, name);
+            if(playerNumber==1) {
+                send("how many players?\n2 or 3?");
+                nplayers = in.nextInt();
+                send("select " + nplayers + " gods\n");
+                String read1 = in.nextLine();
+                String[] inputs = read1.split(",");
+                for(int i=0; i<nplayers; i++){
+                    server.setGods(inputs[i]);
+                }
+                
+            }
+            else if(playerNumber==2){
+                if(nplayers==3) {
+                    send("select your god between: " + server.getGods(0) + server.getGods(1) + server.getGods(2));
+                }else if(nplayers==2) {
+                    send("select your god between: " + server.getGods(0) + server.getGods(1));
+                }
+                String read2 = in.nextLine();
 
+            }
+            else if(playerNumber==3){
+
+
+            }
+            server.lobby(this, name);
             while(isActive()){
                 read = in.nextLine();
                 notify(read);
