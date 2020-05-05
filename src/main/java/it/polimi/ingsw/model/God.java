@@ -10,4 +10,5 @@ public enum God {
     public void setSelectedGod(boolean selectedGod) {
         IsSelectedGod = selectedGod;
     }
+
 }

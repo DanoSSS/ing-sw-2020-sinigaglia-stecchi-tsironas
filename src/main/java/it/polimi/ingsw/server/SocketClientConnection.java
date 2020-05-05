@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.model.Coordinates;
+import it.polimi.ingsw.model.God;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 
@@ -57,7 +58,6 @@ public class SocketClientConnection extends Observable<String> implements Client
 
     @Override
     public void asyncSend(Object message) {
-
     }
 
     private void close() {
@@ -71,6 +71,8 @@ public class SocketClientConnection extends Observable<String> implements Client
     public void run() {
         Scanner in;
         String name;
+        String read2 = "";
+        boolean flag1 = false, flag2 = false;
         int nplayers = 0;
         try{
             in = new Scanner(socket.getInputStream());
@@ -87,28 +89,46 @@ public class SocketClientConnection extends Observable<String> implements Client
                 for(int i=0; i<nplayers; i++){
                     server.setGods(inputs[i]);
                 }
-                
+                notifyAll();
+                while(!flag2){
+                    wait();
+                }
+                send("your god is: " + server.getGods(0));
+                read2 = server.getGods(0);
             }
             else if(playerNumber==2){
+                wait();
                 if(nplayers==3) {
                     send("select your god between: " + server.getGods(0) + server.getGods(1) + server.getGods(2));
+                    read2 = in.nextLine();
+                    server.removeGods(read2);
+                    flag1 = true;
+                    notifyAll();
                 }else if(nplayers==2) {
                     send("select your god between: " + server.getGods(0) + server.getGods(1));
+                    read2 = in.nextLine();
+                    server.removeGods(read2);
+                    flag2 = true;
+                    notifyAll();
                 }
-                String read2 = in.nextLine();
-
             }
             else if(playerNumber==3){
-
-
+                while(!flag1){
+                    wait();
+                    send("select your god between: " + server.getGods(0) + server.getGods(1));
+                    read2 = in.nextLine();
+                    server.removeGods(read2);
+                    flag2 = true;
+                    notifyAll();
+                }
             }
-            server.lobby(this, name);
+            server.lobby(this, name, God.valueOf(read2));
             while(isActive()){
                 read = in.nextLine();
                 notify(read);
 
             }
-        } catch (IOException | NoSuchElementException e) {
+        } catch (IOException | NoSuchElementException | InterruptedException e) {
             System.err.println("Error!" + e.getMessage());
         }finally{
             close();

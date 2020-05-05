@@ -1,19 +1,16 @@
 package it.polimi.ingsw.testcontroller;
 
 import it.polimi.ingsw.controller.RoundPan;
-import it.polimi.ingsw.model.Board;
-import it.polimi.ingsw.model.Coordinates;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestRoundPan {
-    Player player1 = new Player("pippo", "RED", 1,2);
+    Player player1 = new Player("pippo", "RED", 1,2, God.PAN);
     Worker worker1 = new Worker(player1,"RED",1);
     Worker worker2 = new Worker(player1,"RED",2);
-    Player player2 = new Player("pluto", "BLUE", 3,4);
+    Player player2 = new Player("pluto", "BLUE", 3,4, God.PAN);
     Worker worker3 = new Worker(player2,"BLUE",3);
     Worker worker4 = new Worker(player2,"BLUE",4);
     Board board = new Board(worker1,worker2,worker3,worker4,2);

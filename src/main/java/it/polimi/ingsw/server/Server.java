@@ -21,6 +21,7 @@ public class Server {
     private ExecutorService executor = Executors.newFixedThreadPool(128);
     private Map<String, ClientConnection> waitingConnection = new HashMap<>();
     private Map<ClientConnection, ClientConnection> playingConnection = new HashMap<>();
+    private Map<String, God> playerGodAssociation = new HashMap<>();
     private enum color {BLUE,GREEN,RED};
     int nPlayers=0;
     private int nPlayersConnected = 0;
@@ -46,19 +47,24 @@ public class Server {
     }
 
 
-    public synchronized void lobby(ClientConnection c, String name) {
+    public synchronized void lobby(ClientConnection c, String name, God god) {
         int idWorker[]= {1,2,3,4,5,6};
         waitingConnection.put(name, c);
-        if (waitingConnection.size() == 2 /*2 or 3*/) {
+        playerGodAssociation.put(name, god);        //bisogna passare il god al player e aggiungere come observer del relativo turno
+        if (waitingConnection.size() == 2 /*2 or 3*/) {     //
             List<String> keys = new ArrayList<>(waitingConnection.keySet());
             ClientConnection c1 = waitingConnection.get(keys.get(0));
             ClientConnection c2 = waitingConnection.get(keys.get(1));
-            Player player1 = new Player(keys.get(0),"BLUE",idWorker[0],idWorker[1]);
-            Player player2 = new Player(keys.get(1),"RED",idWorker[2],idWorker[3]);
+            God god1 = playerGodAssociation.get(keys.get(0));
+            God god2 = playerGodAssociation.get(keys.get(1));
+            Player player1 = new Player(keys.get(0),"BLUE",idWorker[0],idWorker[1], god1);
+            Player player2 = new Player(keys.get(1),"RED",idWorker[2],idWorker[3], god2);
             View player1View = new RemoteView(player1, keys.get(1), c1);
             View player2View = new RemoteView(player2, keys.get(0), c2);
             Board board = new Board(player1.getWorker1(), player1.getWorker2(), player2.getWorker1(), player2.getWorker2(), nPlayers);
             Game game = new Game(board);
+            game.RoundCreationP1(player1);
+            game.RoundCreationP2(player2);
             board.getObservableModel().addObserver(player1View);
             board.getObservableModel().addObserver(player2View);
             game.addObserver(player1View);
@@ -67,12 +73,6 @@ public class Server {
             player2View.addObserver(game);
             playingConnection.put(c1, c2);
             playingConnection.put(c2, c1);
-            c1.asyncSend("\nYou are the challenger.Choose 2 gods(GOD1,GOD2): ");
-            c2.asyncSend("\nWait for the challenger to choose 2 gods");
-
-
-            //qui far secgliere i god al challenger, distribuire i god ai player e
-            //aggiungere come observer i relativi round di ciascun player alla rispettiva playerView
             //player1View.addObserver(controller);
             //player2View.addObserver(controller);
 

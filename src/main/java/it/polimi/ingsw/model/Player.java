@@ -12,7 +12,7 @@ public class Player {
     private God god;
     private Worker activeworker;
 
-    public Player(String name,String color,int id1,int id2){
+    public Player(String name,String color,int id1,int id2,God god){
         this.nickname=name;
         this.color=color;
         this.worker1 = new Worker(this,color,id1);
@@ -20,6 +20,7 @@ public class Player {
         if(this.worker1.getIdWorker()==1){
             this.IsChallenger = true;
         }
+        this.god = god;
     }
 
 
@@ -49,10 +50,6 @@ public class Player {
 
     public God getGod() {
         return god;
-    }
-
-    public void setGod(God god) {
-        this.god = god;
     }
 
     public boolean isChallenger() {
