@@ -43,11 +43,11 @@ public class TestRoundMinotaur {
                 tag2 = true;
             }
         }
-        assertEquals(tag,false);
-        assertEquals(tag2,true);
+        assertEquals(tag,false);    //test if player can move a worker in a cell where there is other player's worker
+        assertEquals(tag2,true);    //test if player can move a worker in a cell where there is an opponent's worker
         TestRoundMinotaur.doMove(coordinates22,gameover,worker1);
         assertEquals(board.isOccupied(coordinates22), true);
-        assertEquals(board.isOccupied(coordinates31), true);
+        assertEquals(board.isOccupied(coordinates31), true);    //test forcing worker in his back cell
         assertEquals(worker1,board.getWorker(coordinates22));
         assertEquals(worker4,board.getWorker(coordinates31));
         Coordinates coordinatesWorker1 = worker1.getCoordinates();
@@ -60,7 +60,7 @@ public class TestRoundMinotaur {
         int b=coordinatesWorker4.getY();
         assertEquals(3,a);
         assertEquals(1,b);
-        assertEquals(board.isOccupied(coordinates13), false);
+        assertEquals(board.isOccupied(coordinates13), false);   //test initial cell free
         assertEquals(null,board.getWorker(coordinates13));
     }
 

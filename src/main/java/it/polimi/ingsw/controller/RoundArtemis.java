@@ -132,8 +132,7 @@ public class RoundArtemis implements Round {
     }
 
 
-    //vince il potere di artemis o atena?? la seconda mossa di artemis deve sottostare ancora al potere di athena se attivo
-    //oppure puo salire??
+
     public ArrayList<Coordinates> canMoveSecond(Worker worker,Coordinates oldCoordinates) {
         Coordinates coordinates, newCoordinates;
         int x, y;
