@@ -3,7 +3,10 @@ package it.polimi.ingsw.client;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 public class Client {
     private String ip;
@@ -24,10 +27,66 @@ public class Client {
         this.active = active;
     }
 
+    public Thread asyncReadFromSocket(final ObjectInputStream socketIn){
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while (isActive()) {
+                        Object inputObject = socketIn.readObject();
+                        if(inputObject instanceof String){
+                            System.out.println((String)inputObject);
+                        } else {
+                            throw new IllegalArgumentException();
+                        }
+                    }
+                } catch (Exception e){
+                    setActive(false);
+                }
+            }
+        });
+        t.start();
+        return t;
+    }
+
+    public Thread asyncWriteToSocket(final Scanner stdin, final ObjectOutputStream socketOut){
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while (isActive()) {
+                        String inputObject = stdin.nextLine();
+                            socketOut.writeChars( inputObject);
+                            socketOut.flush();
+                    }
+                }catch(Exception e){
+                    setActive(false);
+                }
+            }
+        });
+        t.start();
+        return t;
+    }
+
     public void run() throws IOException {
         Socket socket = new Socket(ip, port);
         System.out.println("Connection established");
         ObjectInputStream SocketIn = new ObjectInputStream(socket.getInputStream());
         ObjectOutputStream SocketOut = new ObjectOutputStream(socket.getOutputStream());
+        Scanner stdin = new Scanner(System.in);
+
+        try{
+            Thread t0 = asyncReadFromSocket(SocketIn);
+            Thread t1 = asyncWriteToSocket(stdin, SocketOut);
+            t0.join();
+            t1.join();
+        } catch(InterruptedException | NoSuchElementException e){
+            System.out.println("Connection closed from the client side");
+        } finally {
+            stdin.close();
+            SocketIn.close();
+            SocketOut.close();
+            socket.close();
+        }
     }
 }

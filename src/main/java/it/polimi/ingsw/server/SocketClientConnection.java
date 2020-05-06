@@ -82,8 +82,9 @@ public class SocketClientConnection extends Observable<String> implements Client
             name = read;
             if(playerNumber==1) {
                 send("how many players?\n2 or 3?");
-                nplayers = in.nextInt();
-                send("select " + nplayers + " gods\n");
+                String read0 = in.nextLine();
+                nplayers =Integer.parseInt(read0);
+                send("select "+nplayers+" gods\n");
                 String read1 = in.nextLine();
                 String[] inputs = read1.split(",");
                 for(int i=0; i<nplayers; i++){
