@@ -64,6 +64,7 @@ public class Server {
             View player1View = new RemoteView(player1, c1);
             View player2View = new RemoteView(player2, c2);
             Board board = new Board(player1.getWorker1(), player1.getWorker2(), player2.getWorker1(), player2.getWorker2(), nPlayers);
+            board.setObservableModel(board);
             Game game = new Game(board);
             game.RoundCreationP1(player1);
             game.RoundCreationP2(player2);
@@ -94,6 +95,7 @@ public class Server {
             View player2View = new RemoteView(player2, c2);
             View player3View = new RemoteView(player3, c3);
             Board board = new Board(player1.getWorker1(), player1.getWorker2(), player2.getWorker1(), player2.getWorker2(), player3.getWorker1(), player3.getWorker2(), nPlayers);
+            board.setObservableModel(board);
             Game game = new Game(board);
             game.RoundCreationP1(player1);
             game.RoundCreationP2(player2);

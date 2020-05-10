@@ -21,9 +21,13 @@ public class Board{
         this.worker2 = worker2;
         this.worker3 = worker3;
         this.worker4 = worker4;
-        this.observableModel = new ObservableModel(this);
+        //this.observableModel = new ObservableModel(this);
         this.NumberOfPlayers = NPlayer;
 
+    }
+
+    public void setObservableModel(Board board){
+        this.observableModel= new ObservableModel(board);
     }
 
     public Board(Worker worker1, Worker worker2, Worker worker3, Worker worker4, Worker worker5, Worker worker6, int NPlayer) {
