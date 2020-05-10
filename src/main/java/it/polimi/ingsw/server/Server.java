@@ -1,10 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.controller.Game;
-import it.polimi.ingsw.model.Board;
-import it.polimi.ingsw.model.God;
-import it.polimi.ingsw.model.ObservableModel;
-import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.view.RemoteView;
 import it.polimi.ingsw.view.View;
 
@@ -26,7 +23,8 @@ public class Server {
     int nPlayers=0;
     private int nPlayersConnected = 0;
     private ArrayList<God> gods = new ArrayList<God>();
-    boolean godscreated = false, godselectedByP2 = false;
+    private ArrayList<Coordinates> workerPositions = new ArrayList<Coordinates>();
+    boolean boolP1 = false, boolP2 = false, boolP3 = false, bool = false;
 
     public Server() throws IOException {
         this.serverSocket = new ServerSocket(PORT);
@@ -46,7 +44,6 @@ public class Server {
             }
         }
     }
-
 
     public synchronized void lobby(ClientConnection c, String name, God god) {
         int idWorker[]= {1,2,3,4,5,6};
@@ -123,24 +120,40 @@ public class Server {
         System.out.println("\nMatch created!");
     }
 
-
-
-    public synchronized void putInWaitP2() throws InterruptedException {
-        while(!godscreated){
+    public synchronized void putInWaitP1() throws InterruptedException {
+        while(!boolP1){
             try{
                 wait();
             }catch (InterruptedException e){}
         }
-        godscreated = false;
+        boolP1 = false;
+    }
+
+    public synchronized void putInWaitStart() throws InterruptedException {
+        while(!bool){
+            try{
+                wait();
+            }catch (InterruptedException e){}
+        }
+        bool = false;
+    }
+
+    public synchronized void putInWaitP2() throws InterruptedException {
+        while(!boolP2){
+            try{
+                wait();
+            }catch (InterruptedException e){}
+        }
+        boolP2 = false;
     }
 
     public synchronized void putInWaitP3() throws InterruptedException {
-        while(!godselectedByP2){
+        while(!boolP3){
             try{
                 wait();
             }catch (InterruptedException e){}
         }
-        godselectedByP2 = false;
+        boolP3 = false;
     }
 
     public synchronized void putInWaitChallenger() throws InterruptedException {
@@ -151,13 +164,23 @@ public class Server {
         }
     }
 
+    public synchronized void removeFromWaitStart (){
+        bool = true;
+        notifyAll();
+    }
+
+    public synchronized void removeFromWaitP1 (){
+        boolP1 = true;
+        notifyAll();
+    }
+
     public synchronized void removeFromWaitP2 (){
-        godscreated = true;
+        boolP2 = true;
         notifyAll();
     }
 
     public synchronized void removeFromWaitP3 (){
-        godselectedByP2 = true;
+        boolP3 = true;
         notifyAll();
     }
 
@@ -165,6 +188,23 @@ public class Server {
         notifyAll();
     }
 
+    public synchronized boolean addWorkersPositions(int x, int y){
+        Iterator<Coordinates> it = workerPositions.iterator();
+        Coordinates newC, oldC;
+        newC = new Coordinates(x,y);
+        while(it.hasNext()){
+            oldC = it.next();
+            if (newC.equals(oldC) && x<5 && x>=0 && y<5 && y>=0){
+                return false;
+            }
+        }
+        workerPositions.add(newC);
+        return true;
+    }
+
+    public ArrayList<Coordinates> getWorkerPositions() {
+        return workerPositions;
+    }
 
     public void setGods(String god){
         gods.add(God.valueOf(god));
@@ -198,7 +238,6 @@ public class Server {
             }
         }
     }
-
 
 }
 

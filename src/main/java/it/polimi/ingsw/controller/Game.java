@@ -176,9 +176,11 @@ public class Game extends Observable<Object> implements Observer<Object> {
         //funzione per posizionare i rispettivi worker sulla board
     }
 
-
     @Override
     public void update(Object message) {
+
     }
+
+
 }
 

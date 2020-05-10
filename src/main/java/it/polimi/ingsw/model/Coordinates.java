@@ -25,4 +25,8 @@ public class Coordinates {
         this.y = y;
     }
 
+
+    public boolean equals (Coordinates c){
+        return (c.getX() == this.x && c.getY() == this.y);
+    }
 }

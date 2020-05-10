@@ -3,11 +3,12 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.server.ClientConnection;
+import it.polimi.ingsw.utils.Message;
 
 public class RemoteView extends View{
     private ClientConnection clientConnection;
 
-    private class MessageReceiver implements Observer<String> {
+    private class MessageReceiver implements Observer<Object> {
         private Player player;
 
         private MessageReceiver(Player player) {
@@ -15,16 +16,13 @@ public class RemoteView extends View{
         }
 
         @Override
-        public void update(String message) {
-            System.out.println("Received: " + message);
-            try{
-                String[] inputs = message.split(",");
-            }catch(IllegalArgumentException e){
-                clientConnection.asyncSend("Error!");
-            }
+        public void update(Object m) {
+            System.out.println("Received");
+            handleMessage(m);
         }
-
     }
+
+
 
     public RemoteView(Player player, ClientConnection c) {
         super(player);
