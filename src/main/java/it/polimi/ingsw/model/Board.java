@@ -1,11 +1,15 @@
 package it.polimi.ingsw.model;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class Board{
     private int NumberOfPlayers;
     private static final int HEIGHT = 5;
     private static final int WIDTH = 5;
     private Cell [][] board;
-    private Worker worker1,worker2,worker3,worker4,worker5,worker6;
+    private Worker[] workers = new Worker[6];
+    //private Worker worker1,worker2,worker3,worker4,worker5,worker6;
     private int nround=0;
     private ObservableModel observableModel;
 
@@ -17,10 +21,11 @@ public class Board{
                 board[i][j] = new Cell(i,j);
             }
         }
-        this.worker1 = worker1;
-        this.worker2 = worker2;
-        this.worker3 = worker3;
-        this.worker4 = worker4;
+        this.workers[0] = worker1;
+        this.workers[1] = worker2;
+        this.workers[2] = worker3;
+        this.workers[3] = worker4;
+
         this.NumberOfPlayers = NPlayer;
 
     }
@@ -37,12 +42,14 @@ public class Board{
                 board[i][j] = new Cell(i,j);
             }
         }
-        this.worker1 = worker1;
-        this.worker2 = worker2;
-        this.worker3 = worker3;
-        this.worker4 = worker4;
-        this.worker5 = worker5;
-        this.worker6 = worker6;
+
+        this.workers[0] = worker1;
+        this.workers[1] = worker2;
+        this.workers[2] = worker3;
+        this.workers[3] = worker4;
+        this.workers[4] = worker5;
+        this.workers[5] = worker6;
+
         this.NumberOfPlayers = NPlayer;
 
     }
@@ -101,6 +108,10 @@ public class Board{
     //method to know which worker is in the cell x,y
     public Worker getWorker(Coordinates coordinates){
         return board[coordinates.getX()][coordinates.getY()].getWorker();
+    }
+
+    public Worker getWorkerById(int id){
+        return this.workers[id];
     }
 
     //method to remove a worker from a cell when it's moved

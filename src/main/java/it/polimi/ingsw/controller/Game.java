@@ -3,7 +3,10 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
+import it.polimi.ingsw.utils.*;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 public class Game extends Observable<Object> implements Observer<Object> {
@@ -178,7 +181,23 @@ public class Game extends Observable<Object> implements Observer<Object> {
 
     @Override
     public void update(Object message) {
+        Action a=((Message) message).getAction(); //0
+        int flag=0,id=1; //0
 
+        switch (a){
+            case INITWORKERS:
+                //imposta a board le posizioni degli worker
+                Iterator<Coordinates> it = ((Message) message).getInitWorkerList().iterator();
+
+                while (it.hasNext()){
+                    flag++;
+                    id++;
+                    if(flag==4) { id=0; } //when list of coordinates is at 4th position -> idworker0 -> player1
+                    board.moveWorker(it.next(),board.getWorkerById(id));
+                }
+
+            case SELECTACTIVEWORKER:
+        }
     }
 
 
