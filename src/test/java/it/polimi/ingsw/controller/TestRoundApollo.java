@@ -1,10 +1,7 @@
-package it.polimi.ingsw.testcontroller;
+package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.controller.RoundApollo;
 import it.polimi.ingsw.model.*;
 
-import org.junit.Ignore;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

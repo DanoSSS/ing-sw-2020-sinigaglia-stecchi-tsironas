@@ -56,8 +56,8 @@ public class Client {
                 try {
                     while (isActive()) {
                         String inputObject = stdin.nextLine();
-                            socketOut.writeChars( inputObject);
-                            socketOut.flush();
+                        socketOut.writeChars(inputObject);
+                        socketOut.flush();
                     }
                 }catch(Exception e){
                     setActive(false);
