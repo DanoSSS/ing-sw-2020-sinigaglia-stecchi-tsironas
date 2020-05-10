@@ -1,10 +1,11 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.observer.Observer;
 
 import java.util.ArrayList;
 
-public class RoundApollo implements Round {
+public class RoundApollo extends Round {
     private Board board;
     private Player player;
 
@@ -157,6 +158,10 @@ public class RoundApollo implements Round {
         }
     }
 
+    @Override
+    public void update(Object message) {
+
+    }
 }
 
 

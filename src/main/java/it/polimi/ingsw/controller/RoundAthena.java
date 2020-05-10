@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
 
-public class RoundAthena implements Round {
+public class RoundAthena extends Round {
     private Board board;
     private Player player;
 
@@ -41,6 +41,11 @@ public class RoundAthena implements Round {
         buildCoordinates = askCoordinatesToBuild(possibleBuilds);
         doBuild(buildCoordinates);
         return gamestatus;
+    }
+
+    @Override
+    public void update(Object message) {
+
     }
 
     public Worker askActiveWorker() {

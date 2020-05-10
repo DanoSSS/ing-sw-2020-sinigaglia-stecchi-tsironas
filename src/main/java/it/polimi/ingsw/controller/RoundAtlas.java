@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.Worker;
 
 import java.util.ArrayList;
 
-public class RoundAtlas implements Round {
+public class RoundAtlas extends Round {
     public Board board;
     public Player player;
 
@@ -50,6 +50,11 @@ public class RoundAtlas implements Round {
             board.setNround(i);
         }
         return gamestatus;
+    }
+
+    @Override
+    public void update(Object message) {
+
     }
 
     public Worker askActiveWorker() {

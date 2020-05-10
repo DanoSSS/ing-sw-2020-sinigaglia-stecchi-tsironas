@@ -8,7 +8,6 @@ import java.util.List;
 public class ObservableModel extends Observable<Object> {
 
     private Board board;
-    private List<Observer> Observers = new ArrayList<>();
 
     public ObservableModel(Board board ){
         this.board=board;

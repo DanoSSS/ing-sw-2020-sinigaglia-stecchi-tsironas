@@ -22,6 +22,7 @@ public class Board{
         this.worker3 = worker3;
         this.worker4 = worker4;
         this.observableModel = new ObservableModel(this);
+        this.NumberOfPlayers = NPlayer;
 
     }
 

@@ -2,6 +2,10 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.observer.Observer;
 
-public interface Round{
-    public boolean ExecuteRound(boolean Gameover);
+public abstract class Round implements Observer<Object>{
+
+    public abstract boolean ExecuteRound(boolean Gameover);
+
+    @Override
+    public abstract void update(Object message);
 }

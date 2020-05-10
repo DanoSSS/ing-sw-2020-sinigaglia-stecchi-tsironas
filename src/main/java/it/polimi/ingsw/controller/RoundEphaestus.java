@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.Worker;
 
 import java.util.ArrayList;
 
-public class RoundEphaestus implements Round {
+public class RoundEphaestus extends Round {
     private Board board;
     private Player player;
 
@@ -55,6 +55,11 @@ public class RoundEphaestus implements Round {
             board.setNround(i);
         }
         return gamestatus;
+    }
+
+    @Override
+    public void update(Object message) {
+
     }
 
     public Worker askActiveWorker() {

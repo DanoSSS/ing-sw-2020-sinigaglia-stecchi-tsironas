@@ -19,7 +19,6 @@ public class RemoteView extends View{
             System.out.println("Received: " + message);
             try{
                 String[] inputs = message.split(",");
-                handleGods(inputs[0],inputs[1]);
             }catch(IllegalArgumentException e){
                 clientConnection.asyncSend("Error!");
             }
@@ -27,11 +26,10 @@ public class RemoteView extends View{
 
     }
 
-    public RemoteView(Player player, String opponent, ClientConnection c) {
+    public RemoteView(Player player, ClientConnection c) {
         super(player);
         this.clientConnection = c;
         clientConnection.addObserver(new MessageReceiver(player));
-        clientConnection.asyncSend("\nYour opponent is " + opponent );
     }
 
     @Override

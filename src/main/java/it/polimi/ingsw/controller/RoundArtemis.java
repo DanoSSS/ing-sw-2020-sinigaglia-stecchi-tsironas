@@ -4,10 +4,11 @@ import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.observer.Observer;
 
 import java.util.ArrayList;
 
-public class RoundArtemis implements Round {
+public class RoundArtemis extends Round {
     private Board board;
     private Player player;
 
@@ -194,4 +195,8 @@ public class RoundArtemis implements Round {
     }
 
 
+    @Override
+    public void update(Object message) {
+
+    }
 }

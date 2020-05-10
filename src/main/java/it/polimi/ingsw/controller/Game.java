@@ -129,6 +129,19 @@ public class Game extends Observable<Object> implements Observer<Object> {
 
     }
 
+    public Round getRoundP1(){
+        return roundP1;
+    }
+
+    public Round getRoundP2(){
+        return roundP2;
+    }
+
+    public Round getRoundP3(){
+        return roundP3;
+    }
+
+
     //engine that cycles rounds in the game until a player wins the game
     public void StartGameOperation () {
         RoundCreationP1(player1);
@@ -158,9 +171,6 @@ public class Game extends Observable<Object> implements Observer<Object> {
         return null;
     }
 
-    public void GodsSetup(){
-        //deve chiedere al challenger di scegliere 3 gods e assegnarle all' attributo gods dei player
-    }
 
     public void GameSetup(){
         //funzione per posizionare i rispettivi worker sulla board
@@ -169,10 +179,6 @@ public class Game extends Observable<Object> implements Observer<Object> {
 
     @Override
     public void update(Object message) {
-        if(message instanceof GodChoice){
-
-        }
-
     }
 }
 

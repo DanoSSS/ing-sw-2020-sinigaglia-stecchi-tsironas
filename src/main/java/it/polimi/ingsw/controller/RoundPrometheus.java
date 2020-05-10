@@ -8,7 +8,7 @@ import it.polimi.ingsw.model.Worker;
 
 import java.util.ArrayList;
 
-public class RoundPrometheus implements Round {
+public class RoundPrometheus extends Round {
     private Player player;
     private Board board;
 
@@ -72,6 +72,11 @@ public class RoundPrometheus implements Round {
             board.setNround(i);
         }
         return gamestatus;
+    }
+
+    @Override
+    public void update(Object message) {
+
     }
 
     public Worker askActiveWorker() {

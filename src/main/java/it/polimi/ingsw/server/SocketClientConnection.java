@@ -6,6 +6,7 @@ import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -58,6 +59,12 @@ public class SocketClientConnection extends Observable<String> implements Client
 
     @Override
     public void asyncSend(Object message) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                send(message);
+            }
+        }).start();
     }
 
     private void close() {
@@ -70,10 +77,10 @@ public class SocketClientConnection extends Observable<String> implements Client
     @Override
     public void run() {
         Scanner in;
+        //ObjectInputStream in;
         String name;
         String read2 = "";
         boolean flag1 = false, flag2 = false;
-        int nplayers = 0;
         try{
             in = new Scanner(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
@@ -82,46 +89,40 @@ public class SocketClientConnection extends Observable<String> implements Client
             name = read;
             if(playerNumber==1) {
                 send("how many players?\n2 or 3?");
+
                 String read0 = in.nextLine();
-                nplayers =Integer.parseInt(read0);
-                send("select "+nplayers+" gods\n");
+                server.setnPlayers(Integer.parseInt(read0));
+                send("select "+server.getnPlayers()+" gods\n");
                 String read1 = in.nextLine();
                 String[] inputs = read1.split(",");
-                for(int i=0; i<nplayers; i++){
+                for(int i=0; i<server.getnPlayers(); i++){
                     server.setGods(inputs[i]);
                 }
-                notifyAll();
-                while(!flag2){
-                    wait();
-                }
+                server.removeFromWaitP2();
+                server.putInWaitChallenger();
                 send("your god is: " + server.getGods(0));
                 read2 = server.getGods(0);
             }
             else if(playerNumber==2){
-                wait();
-                if(nplayers==3) {
+                server.putInWaitP2();
+                if(server.getnPlayers()==3) {
                     send("select your god between: " + server.getGods(0) + server.getGods(1) + server.getGods(2));
                     read2 = in.nextLine();
                     server.removeGods(read2);
-                    flag1 = true;
-                    notifyAll();
-                }else if(nplayers==2) {
+                    server.removeFromWaitP3();
+                }else if(server.getnPlayers()==2) {
                     send("select your god between: " + server.getGods(0) + server.getGods(1));
                     read2 = in.nextLine();
                     server.removeGods(read2);
-                    flag2 = true;
-                    notifyAll();
+                    server.removeFromWait();
                 }
             }
             else if(playerNumber==3){
-                while(!flag1){
-                    wait();
+                    server.putInWaitP3();
                     send("select your god between: " + server.getGods(0) + server.getGods(1));
                     read2 = in.nextLine();
                     server.removeGods(read2);
-                    flag2 = true;
-                    notifyAll();
-                }
+                    server.removeFromWait();
             }
             server.lobby(this, name, God.valueOf(read2));
             while(isActive()){

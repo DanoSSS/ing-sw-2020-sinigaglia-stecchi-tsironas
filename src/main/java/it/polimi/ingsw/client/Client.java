@@ -49,14 +49,14 @@ public class Client {
         return t;
     }
 
-    public Thread asyncWriteToSocket(final Scanner stdin, final ObjectOutputStream socketOut){
+    public Thread asyncWriteToSocket(final Scanner stdin, final PrintWriter socketOut){
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     while (isActive()) {
                         String inputObject = stdin.nextLine();
-                        socketOut.writeChars(inputObject);
+                        socketOut.println(inputObject);
                         socketOut.flush();
                     }
                 }catch(Exception e){
@@ -72,7 +72,7 @@ public class Client {
         Socket socket = new Socket(ip, port);
         System.out.println("Connection established");
         ObjectInputStream SocketIn = new ObjectInputStream(socket.getInputStream());
-        ObjectOutputStream SocketOut = new ObjectOutputStream(socket.getOutputStream());
+        PrintWriter SocketOut = new PrintWriter(socket.getOutputStream());
         Scanner stdin = new Scanner(System.in);
 
         try{
