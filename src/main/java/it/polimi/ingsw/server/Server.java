@@ -19,6 +19,9 @@ public class Server {
     private Map<String, ClientConnection> waitingConnection = new HashMap<>();
     private Map<ClientConnection, ClientConnection> playingConnection = new HashMap<>();
     private Map<String, God> playerGodAssociation = new HashMap<>();
+
+
+
     private enum color {BLUE,GREEN,RED};
     int nPlayers=0;
     private int nPlayersConnected = 0;
@@ -46,78 +49,95 @@ public class Server {
     }
 
     public synchronized void lobby(ClientConnection c, String name, God god) {
-        int idWorker[]= {1,2,3,4,5,6};
         waitingConnection.put(name, c);
         playerGodAssociation.put(name, god);
-        if (waitingConnection.size() == 2 && nPlayers == 2) {
+        if (waitingConnection.size() == 2 && nPlayers == 2) {               // 2 players
             System.out.println("entrato in lobby nel ramo nplayer == 2");
             List<String> keys = new ArrayList<>(waitingConnection.keySet());
-            ClientConnection c1 = waitingConnection.get(keys.get(0));
-            ClientConnection c2 = waitingConnection.get(keys.get(1));
-            God god1 = playerGodAssociation.get(keys.get(0));
-            God god2 = playerGodAssociation.get(keys.get(1));
-            Player player1 = new Player(keys.get(0), "BLUE", idWorker[0], idWorker[1], god1);
-            Player player2 = new Player(keys.get(1), "RED", idWorker[2], idWorker[3], god2);
-            View player1View = new RemoteView(player1, c1);
-            View player2View = new RemoteView(player2, c2);
-            Board board = new Board(player1.getWorker1(), player1.getWorker2(), player2.getWorker1(), player2.getWorker2(), nPlayers);
-            board.setObservableModel(board);
-            Game game = new Game(board);
-            game.RoundCreationP1(player1);
-            game.RoundCreationP2(player2);
-            board.getObservableModel().addObserver(player1View);
-            board.getObservableModel().addObserver(player2View);
-            game.addObserver(player1View);
-            game.addObserver(player2View);
-            player1View.addObserver(game);
-            player2View.addObserver(game);
-            player1View.addObserver(game.getRoundP1());
-            player2View.addObserver(game.getRoundP2());
-            playingConnection.put(c1, c2);
-            playingConnection.put(c2, c1);
+
+            startGameAndObservers2(keys);
+
+            playingConnection.put(waitingConnection.get(keys.get(0)), waitingConnection.get(keys.get(1)));  //(c1,c2)
+            playingConnection.put(waitingConnection.get(keys.get(1)), waitingConnection.get(keys.get(0)));  //(c2,c1)
+            System.out.println("fine if 2");
         }
-        if (waitingConnection.size() == 3 && nPlayers == 3) {
+
+
+        else if (waitingConnection.size() == 3 && nPlayers == 3) {               //3 players
             System.out.println("entrato in lobby nel ramo nplayer == 3");
             List<String> keys = new ArrayList<>(waitingConnection.keySet());
-            ClientConnection c1 = waitingConnection.get(keys.get(0));
-            ClientConnection c2 = waitingConnection.get(keys.get(1));
-            ClientConnection c3 = waitingConnection.get(keys.get(2));
-            God god1 = playerGodAssociation.get(keys.get(0));
-            God god2 = playerGodAssociation.get(keys.get(1));
-            God god3 = playerGodAssociation.get(keys.get(2));
-            Player player1 = new Player(keys.get(0), "BLUE", idWorker[0], idWorker[1], god1);
-            Player player2 = new Player(keys.get(1), "RED", idWorker[2], idWorker[3], god2);
-            Player player3 = new Player(keys.get(2), "GREEN", idWorker[4], idWorker[5], god3);
-            View player1View = new RemoteView(player1, c1);
-            View player2View = new RemoteView(player2, c2);
-            View player3View = new RemoteView(player3, c3);
-            Board board = new Board(player1.getWorker1(), player1.getWorker2(), player2.getWorker1(), player2.getWorker2(), player3.getWorker1(), player3.getWorker2(), nPlayers);
-            board.setObservableModel(board);
-            Game game = new Game(board);
-            game.RoundCreationP1(player1);
-            game.RoundCreationP2(player2);
-            game.RoundCreationP3(player3);
-            board.getObservableModel().addObserver(player1View);
-            board.getObservableModel().addObserver(player2View);
-            board.getObservableModel().addObserver(player3View);
-            player1View.addObserver(game);
-            player2View.addObserver(game);
-            player3View.addObserver(game);
-            game.addObserver(player1View);
-            game.addObserver(player2View);
-            game.addObserver(player3View);
-            player1View.addObserver(game.getRoundP1());
-            player2View.addObserver(game.getRoundP2());
-            player3View.addObserver(game.getRoundP3());
-            playingConnection.put(c1, c2);
-            playingConnection.put(c2, c1);
-            playingConnection.put(c3, c1);
-            playingConnection.put(c1, c3);
-            playingConnection.put(c3, c2);
-            playingConnection.put(c2, c3);
+
+            startGameAndObservers3(keys);
+
+            playingConnection.put(waitingConnection.get(keys.get(0)), waitingConnection.get(keys.get(1)));  //(c1,c2)
+            playingConnection.put(waitingConnection.get(keys.get(1)), waitingConnection.get(keys.get(0)));  //(c2,c1)
+            playingConnection.put(waitingConnection.get(keys.get(2)), waitingConnection.get(keys.get(0)));  //(c3,c1)
+            playingConnection.put(waitingConnection.get(keys.get(0)), waitingConnection.get(keys.get(2)));  //(c1,c3)
+            playingConnection.put(waitingConnection.get(keys.get(2)), waitingConnection.get(keys.get(1)));  //(c3,c2)
+            playingConnection.put(waitingConnection.get(keys.get(1)), waitingConnection.get(keys.get(2)));  //(c2,c3)
             System.out.println("fine if 3");
         }
+
         System.out.println("\nMatch created!");
+    }
+
+    public void startGameAndObservers2(List<String> keys){
+        int idWorker[]= {1,2,3,4,5,6};
+        ClientConnection c1 = waitingConnection.get(keys.get(0));
+        ClientConnection c2 = waitingConnection.get(keys.get(1));
+        //God god1 = playerGodAssociation.get(keys.get(0));
+        //God god2 = playerGodAssociation.get(keys.get(1));
+        Player player1 = new Player(keys.get(0), "RED", idWorker[0], idWorker[1], playerGodAssociation.get(keys.get(0)));
+        Player player2 = new Player(keys.get(1), "GREEN", idWorker[2], idWorker[3], playerGodAssociation.get(keys.get(1)));
+        View player1View = new RemoteView(player1, c1);
+        View player2View = new RemoteView(player2, c2);
+        Board board = new Board(player1.getWorker1(), player1.getWorker2(), player2.getWorker1(), player2.getWorker2(), nPlayers);
+        board.setObservableModel(board);
+        Game game = new Game(board);
+        game.RoundCreationP1(player1);
+        game.RoundCreationP2(player2);
+        board.getObservableModel().addObserver(player1View);
+        board.getObservableModel().addObserver(player2View);
+        game.addObserver(player1View);
+        game.addObserver(player2View);
+        player1View.addObserver(game);
+        player2View.addObserver(game);
+        player1View.addObserver(game.getRoundP1());
+        player2View.addObserver(game.getRoundP2());
+    }
+
+    public void startGameAndObservers3(List<String> keys){
+        int idWorker[]= {1,2,3,4,5,6};
+        ClientConnection c1 = waitingConnection.get(keys.get(0));
+        ClientConnection c2 = waitingConnection.get(keys.get(1));
+        ClientConnection c3 = waitingConnection.get(keys.get(2));
+        God god1 = playerGodAssociation.get(keys.get(0));
+        God god2 = playerGodAssociation.get(keys.get(1));
+        God god3 = playerGodAssociation.get(keys.get(2));
+        Player player1 = new Player(keys.get(0), "RED",idWorker[0], idWorker[1], god1);
+        Player player2 = new Player(keys.get(1), "GREEN", idWorker[2], idWorker[3], god2);
+        Player player3 = new Player(keys.get(2), "BLUE", idWorker[4], idWorker[5], god3);
+        View player1View = new RemoteView(player1, c1);
+        View player2View = new RemoteView(player2, c2);
+        View player3View = new RemoteView(player3, c3);
+        Board board = new Board(player1.getWorker1(), player1.getWorker2(), player2.getWorker1(), player2.getWorker2(), player3.getWorker1(), player3.getWorker2(), nPlayers);
+        board.setObservableModel(board);
+        Game game = new Game(board);
+        game.RoundCreationP1(player1);
+        game.RoundCreationP2(player2);
+        game.RoundCreationP3(player3);
+        board.getObservableModel().addObserver(player1View);
+        board.getObservableModel().addObserver(player2View);
+        board.getObservableModel().addObserver(player3View);
+        player1View.addObserver(game);
+        player2View.addObserver(game);
+        player3View.addObserver(game);
+        game.addObserver(player1View);
+        game.addObserver(player2View);
+        game.addObserver(player3View);
+        player1View.addObserver(game.getRoundP1());
+        player2View.addObserver(game.getRoundP2());
+        player3View.addObserver(game.getRoundP3());
     }
 
     public synchronized void putInWaitP1() throws InterruptedException {
@@ -191,10 +211,11 @@ public class Server {
     public synchronized boolean addWorkersPositions(int x, int y){
         Iterator<Coordinates> it = workerPositions.iterator();
         Coordinates newC, oldC;
+        if(!( (x<5 && x>=0)&&(y<5 && y>=0) )){return false;}
         newC = new Coordinates(x,y);
         while(it.hasNext()){
             oldC = it.next();
-            if (newC.equals(oldC) && x<5 && x>=0 && y<5 && y>=0){
+            if (newC.equals(oldC)){
                 return false;
             }
         }
@@ -206,7 +227,26 @@ public class Server {
         return workerPositions;
     }
 
-    public void setGods(String god){
+    public boolean setGods1(String read) {      //try to create god card from input of P1
+        God g;
+        String[] inputGod = read.split(",");
+        if(inputGod.length!=nPlayers){return false;} //if the input size is <> nPlayer
+        for(int i=0; i<nPlayers; i++){
+            try {
+            g=God.valueOf(inputGod[i].toUpperCase()); //match God class with the input
+            } catch (IllegalArgumentException e){
+                System.out.println("one of the god card doesn't match correctly\n");
+                return false;
+            }
+            if(!((inputGod[i].toUpperCase()).equals(g.toString()))){
+                return false;
+            }
+            setGods(inputGod[i].toUpperCase());
+        }
+        return true;
+    }
+
+    public void setGods(String god){        //put god card in list
         gods.add(God.valueOf(god));
     }
 
@@ -214,15 +254,30 @@ public class Server {
         return gods.get(i).toString();
     }
 
+    public boolean removeGods1(String read) {
+        God g;
+        try {
+            g=God.valueOf(read.toUpperCase()); //match God class with the input
+        } catch (IllegalArgumentException e){
+            System.out.println("one of the god card doesn't match correctly\n");
+            return true;
+        }
+        if(!read.equals(g.toString())){
+            return true;
+        }
+        removeGods(read);
+        return false;
+    }
+
     public void removeGods(String god){
         gods.remove(God.valueOf(god));
     }
 
-    public void setnPlayers(int i){
+    public void setNPlayers(int i){
         nPlayers = i;
     }
 
-    public int getnPlayers(){
+    public int getNPlayers(){
         return nPlayers;
     }
 

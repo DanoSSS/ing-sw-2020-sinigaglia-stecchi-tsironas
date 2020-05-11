@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.utils.Color;
+
 public class Worker {
     private int IdWorker;
     private boolean ActiveWorker=false;

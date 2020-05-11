@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.Game;
+import it.polimi.ingsw.utils.Color;
 
 public class Player {
     private String nickname;
@@ -12,7 +13,7 @@ public class Player {
     private God god;
     private Worker activeworker;
 
-    public Player(String name,String color,int id1,int id2,God god){
+    public Player(String name, String color, int id1, int id2, God god){
         this.nickname=name;
         this.color=color;
         this.worker1 = new Worker(this,color,id1);
