@@ -22,8 +22,9 @@ public class Game extends Observable<Object> implements Observer<Object> {
         return isChallengerTurn;
     }
 
-    public Game(Board board){
+    public Game(Board board,int i){
         this.board=board;
+        this.NumberOfPlayers=i;
     }
 
     public boolean isGameOver() { return GameOver; }
@@ -53,7 +54,7 @@ public class Game extends Observable<Object> implements Observer<Object> {
         if (player.getGod()== God.DEMETER){
             roundP1 = new RoundDemeter(board,player);
         }
-        if (player.getGod()== God.EPHEASTUS){
+        if (player.getGod()== God.EPHAESTUS){
             roundP1 = new RoundEphaestus(board,player);
         }
         if (player.getGod()== God.MINOTAUR){
@@ -85,7 +86,7 @@ public class Game extends Observable<Object> implements Observer<Object> {
         if (player.getGod()== God.DEMETER){
             roundP2 = new RoundDemeter(board,player);
         }
-        if (player.getGod()== God.EPHEASTUS){
+        if (player.getGod()== God.EPHAESTUS){
             roundP2 = new RoundEphaestus(board,player);
         }
         if (player.getGod()== God.MINOTAUR){
@@ -117,7 +118,7 @@ public class Game extends Observable<Object> implements Observer<Object> {
         if (player.getGod()== God.DEMETER){
             roundP3 = new RoundDemeter(board,player);
         }
-        if (player.getGod()== God.EPHEASTUS){
+        if (player.getGod()== God.EPHAESTUS){
             roundP3 = new RoundEphaestus(board,player);
         }
         if (player.getGod()== God.MINOTAUR){
@@ -192,7 +193,11 @@ public class Game extends Observable<Object> implements Observer<Object> {
                 while (it.hasNext()){
                     flag++;
                     id++;
-                    if(flag==4) { id=0; } //when list of coordinates is at 4th position -> idworker0 -> player1
+                    if(NumberOfPlayers==3){
+                        if(flag==4){id=0;}      //when list of coordinates is at 4th position -> idworker0 -> player1
+                    }else{
+                        if(flag==2) {id=0;}     //when list of coordinates is at 2th position -> idworker0 -> player1
+                    }
                     board.moveWorker(it.next(),board.getWorkerById(id));
                 }
 

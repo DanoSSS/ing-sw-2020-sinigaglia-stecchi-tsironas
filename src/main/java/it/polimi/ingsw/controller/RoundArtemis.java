@@ -118,8 +118,8 @@ public class RoundArtemis extends Round {
         int x=activeWorker.getCoordinates().getX();
         int y=activeWorker.getCoordinates().getY();
         oldCoordinates = new Coordinates(x,y);
-        board.freeCellFromWorker(oldCoordinates);
         board.moveWorker(moveCoordinates,activeWorker);
+        board.freeCellFromWorker(oldCoordinates);
         if (board.getLevel(moveCoordinates) == 3 && board.getLevel(oldCoordinates) == 2) {
             GameOver = true;
         }
@@ -146,11 +146,11 @@ public class RoundArtemis extends Round {
                 if (i >= 0 && i <= 4 && j >= 0 && j <= 4) {
                     newCoordinates = new Coordinates(i, j);
                     if (board.getNround() == 0) {
-                        if (!board.isDome(newCoordinates) && (board.getLevel(newCoordinates) - board.getLevel(coordinates)) <= 1 && !board.isOccupied(newCoordinates) && newCoordinates!=oldCoordinates) {
+                        if (!board.isDome(newCoordinates) && (board.getLevel(newCoordinates) - board.getLevel(coordinates)) <= 1 && !board.isOccupied(newCoordinates) && (newCoordinates.getX()!=oldCoordinates.getX() || newCoordinates.getY()!=oldCoordinates.getY())) {
                             possiblesMovesCoordinates.add(newCoordinates);
                         }
                     } else {
-                        if (!board.isDome(newCoordinates) && (board.getLevel(newCoordinates) - board.getLevel(coordinates)) == 0 && !board.isOccupied(newCoordinates) && newCoordinates!=oldCoordinates) {
+                        if (!board.isDome(newCoordinates) && (board.getLevel(newCoordinates) - board.getLevel(coordinates)) == 0 && !board.isOccupied(newCoordinates) && (newCoordinates.getX()!=oldCoordinates.getX() || newCoordinates.getY()!=oldCoordinates.getY())) {
                             possiblesMovesCoordinates.add(newCoordinates);
                         }
                     }

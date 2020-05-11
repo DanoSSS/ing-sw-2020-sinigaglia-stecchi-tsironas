@@ -81,8 +81,12 @@ public class SocketClientConnection extends Observable<Object> implements Client
         try{
             in = new Scanner(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
-            send("Welcome!\nWhat is your name?");                   //for all players
+            send("Welcome!\nWhat is your nickname?");                   //for all players
             String read = in.nextLine();
+            while(!server.nicknameCheck(read)){
+                send("Your selected nickname is already in use.\nSelect an other nickname: ");                   //for all players
+                read = in.nextLine();
+            }
             name = read;
             if(playerNumber==1) {                                   //playerNOne
 
@@ -90,10 +94,11 @@ public class SocketClientConnection extends Observable<Object> implements Client
                 String read0 = in.nextLine();
                 server.setNPlayers(Integer.parseInt(read0));
 
-                send("select "+ server.getNPlayers() +" gods\n");   //Setting god cards
+                send("select "+ server.getNPlayers() +" gods between:\nAPOLLO, ARTEMIS, ATHENA, ATLAS, DEMETER, EPHAESTUS, MINOTAUR, PAN, PROMETHEUS");   //Setting god cards
                 String read1 = in.nextLine();
                 while (!server.setGods1(read1)){
-                    send("god Cards doesn't exist: select "+ server.getNPlayers() +" gods ( ATHENA,\t APOLLO,\tPAN,...)\n");
+                    server.clearGods();
+                    send("gods Cards doesn't exist or they has been misspelled:\nselect "+ server.getNPlayers() +" gods between:\nAPOLLO, ARTEMIS, ATHENA, ATLAS, DEMETER, EPHAESTUS, MINOTAUR, PAN, PROMETHEUS");
                     read1 = in.nextLine();
                 }
 
@@ -121,7 +126,7 @@ public class SocketClientConnection extends Observable<Object> implements Client
                     send("select your god between: " + server.getGods(0) + " " + server.getGods(1));
                     read2 = in.nextLine();
                     while (server.removeGods1(read2)) {
-                        send("you have entered a god card that doesn't exist, select your god between: " + server.getGods(0) + "\t" + server.getGods(1) + "\n");
+                        send("you have entered a god card that doesn't exist, select your god between: " + server.getGods(0) + "\t" + server.getGods(1));
                         read2 = in.nextLine();
                     }
                     server.removeFromWait();
@@ -134,7 +139,7 @@ public class SocketClientConnection extends Observable<Object> implements Client
                 send("select your god between: " + server.getGods(0)+ " " + server.getGods(1));
                 read2 = in.nextLine();
                 while (server.removeGods1(read2)){
-                    send("you have entered a god card that doesn't exist, select your god between: " + server.getGods(0)+ "\t"+ server.getGods(1)+ "\n");
+                    send("you have entered a god card that doesn't exist, select your god between: " + server.getGods(0)+ "\t"+ server.getGods(1));
                         read2 = in.nextLine();
                 }
                 server.removeFromWait();
@@ -183,7 +188,7 @@ public class SocketClientConnection extends Observable<Object> implements Client
         String coordinate = in.nextLine();
         String[] input = coordinate.split(",");
         while(!server.addWorkersPositions(Integer.parseInt(input[0]), Integer.parseInt(input[1]))) {
-            send("this cell is yet occupied or is not in the board, set worker in new coordinate: (x,y) 0<=x<5 0<=y<5");
+            send("this cell is already occupied or is not in the board, set worker in new coordinate: (x,y) 0<=x<5 0<=y<5");
             coordinate = in.nextLine();
             input = coordinate.split(",");
         }
@@ -192,7 +197,7 @@ public class SocketClientConnection extends Observable<Object> implements Client
         coordinate = in.nextLine();
         input = coordinate.split(",");
         while(!server.addWorkersPositions(Integer.parseInt(input[0]), Integer.parseInt(input[1]))) {
-            send("this cell is yet occupied or is not in the board, set worker in new coordinate: (x,y) 0<x<5 0<y<5");
+            send("this cell is already occupied or is not in the board, set worker in new coordinate: (x,y) 0<x<5 0<y<5");
             coordinate = in.nextLine();
             input = coordinate.split(",");
         }

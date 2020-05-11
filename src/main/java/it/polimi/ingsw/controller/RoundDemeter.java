@@ -175,7 +175,7 @@ public class RoundDemeter extends Round {
             for (int j = y - 1; j <= y + 1; j++) {
                 if (i >= 0 && i <= 4 && j >= 0 && j <= 4) {
                     newCoordinates = new Coordinates(i, j);
-                    if (!board.isOccupied(newCoordinates) && !board.isDome(newCoordinates) && newCoordinates!=previousCoordinate) {
+                    if (!board.isOccupied(newCoordinates) && !board.isDome(newCoordinates) && (newCoordinates.getX()!=previousCoordinate.getX() || newCoordinates.getY()!=previousCoordinate.getY())) {
                         possiblesBuildsCoordinates.add(newCoordinates);
                     }
                 }

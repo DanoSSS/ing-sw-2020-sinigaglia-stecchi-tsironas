@@ -25,6 +25,7 @@ public class Server {
     private enum color {BLUE,GREEN,RED};
     int nPlayers=0;
     private int nPlayersConnected = 0;
+    private ArrayList<String> nicknames = new ArrayList<String>();
     private ArrayList<God> gods = new ArrayList<God>();
     private ArrayList<Coordinates> workerPositions = new ArrayList<Coordinates>();
     boolean boolP1 = false, boolP2 = false, boolP3 = false, bool = false;
@@ -93,7 +94,7 @@ public class Server {
         View player2View = new RemoteView(player2, c2);
         Board board = new Board(player1.getWorker1(), player1.getWorker2(), player2.getWorker1(), player2.getWorker2(), nPlayers);
         board.setObservableModel(board);
-        Game game = new Game(board);
+        Game game = new Game(board,2);
         game.RoundCreationP1(player1);
         game.RoundCreationP2(player2);
         board.getObservableModel().addObserver(player1View);
@@ -122,7 +123,7 @@ public class Server {
         View player3View = new RemoteView(player3, c3);
         Board board = new Board(player1.getWorker1(), player1.getWorker2(), player2.getWorker1(), player2.getWorker2(), player3.getWorker1(), player3.getWorker2(), nPlayers);
         board.setObservableModel(board);
-        Game game = new Game(board);
+        Game game = new Game(board,3);
         game.RoundCreationP1(player1);
         game.RoundCreationP2(player2);
         game.RoundCreationP3(player3);
@@ -208,6 +209,19 @@ public class Server {
         notifyAll();
     }
 
+    public synchronized boolean nicknameCheck(String name){
+        Iterator<String> it = nicknames.iterator();
+        String nickname;
+        while(it.hasNext()){
+            nickname = it.next();
+            if(name.equals(nickname)){
+                return false;
+            }
+        }
+        nicknames.add(name);
+        return true;
+    }
+
     public synchronized boolean addWorkersPositions(int x, int y){
         Iterator<Coordinates> it = workerPositions.iterator();
         Coordinates newC, oldC;
@@ -244,6 +258,10 @@ public class Server {
             setGods(inputGod[i].toUpperCase());
         }
         return true;
+    }
+
+    public void clearGods(){
+        gods.clear();
     }
 
     public void setGods(String god){        //put god card in list
