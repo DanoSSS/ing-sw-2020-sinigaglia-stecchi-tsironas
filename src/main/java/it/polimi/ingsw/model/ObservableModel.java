@@ -13,4 +13,5 @@ public class ObservableModel extends Observable<Object> {
         this.board=board;
     }
 
+
 }

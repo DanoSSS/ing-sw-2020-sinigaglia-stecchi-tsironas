@@ -39,11 +39,6 @@ public class SocketClientConnection extends Observable<Object> implements Client
     }
 
     @Override
-    public void addObserver(Observer<Object> observer) {
-
-    }
-
-    @Override
     public synchronized void closeConnection() {
         send("Connection closed!");
         try {

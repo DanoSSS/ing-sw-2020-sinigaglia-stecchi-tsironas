@@ -49,6 +49,8 @@ public class Player {
             worker.setActiveWorker(true);
         }*/
 
+    public String getNickname(){return nickname;}
+
     public God getGod() {
         return god;
     }

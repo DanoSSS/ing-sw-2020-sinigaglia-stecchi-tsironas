@@ -83,15 +83,15 @@ public class Server {
     }
 
     public void startGameAndObservers2(List<String> keys){
-        int idWorker[]= {1,2,3,4,5,6};
+        int idWorker[]= {0,1,2,3};
         ClientConnection c1 = waitingConnection.get(keys.get(0));
         ClientConnection c2 = waitingConnection.get(keys.get(1));
         //God god1 = playerGodAssociation.get(keys.get(0));
         //God god2 = playerGodAssociation.get(keys.get(1));
         Player player1 = new Player(keys.get(0), "RED", idWorker[0], idWorker[1], playerGodAssociation.get(keys.get(0)));
         Player player2 = new Player(keys.get(1), "GREEN", idWorker[2], idWorker[3], playerGodAssociation.get(keys.get(1)));
-        View player1View = new RemoteView(player1, c1);
-        View player2View = new RemoteView(player2, c2);
+        View player1View = new RemoteView(player1, c1, 1);
+        View player2View = new RemoteView(player2, c2, 2);
         Board board = new Board(player1.getWorker1(), player1.getWorker2(), player2.getWorker1(), player2.getWorker2(), nPlayers);
         board.setObservableModel(board);
         Game game = new Game(board,2);
@@ -103,12 +103,12 @@ public class Server {
         game.addObserver(player2View);
         player1View.addObserver(game);
         player2View.addObserver(game);
-        player1View.addObserver(game.getRoundP1());
-        player2View.addObserver(game.getRoundP2());
+        player1View.addObserver(game.getRoundP1(player1));
+        player2View.addObserver(game.getRoundP2(player2));
     }
 
     public void startGameAndObservers3(List<String> keys){
-        int idWorker[]= {1,2,3,4,5,6};
+        int idWorker[]= {0,1,2,3,4,5};
         ClientConnection c1 = waitingConnection.get(keys.get(0));
         ClientConnection c2 = waitingConnection.get(keys.get(1));
         ClientConnection c3 = waitingConnection.get(keys.get(2));
@@ -118,9 +118,9 @@ public class Server {
         Player player1 = new Player(keys.get(0), "RED",idWorker[0], idWorker[1], god1);
         Player player2 = new Player(keys.get(1), "GREEN", idWorker[2], idWorker[3], god2);
         Player player3 = new Player(keys.get(2), "BLUE", idWorker[4], idWorker[5], god3);
-        View player1View = new RemoteView(player1, c1);
-        View player2View = new RemoteView(player2, c2);
-        View player3View = new RemoteView(player3, c3);
+        View player1View = new RemoteView(player1, c1, 1);
+        View player2View = new RemoteView(player2, c2, 2);
+        View player3View = new RemoteView(player3, c3, 3);
         Board board = new Board(player1.getWorker1(), player1.getWorker2(), player2.getWorker1(), player2.getWorker2(), player3.getWorker1(), player3.getWorker2(), nPlayers);
         board.setObservableModel(board);
         Game game = new Game(board,3);
@@ -136,9 +136,9 @@ public class Server {
         game.addObserver(player1View);
         game.addObserver(player2View);
         game.addObserver(player3View);
-        player1View.addObserver(game.getRoundP1());
-        player2View.addObserver(game.getRoundP2());
-        player3View.addObserver(game.getRoundP3());
+        player1View.addObserver(game.getRoundP1(player1));
+        player2View.addObserver(game.getRoundP2(player2));
+        player3View.addObserver(game.getRoundP3(player3));
     }
 
     public synchronized void putInWaitP1() throws InterruptedException {

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.utils.ReturnMessage;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -120,6 +122,16 @@ public class Board{
 
         board[coordinates.getX()][coordinates.getY()].setOccupied(false);
        // observableModel.Notify();    commento da togliere fatto solo per i test
+    }
+
+    public void setWorker(Coordinates coordinates,Worker worker){
+        worker.setCell(coordinates.getX(),coordinates.getY());
+        board[coordinates.getX()][coordinates.getY()].setWorker(worker);
+        board[coordinates.getX()][coordinates.getY()].setOccupied(true);
+    }
+
+    public void initRound(int i){
+        observableModel.notify(new ReturnMessage(2,i));
     }
 
     public ObservableModel getObservableModel(){

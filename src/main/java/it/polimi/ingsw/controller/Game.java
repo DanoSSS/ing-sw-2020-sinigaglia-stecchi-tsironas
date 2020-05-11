@@ -5,15 +5,12 @@ import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.*;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Random;
+import java.util.*;
 
 public class Game extends Observable<Object> implements Observer<Object> {
-    private Round CurrentRound;
-    private Player player1,player2,player3;
+    private int currentRound = 2;
     private Board board;
-    private Round roundP1,roundP2,roundP3;
+    private Map<Player,Round> round = new HashMap<Player,Round>();
     private boolean GameOver;
     private int NumberOfPlayers;
     private boolean isChallengerTurn=true;
@@ -37,147 +34,166 @@ public class Game extends Observable<Object> implements Observer<Object> {
 
     }
 
-
     public void RoundCreationP1(Player player){
+        Round roundP1;
         if (player.getGod()== God.APOLLO) {
             roundP1 = new RoundApollo(board,player);
+            round.put(player,roundP1);
         }
         if (player.getGod()== God.ARTEMIS){
             roundP1 = new RoundArtemis(board,player);
+            round.put(player,roundP1);
         }
         if (player.getGod()== God.ATHENA){
             roundP1 = new RoundAthena(board,player);
+            round.put(player,roundP1);
         }
         if (player.getGod()== God.ATLAS){
             roundP1 = new RoundAtlas(board,player);
+            round.put(player,roundP1);
         }
         if (player.getGod()== God.DEMETER){
             roundP1 = new RoundDemeter(board,player);
+            round.put(player,roundP1);
         }
         if (player.getGod()== God.EPHAESTUS){
             roundP1 = new RoundEphaestus(board,player);
+            round.put(player,roundP1);
         }
         if (player.getGod()== God.MINOTAUR){
             roundP1 = new RoundMinotaur(board,player);
+            round.put(player,roundP1);
         }
         if (player.getGod()== God.PAN){
             roundP1 = new RoundPan(board,player);
+            round.put(player,roundP1);
         }
         if (player.getGod()== God.PROMETHEUS){
             roundP1 = new RoundPrometheus(board,player);
+            round.put(player,roundP1);
         }
 
     }
 
-
     public void RoundCreationP2(Player player){
+        Round roundP2;
         if (player.getGod()== God.APOLLO) {
             roundP2 = new RoundApollo(board, player);
+            round.put(player,roundP2);
         }
         if (player.getGod()== God.ARTEMIS){
             roundP2 = new RoundArtemis(board,player);
+            round.put(player,roundP2);
         }
         if (player.getGod()== God.ATHENA){
             roundP2 = new RoundAthena(board,player);
+            round.put(player,roundP2);
         }
         if (player.getGod()== God.ATLAS){
             roundP2 = new RoundAtlas(board,player);
+            round.put(player,roundP2);
         }
         if (player.getGod()== God.DEMETER){
             roundP2 = new RoundDemeter(board,player);
+            round.put(player,roundP2);
         }
         if (player.getGod()== God.EPHAESTUS){
             roundP2 = new RoundEphaestus(board,player);
+            round.put(player,roundP2);
         }
         if (player.getGod()== God.MINOTAUR){
             roundP2 = new RoundMinotaur(board,player);
+            round.put(player,roundP2);
         }
         if (player.getGod()== God.PAN){
             roundP2 = new RoundPan(board,player);
+            round.put(player,roundP2);
         }
         if (player.getGod()== God.PROMETHEUS){
             roundP2 = new RoundPrometheus(board,player);
+            round.put(player,roundP2);
         }
 
     }
 
-
     public void RoundCreationP3(Player player){
+        Round roundP3;
         if (player.getGod()== God.APOLLO) {
             roundP3 = new RoundApollo(board,player);
+            round.put(player,roundP3);
         }
         if (player.getGod()== God.ARTEMIS){
             roundP3 = new RoundArtemis(board,player);
+            round.put(player,roundP3);
+
         }
         if (player.getGod()== God.ATHENA){
             roundP3 = new RoundAthena(board,player);
+            round.put(player,roundP3);
+
         }
         if (player.getGod()== God.ATLAS){
             roundP3 = new RoundAtlas(board,player);
+            round.put(player,roundP3);
+
         }
         if (player.getGod()== God.DEMETER){
             roundP3 = new RoundDemeter(board,player);
+            round.put(player,roundP3);
+
         }
         if (player.getGod()== God.EPHAESTUS){
             roundP3 = new RoundEphaestus(board,player);
+            round.put(player,roundP3);
+
         }
         if (player.getGod()== God.MINOTAUR){
             roundP3 = new RoundMinotaur(board,player);
+            round.put(player,roundP3);
+
         }
         if (player.getGod()== God.PAN){
             roundP3 = new RoundPan(board,player);
+            round.put(player,roundP3);
+
         }
         if (player.getGod()== God.PROMETHEUS){
             roundP3 = new RoundPrometheus(board,player);
+            round.put(player,roundP3);
+
         }
 
     }
 
-    public Round getRoundP1(){
-        return roundP1;
+    public Round getRoundP1(Player player){
+        return round.get(player);
     }
 
-    public Round getRoundP2(){
-        return roundP2;
+    public Round getRoundP2(Player player){
+        return round.get(player);
     }
 
-    public Round getRoundP3(){
-        return roundP3;
+    public Round getRoundP3(Player player){
+        return round.get(player);
     }
 
-
-    //engine that cycles rounds in the game until a player wins the game
-    public void StartGameOperation () {
-        RoundCreationP1(player1);
-        RoundCreationP2(player2);
-        RoundCreationP3(player3);
-        do{
-            CurrentRound = SelectRound(CurrentRound);
-            GameOver=CurrentRound.ExecuteRound(GameOver);
-        }while(!GameOver);
+    //function that select
+    public void SelectRound(Player currentPlayer) {
+        round.get(currentPlayer).ExecuteRound(GameOver);
+        UpdateRound();
     }
 
-    //function that select the current round and the first player randomly
-    public Round SelectRound(Round currentRound){
-        Random random = new Random();
-        int RandomVar;
-        if(currentRound==null){
-            RandomVar = random.nextInt(2);
-            if (RandomVar==0) return roundP1;
-            if (RandomVar==1) return roundP2;
-            if (RandomVar==2) return roundP3;
+    public void UpdateRound(){
+        currentRound++;
+        if(NumberOfPlayers==2 && currentRound==3){
+            currentRound=1;
+            board.initRound(currentRound);
         }
-        else {
-            if (currentRound == roundP1) return roundP2;
-            if (currentRound == roundP2) return roundP3;
-            if (currentRound == roundP3) return roundP1;
+        else if(NumberOfPlayers==3 && currentRound==4){
+            currentRound=1;
+            board.initRound(currentRound);
         }
-        return null;
-    }
-
-
-    public void GameSetup(){
-        //funzione per posizionare i rispettivi worker sulla board
+        else{board.initRound(currentRound);}
     }
 
     @Override
@@ -189,7 +205,7 @@ public class Game extends Observable<Object> implements Observer<Object> {
             case INITWORKERS:
                 //imposta a board le posizioni degli worker
                 Iterator<Coordinates> it = ((Message) message).getInitWorkerList().iterator();
-
+                Map<Player,Coordinates> workerPosition = new HashMap<>();
                 while (it.hasNext()){
                     flag++;
                     id++;
@@ -198,10 +214,14 @@ public class Game extends Observable<Object> implements Observer<Object> {
                     }else{
                         if(flag==2) {id=0;}     //when list of coordinates is at 2th position -> idworker0 -> player1
                     }
-                    board.moveWorker(it.next(),board.getWorkerById(id));
+                    workerPosition.put(board.getWorkerById(id).getPlayer(),it.next());
+                    board.setWorker(it.next(),board.getWorkerById(id));
                 }
+                board.getObservableModel().notify(new ReturnMessage(5,workerPosition));
+                board.initRound(currentRound);
 
-            case SELECTACTIVEWORKER:
+            case INITEXECUTEROUND:
+                SelectRound(((Message) message).getPlayer());
         }
     }
 
