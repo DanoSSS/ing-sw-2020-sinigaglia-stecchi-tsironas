@@ -2,6 +2,7 @@ package it.polimi.ingsw.utils;
 
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Worker;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +11,7 @@ public class ReturnMessage {
 
     private Action action;
     private int nCurrentPlayer;
-    private Map<Player, Coordinates> workerPosition = new HashMap<>();
+    private Map<Worker, Coordinates> workerPosition = new HashMap<>();
 
     public ReturnMessage(int nAction,int nCurrentPlayer){
         this.action = Action.values()[nAction];
@@ -22,7 +23,7 @@ public class ReturnMessage {
         this.workerPosition = workerPosition;
     }
 
-    public Map<Player, Coordinates> getWorkerPosition() {
+    public Map<Worker, Coordinates> getWorkerPosition() {
         return workerPosition;
     }
 

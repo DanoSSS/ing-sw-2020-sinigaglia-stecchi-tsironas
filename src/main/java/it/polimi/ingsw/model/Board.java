@@ -11,7 +11,7 @@ public class Board{
     private static final int HEIGHT = 5;
     private static final int WIDTH = 5;
     private Cell [][] board;
-    private Worker[] workers = new Worker[5];
+    private Worker[] workers = new Worker[6];
     //private Worker worker1,worker2,worker3,worker4,worker5,worker6;
     private int nround=0;
     private ObservableModel observableModel;

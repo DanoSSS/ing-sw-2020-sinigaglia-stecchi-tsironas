@@ -90,8 +90,8 @@ public class Server {
         //God god2 = playerGodAssociation.get(keys.get(1));
         Player player1 = new Player(keys.get(0), "RED", idWorker[0], idWorker[1], playerGodAssociation.get(keys.get(0)));
         Player player2 = new Player(keys.get(1), "GREEN", idWorker[2], idWorker[3], playerGodAssociation.get(keys.get(1)));
-        View player1View = new RemoteView(player1, c1, 1);
-        View player2View = new RemoteView(player2, c2, 2);
+        View player1View = new RemoteView(player1, c1, 2);
+        View player2View = new RemoteView(player2, c2, 1);
         Board board = new Board(player1.getWorker1(), player1.getWorker2(), player2.getWorker1(), player2.getWorker2(), nPlayers);
         board.setObservableModel(board);
         Game game = new Game(board,2,player1,player2);
@@ -118,9 +118,9 @@ public class Server {
         Player player1 = new Player(keys.get(0), "RED",idWorker[0], idWorker[1], god1);
         Player player2 = new Player(keys.get(1), "GREEN", idWorker[2], idWorker[3], god2);
         Player player3 = new Player(keys.get(2), "BLUE", idWorker[4], idWorker[5], god3);
-        View player1View = new RemoteView(player1, c1, 1);
-        View player2View = new RemoteView(player2, c2, 2);
-        View player3View = new RemoteView(player3, c3, 3);
+        View player1View = new RemoteView(player1, c1, 2);
+        View player2View = new RemoteView(player2, c2, 3);
+        View player3View = new RemoteView(player3, c3, 1);
         Board board = new Board(player1.getWorker1(), player1.getWorker2(), player2.getWorker1(), player2.getWorker2(), player3.getWorker1(), player3.getWorker2(), nPlayers);
         board.setObservableModel(board);
         Game game = new Game(board,3,player1,player2,player3);

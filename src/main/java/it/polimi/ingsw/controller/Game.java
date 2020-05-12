@@ -219,7 +219,7 @@ public class Game extends Observable<Object> implements Observer<Object> {
             case INITWORKERS:
                 //imposta a board le posizioni degli worker
                 //Iterator it = (((Message)message).getInitWorkerList()).iterator();
-                Map<Coordinates,Player> workerPosition = new HashMap<>();/*
+                Map<Worker,Coordinates> workerPosition = new HashMap<>();/*
                 while (it.hasNext() && ((NumberOfPlayers==3 && flag<=6) || (NumberOfPlayers==2 && flag<=4))  ){
                     Coordinates c = (Coordinates)it.next();
                              //1,2,3,4,5,6
@@ -238,11 +238,12 @@ public class Game extends Observable<Object> implements Observer<Object> {
                              //0,1,2,3,4,5
                     id++;    //2,3,4,5,0,1
                     if(NumberOfPlayers==3){
-                        if(flag==2){id=0;player++;}      //when list of coordinates is at 4th position -> idworker0 -> player1
+                        if(flag==2){player++;}      //when list of coordinates is at 4th position -> idworker0 -> player1
+                        else if(flag==4){player=0;id=0;}
                     }else if(NumberOfPlayers==2){
                         if(flag==2) {id=0;player--;}     //when list of coordinates is at 2th position -> idworker0 -> player1
-                    }else if(flag==5){player=0;}
-                    workerPosition.put(c,players.get(player));
+                    }
+                    workerPosition.put(board.getWorkerById(id),c);
                     board.setWorker(c,id);
                     flag++;
                 }
