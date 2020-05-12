@@ -86,7 +86,6 @@ public class Game extends Observable<Object> implements Observer<Object> {
             roundP1 = new RoundPrometheus(board,player);
             round.put(player,roundP1);
         }
-
     }
 
     public void RoundCreationP2(Player player){

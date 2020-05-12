@@ -8,12 +8,10 @@ import it.polimi.ingsw.model.Worker;
 import java.util.ArrayList;
 
 public class RoundAtlas extends Round {
-    public Board board;
-    public Player player;
+
 
     public RoundAtlas(Board board, Player player){
-        this.board = board;
-        this.player = player;
+        super(board, player);
     }
 
     @Override

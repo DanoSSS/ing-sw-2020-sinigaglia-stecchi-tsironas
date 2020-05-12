@@ -6,12 +6,9 @@ import it.polimi.ingsw.observer.Observer;
 import java.util.ArrayList;
 
 public class RoundApollo extends Round {
-    private Board board;
-    private Player player;
 
     public RoundApollo(Board board, Player player) {
-        this.board = board;
-        this.player = player;
+        super(board, player);
     }
 
     @Override

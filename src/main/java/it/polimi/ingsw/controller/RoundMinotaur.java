@@ -8,12 +8,9 @@ import it.polimi.ingsw.model.Worker;
 import java.util.ArrayList;
 
 public class RoundMinotaur extends Round {
-        private Board board;
-        private Player player;
 
     public RoundMinotaur(Board board, Player player) {
-        this.board = board;
-        this.player = player;
+        super(board, player);
     }
 
     @Override

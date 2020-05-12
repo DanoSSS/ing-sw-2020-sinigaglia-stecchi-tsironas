@@ -5,12 +5,9 @@ import it.polimi.ingsw.model.*;
 import java.util.ArrayList;
 
 public class RoundAthena extends Round {
-    private Board board;
-    private Player player;
 
     public RoundAthena(Board board, Player player) {
-        this.board = board;
-        this.player = player;
+        super(board, player);
     }
 
     @Override

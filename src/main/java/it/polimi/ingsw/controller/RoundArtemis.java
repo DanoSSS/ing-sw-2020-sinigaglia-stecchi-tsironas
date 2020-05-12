@@ -9,12 +9,9 @@ import it.polimi.ingsw.observer.Observer;
 import java.util.ArrayList;
 
 public class RoundArtemis extends Round {
-    private Board board;
-    private Player player;
 
     public RoundArtemis(Board board, Player player) {
-        this.board = board;
-        this.player = player;
+        super(board, player);
     }
 
     @Override
