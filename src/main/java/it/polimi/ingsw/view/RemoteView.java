@@ -47,8 +47,8 @@ public class RemoteView extends View{
             case CURRENTPLAYERNUMBER:
                 int currentplayer = ((ReturnMessage)message).getnCurrentPlayer();
                 if(this.numberRW == currentplayer){
-                    clientConnection.asyncSend("It's your turn!");
                     handleMessage(new Message(3,this.getPlayer()));
+                    clientConnection.asyncSend("It's your turn!");  //da mettere nella askActiveWorker
                 }else{
                     clientConnection.asyncSend("Wait your turn!");
                 }
