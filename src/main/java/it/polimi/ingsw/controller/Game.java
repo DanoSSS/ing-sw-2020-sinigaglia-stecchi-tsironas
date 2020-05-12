@@ -10,6 +10,7 @@ import java.util.*;
 public class Game extends Observable<Object> implements Observer<Object> {
     private int currentRound = 2;
     private Board board;
+    private List<Player> players= new ArrayList<>();
     private Map<Player,Round> round = new HashMap<Player,Round>();
     private boolean GameOver;
     private int NumberOfPlayers;
@@ -19,10 +20,23 @@ public class Game extends Observable<Object> implements Observer<Object> {
         return isChallengerTurn;
     }
 
-    public Game(Board board,int i){
+    public Game(Board board,int i,Player p1,Player p2){
         this.board=board;
         this.NumberOfPlayers=i;
+        this.players.add(p1);
+        this.players.add(p2);
     }
+
+
+    public Game(Board board,int i,Player p1,Player p2,Player p3){
+        this.board=board;
+        this.NumberOfPlayers=i;
+        this.players.add(p1);
+        this.players.add(p2);
+        this.players.add(p3);
+    }
+
+
 
     public boolean isGameOver() { return GameOver; }
 
@@ -199,25 +213,40 @@ public class Game extends Observable<Object> implements Observer<Object> {
     @Override
     public void update(Object message) {
         Action a=((Message) message).getAction(); //0
-        int flag=0,id=1; //0
+        int flag=0,id=1,player=1; //0
 
         switch (a){
             case INITWORKERS:
                 //imposta a board le posizioni degli worker
-                Iterator<Coordinates> it = ((Message) message).getInitWorkerList().iterator();
-                Map<Player,Coordinates> workerPosition = new HashMap<>();
-                while (it.hasNext()){
-                    flag++;
-                    id++;
+                //Iterator it = (((Message)message).getInitWorkerList()).iterator();
+                Map<Coordinates,Player> workerPosition = new HashMap<>();/*
+                while (it.hasNext() && ((NumberOfPlayers==3 && flag<=6) || (NumberOfPlayers==2 && flag<=4))  ){
+                    Coordinates c = (Coordinates)it.next();
+                             //1,2,3,4,5,6
+                    id++;    //2,3,4,5,0,1
                     if(NumberOfPlayers==3){
-                        if(flag==4){id=0;}      //when list of coordinates is at 4th position -> idworker0 -> player1
-                    }else{
-                        if(flag==2) {id=0;}     //when list of coordinates is at 2th position -> idworker0 -> player1
-                    }
-                    workerPosition.put(board.getWorkerById(id).getPlayer(),it.next());
-                    board.setWorker(it.next(),board.getWorkerById(id));
+                        if(flag==3){id=0;player++;}      //when list of coordinates is at 4th position -> idworker0 -> player1
+                    }else if(NumberOfPlayers==2){
+                        if(flag==3) {id=0;player--;}     //when list of coordinates is at 2th position -> idworker0 -> player1
+                    }else if(flag==5){player=0;}
+                    workerPosition.put(c,players.get(player));
+                    board.setWorker(c,id);
+                    flag++;
+                }*/
+                for (Iterator<Coordinates> it = (((Message)message).getInitWorkerList()).iterator(); it.hasNext();) {
+                    Coordinates c = (Coordinates)it.next();
+                             //0,1,2,3,4,5
+                    id++;    //2,3,4,5,0,1
+                    if(NumberOfPlayers==3){
+                        if(flag==2){id=0;player++;}      //when list of coordinates is at 4th position -> idworker0 -> player1
+                    }else if(NumberOfPlayers==2){
+                        if(flag==2) {id=0;player--;}     //when list of coordinates is at 2th position -> idworker0 -> player1
+                    }else if(flag==5){player=0;}
+                    workerPosition.put(c,players.get(player));
+                    board.setWorker(c,id);
+                    flag++;
                 }
-                board.getObservableModel().notify(new ReturnMessage(5,workerPosition));
+                board.getObservableModel().notify(new ReturnMessage(4,workerPosition));
                 board.initRound(currentRound);
 
             case INITEXECUTEROUND:

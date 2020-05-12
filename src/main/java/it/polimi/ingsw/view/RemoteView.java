@@ -30,8 +30,6 @@ public class RemoteView extends View{
         }
     }
 
-
-
     public RemoteView(Player player, ClientConnection c, int i) {
         super(player);
         this.clientConnection = c;

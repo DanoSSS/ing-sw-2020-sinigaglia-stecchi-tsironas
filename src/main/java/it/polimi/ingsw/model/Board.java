@@ -4,13 +4,14 @@ import it.polimi.ingsw.utils.ReturnMessage;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Board{
     private int NumberOfPlayers;
     private static final int HEIGHT = 5;
     private static final int WIDTH = 5;
     private Cell [][] board;
-    private Worker[] workers = new Worker[6];
+    private Worker[] workers = new Worker[5];
     //private Worker worker1,worker2,worker3,worker4,worker5,worker6;
     private int nround=0;
     private ObservableModel observableModel;
@@ -124,9 +125,9 @@ public class Board{
        // observableModel.Notify();    commento da togliere fatto solo per i test
     }
 
-    public void setWorker(Coordinates coordinates,Worker worker){
-        worker.setCell(coordinates.getX(),coordinates.getY());
-        board[coordinates.getX()][coordinates.getY()].setWorker(worker);
+    public void setWorker(Coordinates coordinates,int id){
+        workers[id].setCell(coordinates.getX(),coordinates.getY());
+        board[coordinates.getX()][coordinates.getY()].setWorker(workers[id]);
         board[coordinates.getX()][coordinates.getY()].setOccupied(true);
     }
 
