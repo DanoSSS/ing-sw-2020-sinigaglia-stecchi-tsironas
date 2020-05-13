@@ -14,7 +14,6 @@ public class RoundPrometheus extends Round {
         super(board, player);
     }
 
-    @Override
     public boolean ExecuteRound(boolean Gameover) {
         boolean gamestatus,buildBefore;
         int i;
@@ -76,14 +75,11 @@ public class RoundPrometheus extends Round {
 
     }
 
-
-
     public boolean askIfWantBuildBefore(){
         boolean buildBefore=true;
         //chiede se vuole costruire prima di muovere sapendo di non poter salire
         return buildBefore;
     }
-
 
     public ArrayList<Coordinates> canMoveAfterBuild(Worker worker,boolean buildBefore) {
         Coordinates coordinates, newCoordinates;

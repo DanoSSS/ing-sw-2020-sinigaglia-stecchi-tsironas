@@ -14,7 +14,7 @@ public class RoundArtemis extends Round {
         super(board, player);
     }
 
-    @Override
+
     public boolean ExecuteRound(boolean Gameover) {
         boolean gamestatus,moveSecond;
         int i;
@@ -73,8 +73,6 @@ public class RoundArtemis extends Round {
         //chiedere se si vuole muovere una seconda volta ma non nella posizione iniziale
         return moveSecond;
     }
-
-
 
     public ArrayList<Coordinates> canMoveSecond(Worker worker,Coordinates oldCoordinates) {
         Coordinates coordinates, newCoordinates;

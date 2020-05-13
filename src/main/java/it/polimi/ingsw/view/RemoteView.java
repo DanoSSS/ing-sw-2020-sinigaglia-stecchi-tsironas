@@ -27,7 +27,6 @@ public class RemoteView extends View{
         @Override
         public void update(Object m) {
             System.out.println("Received");      //debug here!!!
-            handleMessage(m);
         }
     }
 
@@ -47,8 +46,7 @@ public class RemoteView extends View{
             case CURRENTPLAYERNUMBER:
                 int currentplayer = ((ReturnMessage)message).getnCurrentPlayer();
                 if(this.numberRW == currentplayer){
-                    handleMessage(new Message(3,this.getPlayer()));
-                    clientConnection.asyncSend("It's your turn!");  //da mettere nella askActiveWorker
+                    clientConnection.asyncSend("It's your turn!\nSelect your active worker:(x,y)");  //da mettere nella askActiveWorker
                 }else{
                     clientConnection.asyncSend("Wait your turn!");
                 }

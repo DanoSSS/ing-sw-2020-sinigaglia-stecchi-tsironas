@@ -246,11 +246,9 @@ public class Game extends Observable<Object> implements Observer<Object> {
                     board.setWorker(c,id);
                     flag++;
                 }
-                board.getObservableModel().notify(new ReturnMessage(4,workerPosition));
+                board.getObservableModel().notify(new ReturnMessage(3,workerPosition));
                 board.initRound(currentRound);
 
-            case INITEXECUTEROUND:
-                SelectRound(((Message) message).getPlayer());
         }
     }
 

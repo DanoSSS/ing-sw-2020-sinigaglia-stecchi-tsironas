@@ -13,7 +13,7 @@ public class RoundDemeter extends Round {
         super(board, player);
     }
 
-    @Override
+
     public boolean ExecuteRound(boolean Gameover) {
         boolean gamestatus,secondBuild;
         int i;
@@ -61,10 +61,6 @@ public class RoundDemeter extends Round {
     public void update(Object message) {
 
     }
-
-
-
-
 
     public boolean askIfBuildSecond(){
         boolean buildSecond=true;

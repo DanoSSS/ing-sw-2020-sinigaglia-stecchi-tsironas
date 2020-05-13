@@ -12,6 +12,7 @@ public class ReturnMessage {
     private Action action;
     private int nCurrentPlayer;
     private Map<Worker, Coordinates> workerPosition = new HashMap<>();
+    private String sentence;
 
     public ReturnMessage(int nAction,int nCurrentPlayer){
         this.action = Action.values()[nAction];
@@ -21,6 +22,11 @@ public class ReturnMessage {
     public ReturnMessage(int nAction,Map workerPosition){
         this.action = Action.values()[nAction];
         this.workerPosition = workerPosition;
+    }
+
+    public ReturnMessage(int nAction,String sentence){
+        this.action = Action.values()[nAction];
+        this.sentence = sentence;
     }
 
     public Map<Worker, Coordinates> getWorkerPosition() {
@@ -33,5 +39,9 @@ public class ReturnMessage {
 
     public Action getAction() {
         return action;
+    }
+
+    public String getSentence() {
+        return sentence;
     }
 }

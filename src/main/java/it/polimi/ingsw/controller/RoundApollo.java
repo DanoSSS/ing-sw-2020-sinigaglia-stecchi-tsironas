@@ -11,8 +11,6 @@ public class RoundApollo extends Round {
         super(board, player);
     }
 
-
-
     public ArrayList<Coordinates> canMove(Worker worker) {
         Coordinates coordinates, newCoordinates;
         int x, y;
@@ -48,7 +46,6 @@ public class RoundApollo extends Round {
     }
 
 
-
     public boolean doMove(Coordinates moveCoordinates,boolean GameOver,Worker activeWorker) {
         Coordinates oldCoordinates;
         int x=activeWorker.getCoordinates().getX();
@@ -70,10 +67,8 @@ public class RoundApollo extends Round {
         return GameOver;
     }
 
-
     @Override
     public void update(Object message) {
-
     }
 }
 

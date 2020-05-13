@@ -17,8 +17,6 @@ public class RoundPan extends Round {
 
     }
 
-
-
     public boolean doMove(Coordinates moveCoordinates,boolean GameOver,Worker activeWorker){
         Coordinates oldCoordinates;
         int x=activeWorker.getCoordinates().getX();

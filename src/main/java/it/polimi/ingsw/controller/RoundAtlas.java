@@ -14,7 +14,7 @@ public class RoundAtlas extends Round {
         super(board, player);
     }
 
-    @Override
+
     public boolean ExecuteRound(boolean Gameover) {
         boolean gamestatus,domePower;
         int i;
@@ -54,8 +54,6 @@ public class RoundAtlas extends Round {
     public void update(Object message) {
 
     }
-
-
 
     public boolean askDomeOrNot(){
         boolean dome=true;

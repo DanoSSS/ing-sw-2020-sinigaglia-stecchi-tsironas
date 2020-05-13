@@ -10,7 +10,7 @@ public class RoundAthena extends Round {
         super(board, player);
     }
 
-    @Override
+
     public boolean ExecuteRound(boolean Gameover) {
         boolean gamestatus;
         int i;
@@ -44,8 +44,6 @@ public class RoundAthena extends Round {
     public void update(Object message) {
 
     }
-
-
 
 
     public ArrayList<Coordinates> canMove(Worker worker) {

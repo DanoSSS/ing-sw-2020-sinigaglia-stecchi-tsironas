@@ -13,7 +13,7 @@ public class RoundEphaestus extends Round {
         super(board, player);
     }
 
-    @Override
+
     public boolean ExecuteRound(boolean Gameover) {
         boolean gamestatus,buildSecondSameSpace;
         int i;
@@ -58,8 +58,6 @@ public class RoundEphaestus extends Round {
     public void update(Object message) {
 
     }
-
-
 
     public boolean askIfBUildSecond(){
         boolean buildSecond=true;

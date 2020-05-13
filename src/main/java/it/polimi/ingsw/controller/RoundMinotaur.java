@@ -19,9 +19,6 @@ public class RoundMinotaur extends Round {
 
     }
 
-
-
-
     public ArrayList<Coordinates> canMove(Worker worker) {
         Coordinates coordinates, newCoordinates;
         int x, y;
