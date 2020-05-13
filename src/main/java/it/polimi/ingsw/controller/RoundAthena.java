@@ -45,17 +45,7 @@ public class RoundAthena extends Round {
 
     }
 
-    public Worker askActiveWorker() {
-        Worker worker=null;
-        //chiede alla view di selezionare un worker
-        return worker;
-    }
 
-    public Worker askOtherWorker() {
-        Worker worker=null;
-        //chiede alla view di selezionare l'altro worker
-        return worker;
-    }
 
 
     public ArrayList<Coordinates> canMove(Worker worker) {
@@ -78,12 +68,6 @@ public class RoundAthena extends Round {
         return possiblesMovesCoordinates;
     }
 
-    public Coordinates askCoordinatesToMove(ArrayList<Coordinates> possibleCoordinates){
-        Coordinates coordinates=null;
-        //dare alla view arraylist e chiedere al player dove vuole andare se non si può passare da controller si fa
-        //un currentlypossiblemove in board
-        return coordinates;
-    }
 
     public boolean doMove(Coordinates moveCoordinates,boolean GameOver,Worker activeWorker) {
         int count;
@@ -109,38 +93,6 @@ public class RoundAthena extends Round {
         return GameOver;
     }
 
-    public ArrayList<Coordinates> canBuild(Worker worker) {
-        Coordinates coordinates, newCoordinates;
-        int x, y;
-        ArrayList<Coordinates> possiblesBuildsCoordinates = new ArrayList<Coordinates>();
-        coordinates = worker.getCoordinates();
-        x = coordinates.getX();
-        y = coordinates.getY();
-        for (int i = x - 1; i <= x + 1; i++) {
-            for (int j = y - 1; j <= y + 1; j++) {
-                if (i >= 0 && i <= 4 && j >= 0 && j <= 4) {
-                    newCoordinates = new Coordinates(i, j);
-                    if (!board.isOccupied(newCoordinates) && !board.isDome(newCoordinates)) {
-                        possiblesBuildsCoordinates.add(newCoordinates);
-                    }
-                }
-            }
-        }
-        return possiblesBuildsCoordinates;
-    }
 
-    public Coordinates askCoordinatesToBuild(ArrayList<Coordinates> possibleCoordinates){
-        Coordinates coordinates=null;
-        //dare alla view arraylist e chiedere al player dove vuole costruire se non si può passare da controller si fa
-        //un currentlypossiblebuild in board
-        return coordinates;
-    }
-
-    public void doBuild(Coordinates buildCoordinate){
-        board.setLevel(buildCoordinate);
-        if(board.getLevel(buildCoordinate)==4) {
-            board.setDome(buildCoordinate);
-        }
-    }
 
 }
