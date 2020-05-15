@@ -150,7 +150,7 @@ public class SocketClientConnection extends Observable<Object> implements Client
                 send(new ReturnMessage(4,"wait other player set their workers"));
                 server.putInWaitP1();
                 askForCoordinates();
-                send(new ReturnMessage(4,"OK, now let's start!"));
+                send(new ReturnMessage(4,"OK!"));
                 notify(new Message(0, server.getWorkerPositions()));
             } else if (playerNumber == 2) {
                 if (NPlayers == 3) {
@@ -175,8 +175,8 @@ public class SocketClientConnection extends Observable<Object> implements Client
                 server.removeFromWaitP1();
             }
 
-
-            /*creare notify finta per inizializzare il model e far si che i client ricevano le
+            /*send(new ReturnMessage(4,"OK, now let's start!"));
+            creare notify finta per inizializzare il model e far si che i client ricevano le
             * update adeguate tramite la action usata solo per reset: CurrentPlayerNumber*/
             if(playerNumber==2){
                 server.putInWaitP2();

@@ -2,28 +2,26 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.utils.ReturnMessage;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
-
 public class Board{
     private int NumberOfPlayers;
     private static final int HEIGHT = 5;
     private static final int WIDTH = 5;
     private Cell [][] board;
     private Worker[] workers = new Worker[6];
+    private Player[] players;
     //private Worker worker1,worker2,worker3,worker4,worker5,worker6;
     private int nround=0;
     private ObservableModel observableModel;
 
-    public Board(Worker worker1, Worker worker2, Worker worker3, Worker worker4, int NPlayer) {
-
+    public Board(Object[] players, Worker worker1, Worker worker2, Worker worker3, Worker worker4, int NPlayer) {
+        this.players =(Player[])players;
         board = new Cell[HEIGHT][WIDTH];                        //i==row && j==col
         for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < HEIGHT; j++) {
                 board[i][j] = new Cell(i,j);
             }
         }
+
         this.workers[0] = worker1;
         this.workers[1] = worker2;
         this.workers[2] = worker3;
@@ -37,8 +35,8 @@ public class Board{
         this.observableModel= new ObservableModel(board);
     }
 
-    public Board(Worker worker1, Worker worker2, Worker worker3, Worker worker4, Worker worker5, Worker worker6, int NPlayer) {
-
+    public Board(Object[] players , Worker worker1, Worker worker2, Worker worker3, Worker worker4, Worker worker5, Worker worker6, int NPlayer) {
+        this.players =(Player[])players;
         board = new Cell[HEIGHT][WIDTH];                        //i==row && j==col
         for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < HEIGHT; j++) {
@@ -138,4 +136,25 @@ public class Board{
     public ObservableModel getObservableModel(){
         return observableModel;
     }
+
+    public String[] getPlayerNicknames() {
+        String players[] = NumberOfPlayers==2 ? new String[2] : new String[3];
+        for (int i=0;i<this.players.length;i++){
+            players[i]=this.players[i].getNickname();
+        }
+        return players;
+    }
+
+    public Integer[] getIdPlayers(){
+        Integer idPlayers[] = NumberOfPlayers==2 ? new Integer[2] : new Integer[3];
+        for (int i=0;i<this.players.length;i++){
+            idPlayers[i]=this.players[i].getIdPlayer();
+        }
+        return idPlayers;
+    }
+
+
+
+
 }
+

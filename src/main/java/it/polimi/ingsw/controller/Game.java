@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
@@ -217,38 +218,43 @@ public class Game extends Observable<Object> implements Observer<Object> {
         switch (a){
             case INITWORKERS:
                 //imposta a board le posizioni degli worker
-                //Iterator it = (((Message)message).getInitWorkerList()).iterator();
-                Map<Worker,Coordinates> workerPosition = new HashMap<>();/*
-                while (it.hasNext() && ((NumberOfPlayers==3 && flag<=6) || (NumberOfPlayers==2 && flag<=4))  ){
-                    Coordinates c = (Coordinates)it.next();
-                             //1,2,3,4,5,6
-                    id++;    //2,3,4,5,0,1
-                    if(NumberOfPlayers==3){
-                        if(flag==3){id=0;player++;}      //when list of coordinates is at 4th position -> idworker0 -> player1
-                    }else if(NumberOfPlayers==2){
-                        if(flag==3) {id=0;player--;}     //when list of coordinates is at 2th position -> idworker0 -> player1
-                    }else if(flag==5){player=0;}
-                    workerPosition.put(c,players.get(player));
-                    board.setWorker(c,id);
-                    flag++;
-                }*/
-                for (Iterator<Coordinates> it = (((Message)message).getInitWorkerList()).iterator(); it.hasNext();) {
-                    Coordinates c = (Coordinates)it.next();
-                             //0,1,2,3,4,5
-                    id++;    //2,3,4,5,0,1
-                    if(NumberOfPlayers==3){
-                        if(flag==2){player++;}      //when list of coordinates is at 4th position -> idworker0 -> player1
-                        else if(flag==4){player=0;id=0;}
-                    }else if(NumberOfPlayers==2){
-                        if(flag==2) {id=0;player--;}     //when list of coordinates is at 2th position -> idworker0 -> player1
+                Map<Worker,Coordinates> workerPosition = new HashMap<>();
+                int messageFromPlayerNumber = ((Message)message).getPlayerValue();  //who sent the message ID
+                if(messageFromPlayerNumber==1) {
+                    for (Coordinates c : ((Message) message).getInitWorkerList()) {
+                        //0,1,2,3,4,5
+                        id++;    //2,3,4,5,0,1
+                        if (NumberOfPlayers == 3) {
+                            if (flag == 2) {
+                                player++;
+                            }      //when list of coordinates is at 4th position -> idworker0 -> player1
+                            else if (flag == 4) {
+                                player = 0;
+                                id = 0;
+                            }
+                        } else if (NumberOfPlayers == 2) {
+                            if (flag == 2) {
+                                id = 0;
+                                player--;
+                            }     //when list of coordinates is at 2th position -> idworker0 -> player1
+                        }
+                        workerPosition.put(board.getWorkerById(id), c);
+                        board.setWorker(c, id);
+                        flag++;
                     }
-                    workerPosition.put(board.getWorkerById(id),c);
-                    board.setWorker(c,id);
-                    flag++;
-                }
-                board.getObservableModel().notify(new ReturnMessage(3,workerPosition));
-                //board.initRound(currentRound);
+                    String[] players = board.getPlayerNicknames();
+                    Integer[] idPlayers = board.getIdPlayers();
+                    int firstToStartID = idPlayers[messageFromPlayerNumber+1];
+                    //int idPlayer1= idPlayers[messageFromPlayerNumber];
+                    //String nicknameP1=players[messageFromPlayerNumber];
+                    board.getObservableModel().notify(new ReturnMessage(3, workerPosition,players,idPlayers,NumberOfPlayers,firstToStartID));
+                    //board.initRound(currentRound);
+                } else {
+                    int[] whoToSend = new int [1];
+                    whoToSend[0] = messageFromPlayerNumber; //set the number to response that it isn't his turn
+                    board.getObservableModel().notify(new ReturnMessage(4, whoToSend,"Wait the server is working on your game!"));
 
+                }
         }
     }
 

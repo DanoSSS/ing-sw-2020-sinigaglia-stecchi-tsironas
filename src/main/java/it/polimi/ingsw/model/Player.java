@@ -6,16 +6,17 @@ import it.polimi.ingsw.utils.Color;
 public class Player {
     private String nickname;
     private String color;
-    private int id;
-    private boolean IsChallenger;
+    private int idPlayer;
+    private boolean IsChallenger=false;
     private Worker worker1;
     private Worker worker2;
     private God god;
     private Worker activeworker;
 
-    public Player(String name, String color, int id1, int id2, God god){
+    public Player(String name, String color, int id1, int id2, God god,int id){
         this.nickname=name;
         this.color=color;
+        this.idPlayer=id;
         this.worker1 = new Worker(this,color,id1);
         this.worker2 = new Worker(this,color,id2);
         if(this.worker1.getIdWorker()==1){
@@ -58,7 +59,10 @@ public class Player {
     public boolean isChallenger() {
         return IsChallenger;
     }
-    public int getId() {
-        return id;
+
+    public int getIdPlayer() {
+        return idPlayer;
     }
+
+
 }

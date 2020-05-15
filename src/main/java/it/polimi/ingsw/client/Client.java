@@ -16,6 +16,7 @@ public class Client {
     private String ip;
     private int port;
     private Action a=Action.STRING;
+    private ClientController clientController;
 
     public void setA(Action a) {
         this.a = a;
@@ -52,10 +53,20 @@ public class Client {
                     while (isActive()) {
                         ReturnMessage inputObject =(ReturnMessage) socketIn.readObject();
                         Action a = inputObject.getAction();
-                        switch (a){
-                            case STRING:
+                        if (a==Action.STRING) {
                             System.out.println(inputObject.getSentence());
+                        }else if(a==Action.CURRENTPLAYERNUMBER){}
+                        else if (a==Action.SELECTACTIVEWORKER){}
+                        else if (a==Action.INITWORKERS){}
+                        else if(a==Action.WORKERSET){
+                            clientController = inputObject.getClientController().clone();
+                            for (int i=0;i<inputObject.getNicknames().length;i++){
+                                System.out.println(inputObject.getNicknames()[i]); //get the String[] with the output
+                            }
+                        }else {
+
                         }
+
                     }
                 } catch (Exception e){
                     setActive(false);

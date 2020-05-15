@@ -4,13 +4,14 @@ import org.junit.jupiter.api.Test;
 
 
 public class TestBoard {
-    Player player1 = new Player("pippo", "RED", 1,2, God.APOLLO);
+    Player player1 = new Player("pippo", "RED", 1,2, God.APOLLO,1);
     Worker worker1 = new Worker(player1,"RED",1);
     Worker worker2 = new Worker(player1,"RED",2);
-    Player player2 = new Player("pluto", "BLUE", 3,4, God.APOLLO);
+    Player player2 = new Player("pluto", "BLUE", 3,4, God.APOLLO,2);
     Worker worker3 = new Worker(player2,"BLUE",3);
     Worker worker4 = new Worker(player2,"BLUE",4);
-    Board board = new Board(worker1,worker2,worker3,worker4,2);
+    Player players[] = {player1,player2};
+    Board board = new Board(players,worker1,worker2,worker3,worker4,2);
 
 
 

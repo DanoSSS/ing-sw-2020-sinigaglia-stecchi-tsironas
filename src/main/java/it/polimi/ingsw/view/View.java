@@ -19,10 +19,12 @@ public abstract class View extends Observable<Object> implements Observer<Object
     }
 
     protected void handleMessage(Object m,int idPlayer){  //getplayerbyid
-        Message request = (Message)m;
         Action a =((Message) m).getAction();
         int actionValue;
         switch (a){
+            case INITWORKERS:
+                ((Message) m).setPlayerValue(idPlayer);
+                notify(m);
             case CURRENTPLAYERNUMBER:
                 actionValue = a.getValue();
                 notify(new Message(actionValue,idPlayer));

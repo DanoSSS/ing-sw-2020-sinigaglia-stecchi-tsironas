@@ -38,4 +38,7 @@ public class Message implements Serializable {
     public int getPlayerValue() {
         return playerValue;
     }
+    public void setPlayerValue(int idPlayer){
+        this.playerValue=idPlayer;
+    }
 }

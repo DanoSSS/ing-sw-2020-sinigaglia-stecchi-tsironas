@@ -20,13 +20,13 @@ public class Server {
     private Map<String, ClientConnection> waitingConnection = new HashMap<>();
     private Map<ClientConnection, ClientConnection> playingConnection = new HashMap<>();
     private Map<String, God> playerGodAssociation = new HashMap<>();
-    //private enum color {BLUE,GREEN,RED};
+    private int idGenerate=0;
     int nPlayers=0;
     private int nPlayersConnected = 0;
     private ArrayList<String> nicknames = new ArrayList<String>();
     private ArrayList<God> gods = new ArrayList<God>();
     private ArrayList<Coordinates> workerPositions = new ArrayList<Coordinates>();
-    boolean boolP1 = false, boolP2 = false, boolP3 = false, bool = false,FLAG=false;
+    boolean boolP1 = false, boolP2 = false, boolP3 = false, bool = false;
 
 
 
@@ -34,12 +34,6 @@ public class Server {
         this.serverSocket = new ServerSocket(PORT);
     }
 
-    public boolean getFlag(){
-        return FLAG;
-    }
-    public void setFLAG(boolean b){
-        this.FLAG=b;
-    }
 
     public synchronized void deregisterConnection(ClientConnection c) {
         ClientConnection opponent = playingConnection.get(c);
@@ -48,12 +42,7 @@ public class Server {
         }
         playingConnection.remove(c);
         playingConnection.remove(opponent);
-        Iterator<String> iterator = waitingConnection.keySet().iterator();
-        while(iterator.hasNext()){
-            if(waitingConnection.get(iterator.next())==c){
-                iterator.remove();
-            }
-        }
+        waitingConnection.keySet().removeIf(s -> waitingConnection.get(s) == c);
     }
 
     public synchronized void lobby(ClientConnection c, String name, God god) {
@@ -64,7 +53,7 @@ public class Server {
             List<String> keys = new ArrayList<>(waitingConnection.keySet());
 
             startGameAndObservers2(keys);
-            setFLAG(true);
+
             playingConnection.put(waitingConnection.get(keys.get(0)), waitingConnection.get(keys.get(1)));  //(c1,c2)
             playingConnection.put(waitingConnection.get(keys.get(1)), waitingConnection.get(keys.get(0)));  //(c2,c1)
             System.out.println("fine if 2");
@@ -76,7 +65,7 @@ public class Server {
             List<String> keys = new ArrayList<>(waitingConnection.keySet());
 
             startGameAndObservers3(keys);
-            setFLAG(true);
+
             playingConnection.put(waitingConnection.get(keys.get(0)), waitingConnection.get(keys.get(1)));  //(c1,c2)
             playingConnection.put(waitingConnection.get(keys.get(1)), waitingConnection.get(keys.get(0)));  //(c2,c1)
             playingConnection.put(waitingConnection.get(keys.get(2)), waitingConnection.get(keys.get(0)));  //(c3,c1)
@@ -90,16 +79,19 @@ public class Server {
     }
 
     public void startGameAndObservers2(List<String> keys){
-        int idWorker[]= {0,1,2,3};
+        int[] idWorker = {0,1,2,3};
+        List<Player> players=new ArrayList<>();
         ClientConnection c1 = waitingConnection.get(keys.get(0));
         ClientConnection c2 = waitingConnection.get(keys.get(1));
         //God god1 = playerGodAssociation.get(keys.get(0));
         //God god2 = playerGodAssociation.get(keys.get(1));
-        Player player1 = new Player(keys.get(0), "RED", idWorker[0], idWorker[1], playerGodAssociation.get(keys.get(0)));
-        Player player2 = new Player(keys.get(1), "GREEN", idWorker[2], idWorker[3], playerGodAssociation.get(keys.get(1)));
-        View player1View = new RemoteView(player1, c1, 1);
-        View player2View = new RemoteView(player2, c2, 2);
-        Board board = new Board(player1.getWorker1(), player1.getWorker2(), player2.getWorker1(), player2.getWorker2(), nPlayers);
+        Player player1 = new Player(keys.get(0), "RED", idWorker[0], idWorker[1], playerGodAssociation.get(keys.get(0)),generateIdPlayer());
+        Player player2 = new Player(keys.get(1), "GREEN", idWorker[2], idWorker[3], playerGodAssociation.get(keys.get(1)),generateIdPlayer());
+        players.add(player1);
+        players.add(player2);
+        View player1View = new RemoteView(player1, c1, player1.getIdPlayer());
+        View player2View = new RemoteView(player2, c2, player2.getIdPlayer());
+        Board board = new Board(players.toArray() , player1.getWorker1(), player1.getWorker2(), player2.getWorker1(), player2.getWorker2(), nPlayers);
         board.setObservableModel(board);
         Game game = new Game(board,2,player1,player2);
         game.RoundCreationP1(player1);
@@ -115,20 +107,24 @@ public class Server {
     }
 
     public void startGameAndObservers3(List<String> keys){
-        int idWorker[]= {0,1,2,3,4,5};
+        int[] idWorker = {0,1,2,3,4,5};
+        List<Player> players=new ArrayList<>();
         ClientConnection c1 = waitingConnection.get(keys.get(0));
         ClientConnection c2 = waitingConnection.get(keys.get(1));
         ClientConnection c3 = waitingConnection.get(keys.get(2));
         God god1 = playerGodAssociation.get(keys.get(0));
         God god2 = playerGodAssociation.get(keys.get(1));
         God god3 = playerGodAssociation.get(keys.get(2));
-        Player player1 = new Player(keys.get(0), "RED",idWorker[0], idWorker[1], god1);
-        Player player2 = new Player(keys.get(1), "GREEN", idWorker[2], idWorker[3], god2);
-        Player player3 = new Player(keys.get(2), "BLUE", idWorker[4], idWorker[5], god3);
-        View player1View = new RemoteView(player1, c1, 1);
-        View player2View = new RemoteView(player2, c2, 2);
-        View player3View = new RemoteView(player3, c3, 3);
-        Board board = new Board(player1.getWorker1(), player1.getWorker2(), player2.getWorker1(), player2.getWorker2(), player3.getWorker1(), player3.getWorker2(), nPlayers);
+        Player player1 = new Player(keys.get(0), "RED",idWorker[0], idWorker[1], god1,generateIdPlayer());
+        Player player2 = new Player(keys.get(1), "GREEN", idWorker[2], idWorker[3], god2,generateIdPlayer());
+        Player player3 = new Player(keys.get(2), "BLUE", idWorker[4], idWorker[5], god3,generateIdPlayer());
+        players.add(player1);
+        players.add(player2);
+        players.add(player3);
+        View player1View = new RemoteView(player1, c1, player1.getIdPlayer());
+        View player2View = new RemoteView(player2, c2, player2.getIdPlayer());
+        View player3View = new RemoteView(player3, c3, player3.getIdPlayer());
+        Board board = new Board(players.toArray(),player1.getWorker1(), player1.getWorker2(), player2.getWorker1(), player2.getWorker2(), player3.getWorker1(), player3.getWorker2(), nPlayers);
         board.setObservableModel(board);
         Game game = new Game(board,3,player1,player2,player3);
         game.RoundCreationP1(player1);
@@ -152,7 +148,9 @@ public class Server {
         while(!boolP1){
             try{
                 wait();
-            }catch (InterruptedException e){}
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }
         }
         boolP1 = false;
     }
@@ -161,7 +159,9 @@ public class Server {
         while(!bool){
             try{
                 wait();
-            }catch (InterruptedException e){}
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }
         }
         bool = false;
     }
@@ -170,7 +170,9 @@ public class Server {
         while(!boolP2){
             try{
                 wait();
-            }catch (InterruptedException e){}
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }
         }
         boolP2 = false;
     }
@@ -179,7 +181,9 @@ public class Server {
         while(!boolP3 ){
             try{
                 wait();
-            }catch (InterruptedException e){}
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }
         }
         boolP3 = false;
     }
@@ -188,13 +192,15 @@ public class Server {
         while(gods.size()!=1){
             try{
                 wait();
-            }catch (InterruptedException e){}
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }
         }
     }
 
     public synchronized void removeFromWaitStart (){
-        bool = true;
-        notifyAll();
+            bool = true;
+            notifyAll();
     }
 
     public synchronized void removeFromWaitP1 (){
@@ -325,6 +331,10 @@ public class Server {
     }
     public static int getStartPlayer() {
         return startPlayer;
+    }
+
+    public int generateIdPlayer(){
+        return idGenerate++;
     }
 
 }
