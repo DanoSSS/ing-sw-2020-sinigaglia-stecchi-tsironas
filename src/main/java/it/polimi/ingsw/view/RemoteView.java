@@ -60,6 +60,7 @@ public class RemoteView extends View{
                 if(playerToSend[0]==getPlayer().getIdPlayer()){   //if the player is that one who received the ErrorMessage
                     clientConnection.asyncSend(new ReturnMessage(4,((ReturnMessage)message).getSentence()));
                 }
+                break;
             /*case CURRENTPLAYERNUMBER:
                 int currentplayer = ((ReturnMessage)message).getnCurrentPlayer();
                 if(this.numberRW == currentplayer){
@@ -84,6 +85,7 @@ public class RemoteView extends View{
                     messageSettingWorkersPositions[i]= workers.get(i).getIdWorker() + " set in cell " + m.get(workers.get(i)).getX() + "," + m.get(workers.get(i)).getY();
                 }
                 clientConnection.asyncSend(new ReturnMessage(3,messageSettingWorkersPositions,clientController));
+                break;
         }
     }
 }

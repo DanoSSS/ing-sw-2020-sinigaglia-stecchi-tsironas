@@ -181,7 +181,7 @@ public class SocketClientConnection extends Observable<Object> implements Client
             if(playerNumber==2){
                 server.putInWaitP2();
                 server.removeFromWaitP3();//who first come, wake up the others
-                notify(new Message(2,playerNumber));  //CURRENTPLAYERNUMBER
+               // notify(new Message(2,playerNumber));  //CURRENTPLAYERNUMBER
                 send(new ReturnMessage(4,"It's your turn\n\t choose a worker :\n"));
             } else if(playerNumber==3){
                 server.putInWaitP3();
@@ -193,9 +193,13 @@ public class SocketClientConnection extends Observable<Object> implements Client
                 send(new ReturnMessage(4,"Wait your turn\n\t"+server.getNicknamesByNumberOfTurns(server.getStartPlayer()))+"'s turn");
             }
             //GAME STARTED
+
             while (isActive()) {
-                read = read();
-                notify(read);
+                if(playerNumber==1){System.out.println("11111");}
+                else if(playerNumber==2){System.out.println("2222");}
+                else if(playerNumber==2){System.out.println("33333");}
+                // read = read();
+               // notify(read);
 
             }
         } catch (IOException | NoSuchElementException | InterruptedException | ClassNotFoundException e) {
@@ -219,7 +223,7 @@ public class SocketClientConnection extends Observable<Object> implements Client
         return read;
     }
 
-    private void askForCoordinates() throws IOException, ClassNotFoundException {
+    private synchronized void askForCoordinates() throws IOException, ClassNotFoundException {
         try {
             send(new ReturnMessage(4,"set your first worker in coordinate: (x,y)"));
 

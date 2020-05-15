@@ -13,8 +13,8 @@ public class Board{
     private int nround=0;
     private ObservableModel observableModel;
 
-    public Board(Object[] players, Worker worker1, Worker worker2, Worker worker3, Worker worker4, int NPlayer) {
-        this.players =(Player[])players;
+    public Board(Player[] players, Worker worker1, Worker worker2, Worker worker3, Worker worker4, int NPlayer) {
+        this.players =players;
         board = new Cell[HEIGHT][WIDTH];                        //i==row && j==col
         for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < HEIGHT; j++) {
@@ -35,8 +35,8 @@ public class Board{
         this.observableModel= new ObservableModel(board);
     }
 
-    public Board(Object[] players , Worker worker1, Worker worker2, Worker worker3, Worker worker4, Worker worker5, Worker worker6, int NPlayer) {
-        this.players =(Player[])players;
+    public Board(Player[] players , Worker worker1, Worker worker2, Worker worker3, Worker worker4, Worker worker5, Worker worker6, int NPlayer) {
+        this.players =players;
         board = new Cell[HEIGHT][WIDTH];                        //i==row && j==col
         for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < HEIGHT; j++) {

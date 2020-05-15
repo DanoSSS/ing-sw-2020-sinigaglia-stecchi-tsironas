@@ -25,9 +25,11 @@ public abstract class View extends Observable<Object> implements Observer<Object
             case INITWORKERS:
                 ((Message) m).setPlayerValue(idPlayer);
                 notify(m);
+                break;
             case CURRENTPLAYERNUMBER:
                 actionValue = a.getValue();
                 notify(new Message(actionValue,idPlayer));
+                break;
 /*creare id dei player nella classe player e un getter,
 * inserirlo nel notify sopra e inizializzare lo stato della board in modo corretto*/
         }

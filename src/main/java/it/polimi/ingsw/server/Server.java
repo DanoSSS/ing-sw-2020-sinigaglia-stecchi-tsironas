@@ -80,18 +80,18 @@ public class Server {
 
     public void startGameAndObservers2(List<String> keys){
         int[] idWorker = {0,1,2,3};
-        List<Player> players=new ArrayList<>();
+        Player[] players = new Player[2];
         ClientConnection c1 = waitingConnection.get(keys.get(0));
         ClientConnection c2 = waitingConnection.get(keys.get(1));
         //God god1 = playerGodAssociation.get(keys.get(0));
         //God god2 = playerGodAssociation.get(keys.get(1));
         Player player1 = new Player(keys.get(0), "RED", idWorker[0], idWorker[1], playerGodAssociation.get(keys.get(0)),generateIdPlayer());
         Player player2 = new Player(keys.get(1), "GREEN", idWorker[2], idWorker[3], playerGodAssociation.get(keys.get(1)),generateIdPlayer());
-        players.add(player1);
-        players.add(player2);
+        players[0] = player1;
+        players[1] = player2;
         View player1View = new RemoteView(player1, c1, player1.getIdPlayer());
         View player2View = new RemoteView(player2, c2, player2.getIdPlayer());
-        Board board = new Board(players.toArray() , player1.getWorker1(), player1.getWorker2(), player2.getWorker1(), player2.getWorker2(), nPlayers);
+        Board board = new Board(players , player1.getWorker1(), player1.getWorker2(), player2.getWorker1(), player2.getWorker2(), nPlayers);
         board.setObservableModel(board);
         Game game = new Game(board,2,player1,player2);
         game.RoundCreationP1(player1);
@@ -108,7 +108,7 @@ public class Server {
 
     public void startGameAndObservers3(List<String> keys){
         int[] idWorker = {0,1,2,3,4,5};
-        List<Player> players=new ArrayList<>();
+        Player[] players = new Player[3];
         ClientConnection c1 = waitingConnection.get(keys.get(0));
         ClientConnection c2 = waitingConnection.get(keys.get(1));
         ClientConnection c3 = waitingConnection.get(keys.get(2));
@@ -118,13 +118,13 @@ public class Server {
         Player player1 = new Player(keys.get(0), "RED",idWorker[0], idWorker[1], god1,generateIdPlayer());
         Player player2 = new Player(keys.get(1), "GREEN", idWorker[2], idWorker[3], god2,generateIdPlayer());
         Player player3 = new Player(keys.get(2), "BLUE", idWorker[4], idWorker[5], god3,generateIdPlayer());
-        players.add(player1);
-        players.add(player2);
-        players.add(player3);
+        players[0]= player1;
+        players[1]= player2;
+        players[2]= player3;
         View player1View = new RemoteView(player1, c1, player1.getIdPlayer());
         View player2View = new RemoteView(player2, c2, player2.getIdPlayer());
         View player3View = new RemoteView(player3, c3, player3.getIdPlayer());
-        Board board = new Board(players.toArray(),player1.getWorker1(), player1.getWorker2(), player2.getWorker1(), player2.getWorker2(), player3.getWorker1(), player3.getWorker2(), nPlayers);
+        Board board = new Board(players,player1.getWorker1(), player1.getWorker2(), player2.getWorker1(), player2.getWorker2(), player3.getWorker1(), player3.getWorker2(), nPlayers);
         board.setObservableModel(board);
         Game game = new Game(board,3,player1,player2,player3);
         game.RoundCreationP1(player1);

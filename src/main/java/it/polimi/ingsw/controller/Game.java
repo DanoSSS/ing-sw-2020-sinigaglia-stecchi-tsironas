@@ -244,7 +244,7 @@ public class Game extends Observable<Object> implements Observer<Object> {
                     }
                     String[] players = board.getPlayerNicknames();
                     Integer[] idPlayers = board.getIdPlayers();
-                    int firstToStartID = idPlayers[messageFromPlayerNumber+1];
+                    int firstToStartID = 2;
                     //int idPlayer1= idPlayers[messageFromPlayerNumber];
                     //String nicknameP1=players[messageFromPlayerNumber];
                     board.getObservableModel().notify(new ReturnMessage(3, workerPosition,players,idPlayers,NumberOfPlayers,firstToStartID));
@@ -255,6 +255,7 @@ public class Game extends Observable<Object> implements Observer<Object> {
                     board.getObservableModel().notify(new ReturnMessage(4, whoToSend,"Wait the server is working on your game!"));
 
                 }
+
         }
     }
 
