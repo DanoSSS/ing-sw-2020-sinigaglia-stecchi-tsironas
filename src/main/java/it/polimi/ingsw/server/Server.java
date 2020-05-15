@@ -14,24 +14,31 @@ import java.util.concurrent.Executors;
 
 public class Server {
     private static final int PORT=12345;
+    private static final int startPlayer = 2;
     private ServerSocket serverSocket;
     private ExecutorService executor = Executors.newFixedThreadPool(128);
     private Map<String, ClientConnection> waitingConnection = new HashMap<>();
     private Map<ClientConnection, ClientConnection> playingConnection = new HashMap<>();
     private Map<String, God> playerGodAssociation = new HashMap<>();
-
-
-
-    private enum color {BLUE,GREEN,RED};
+    //private enum color {BLUE,GREEN,RED};
     int nPlayers=0;
     private int nPlayersConnected = 0;
     private ArrayList<String> nicknames = new ArrayList<String>();
     private ArrayList<God> gods = new ArrayList<God>();
     private ArrayList<Coordinates> workerPositions = new ArrayList<Coordinates>();
-    boolean boolP1 = false, boolP2 = false, boolP3 = false, bool = false;
+    boolean boolP1 = false, boolP2 = false, boolP3 = false, bool = false,FLAG=false;
+
+
 
     public Server() throws IOException {
         this.serverSocket = new ServerSocket(PORT);
+    }
+
+    public boolean getFlag(){
+        return FLAG;
+    }
+    public void setFLAG(boolean b){
+        this.FLAG=b;
     }
 
     public synchronized void deregisterConnection(ClientConnection c) {
@@ -57,7 +64,7 @@ public class Server {
             List<String> keys = new ArrayList<>(waitingConnection.keySet());
 
             startGameAndObservers2(keys);
-
+            setFLAG(true);
             playingConnection.put(waitingConnection.get(keys.get(0)), waitingConnection.get(keys.get(1)));  //(c1,c2)
             playingConnection.put(waitingConnection.get(keys.get(1)), waitingConnection.get(keys.get(0)));  //(c2,c1)
             System.out.println("fine if 2");
@@ -69,7 +76,7 @@ public class Server {
             List<String> keys = new ArrayList<>(waitingConnection.keySet());
 
             startGameAndObservers3(keys);
-
+            setFLAG(true);
             playingConnection.put(waitingConnection.get(keys.get(0)), waitingConnection.get(keys.get(1)));  //(c1,c2)
             playingConnection.put(waitingConnection.get(keys.get(1)), waitingConnection.get(keys.get(0)));  //(c2,c1)
             playingConnection.put(waitingConnection.get(keys.get(2)), waitingConnection.get(keys.get(0)));  //(c3,c1)
@@ -169,7 +176,7 @@ public class Server {
     }
 
     public synchronized void putInWaitP3() throws InterruptedException {
-        while(!boolP3){
+        while(!boolP3 ){
             try{
                 wait();
             }catch (InterruptedException e){}
@@ -310,6 +317,14 @@ public class Server {
                 System.out.println("Connection Error!");
             }
         }
+    }
+
+    public String getNicknamesByNumberOfTurns(int playerNumber) {
+        return nicknames.get(playerNumber-1);
+
+    }
+    public static int getStartPlayer() {
+        return startPlayer;
     }
 
 }

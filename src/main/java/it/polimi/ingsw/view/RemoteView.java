@@ -27,7 +27,8 @@ public class RemoteView extends View{
         @Override
         public void update(Object m) {
             System.out.println("Received");     //debug here!!!
-            handleMessage(m);
+
+            handleMessage(m,player.getId());  //CREARE getId() in Player, inizializzare questo valore id dei players
         }
     }
 
@@ -44,13 +45,13 @@ public class RemoteView extends View{
         Map<Worker,Coordinates> m;
 
         switch (a) {
-            case CURRENTPLAYERNUMBER:
+            /*case CURRENTPLAYERNUMBER:
                 int currentplayer = ((ReturnMessage)message).getnCurrentPlayer();
                 if(this.numberRW == currentplayer){
                     clientConnection.asyncSend(new ReturnMessage(4,"It's your turn!\nSelect your active worker:(x,y)"));  //da mettere nella askActiveWorker
                 }else{
                     clientConnection.asyncSend(new ReturnMessage(4,"Wait your turn!"));
-                }
+                }*/
             case WORKERSET:
                 m=((ReturnMessage)message).getWorkerPosition();
                 List<Worker> workers = new ArrayList<>(m.keySet());

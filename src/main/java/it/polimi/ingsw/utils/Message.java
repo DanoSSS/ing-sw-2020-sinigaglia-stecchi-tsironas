@@ -12,7 +12,7 @@ public class Message implements Serializable {
     private ArrayList<Coordinates> coordinatesInitWorkers;
     private Player player;
     private String sentence;
-
+    private int playerValue;
 
     public Message(int nAction, ArrayList<Coordinates> coordinates){
         this.action = Action.values()[nAction];
@@ -23,6 +23,11 @@ public class Message implements Serializable {
         this.action = Action.values()[nAction];
         this.sentence = sentence;
     }
+    public Message (int nAction, int playerNumber){
+        this.action = Action.values()[nAction];
+        this.playerValue = playerNumber;
+    }
+
 
     public Action getAction(){return action;}
     public ArrayList<Coordinates> getInitWorkerList(){
@@ -30,5 +35,7 @@ public class Message implements Serializable {
     }
     public Player getPlayer(){return player;}
     public String getSentence(){return sentence;}
-
+    public int getPlayerValue() {
+        return playerValue;
+    }
 }

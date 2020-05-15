@@ -25,6 +25,10 @@ public class ReturnMessage implements Serializable {
         this.workerPosition = workerPosition;
     }
 
+    public ReturnMessage(int nAction){
+        this.action = Action.values()[nAction];
+    }
+
     public ReturnMessage(int nAction,String sentence){
         this.action = Action.values()[nAction];
         this.sentence = sentence;

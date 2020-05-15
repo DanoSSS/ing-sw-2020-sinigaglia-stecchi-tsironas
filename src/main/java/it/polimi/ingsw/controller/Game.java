@@ -247,7 +247,7 @@ public class Game extends Observable<Object> implements Observer<Object> {
                     flag++;
                 }
                 board.getObservableModel().notify(new ReturnMessage(3,workerPosition));
-                board.initRound(currentRound);
+                //board.initRound(currentRound);
 
         }
     }

@@ -82,8 +82,8 @@ public class SocketClientConnection extends Observable<Object> implements Client
     @Override
     public void run() {
         String name;
-        String read2 = "";
-        boolean flag1 = false, flag2 = false;
+        int NPlayers = 0;
+
         try {
             send(new ReturnMessage(4,"Welcome!\nWhat is your nickname?"));                   //for all players
             String read = read();
@@ -91,82 +91,107 @@ public class SocketClientConnection extends Observable<Object> implements Client
                 send(new ReturnMessage(4,"Your selected nickname is already in use.\nSelect an other nickname: "));                   //for all players
                 read = read();
             }
-            name = read;
+            name = read.valueOf(read.toCharArray(), 0, read.length());  //copia il nickname in name
             if (playerNumber == 1) {                                   //playerNOne
-
                 send(new ReturnMessage(4,"how many players?\n2 or 3?"));     //setting numberOfPlayers
-                String read0 = read();
-                server.setNPlayers(Integer.parseInt(read0));
+                read = read();
+                NPlayers = Integer.parseInt(read);
+                server.setNPlayers(NPlayers);
 
                 send(new ReturnMessage(4,"select " + server.getNPlayers() + " gods between:\nAPOLLO, ARTEMIS, ATHENA, ATLAS, DEMETER, EPHAESTUS, MINOTAUR, PAN, PROMETHEUS"));   //Setting god cards
-                String read1 = read();
-                while (!server.setGods1(read1)) {
+                read = read();
+                while (!server.setGods1(read)) {
                     server.clearGods();
                     send(new ReturnMessage(4,"gods Cards doesn't exist or they has been misspelled:\nselect " + server.getNPlayers() + " gods between:\nAPOLLO, ARTEMIS, ATHENA, ATLAS, DEMETER, EPHAESTUS, MINOTAUR, PAN, PROMETHEUS"));
-                    read1 = read();
+                    read = read();
                 }
 
                 server.removeFromWaitP2();      //Remove P2 from wait
+                send(new ReturnMessage(4,"\nwait your turn...."));
                 server.putInWaitChallenger();  //Wait for P2,P3
+                read=server.getGods(0);
+                send(new ReturnMessage(4,"your god is: " + read));
+                //read = server.getGods(0);
+                send(new ReturnMessage(4, "\nGameBoard settled! Now P2 Choose his workers :\n"));
+                server.removeFromWaitStart(); //LIBERA P2: comincia a chiedere al giocatre 2 le coordinate
 
-                send(new ReturnMessage(4,"your god is: " + server.getGods(0)));
-                read2 = server.getGods(0);
-                server.removeFromWaitStart(); //messo in server.lobby dentro if
-            } else if (playerNumber == 2) {                               //PlayerNTwo
+            }
+            else if (playerNumber == 2) {                                                             //PlayerNTwo
                 send(new ReturnMessage(4,"wait the P1... is taking the cards"));
-                server.putInWaitP2(); //Wait for the P1 to choose the cards
-                if (server.getNPlayers() == 3) {       //3
+                server.putInWaitP2();       //Wait for the P1 to choose the cards
+                NPlayers = server.getNPlayers();
+
+                if (NPlayers == 3) {       //3
                     send(new ReturnMessage(4,"select your god between: " + server.getGods(0) + "\t" + server.getGods(1) + "\t" + server.getGods(2)));
-                    read2 = read();
-                    while (server.removeGods1(read2)) {
-                        send(new ReturnMessage(4,"you have entered a god card that doesn't exist, select your god between: " + server.getGods(0) + "\t" + server.getGods(1) + "\t" + server.getGods(2)));
-                        read2 = read();
-                    }
+                    read = godSelection(NPlayers);
+
                     server.removeFromWaitP3();
-                } else if (server.getNPlayers() == 2) {    //2
+                }
+                else if (NPlayers == 2) {    //2
                     send(new ReturnMessage(4,"select your god between: " + server.getGods(0) + " " + server.getGods(1)));
-                    read2 = read();
-                    while (server.removeGods1(read2)) {
-                        send(new ReturnMessage(4,"you have entered a god card that doesn't exist, select your god between: " + server.getGods(0) + "\t" + server.getGods(1)));
-                        read2 = read();
-                    }
+                    read = godSelection(NPlayers);
+
                     server.removeFromWait();
                 }
-            } else if (playerNumber == 3) {                               //PlayerNThree
+            }
+            else if (playerNumber == 3) {                               //PlayerNThree
                 send(new ReturnMessage(4,"wait the P1... is taking the cards"));
                 server.putInWaitP3(); //Wait P1 to choose the cards
+                NPlayers = server.getNPlayers();
                 send(new ReturnMessage(4,"select your god between: " + server.getGods(0) + " " + server.getGods(1)));
-                read2 = read();
-                while (server.removeGods1(read2)) {
-                    send(new ReturnMessage(4,"you have entered a god card that doesn't exist, select your god between: " + server.getGods(0) + "\t" + server.getGods(1)));
-                    read2 = read();
-                }
+                read = godSelection(NPlayers);
+
                 server.removeFromWait();
             }//END CARDS
 
-            server.lobby(this, name, God.valueOf(read2));
+            server.lobby(this, name, God.valueOf(read));
 
             if (playerNumber == 1) {
-                send(new ReturnMessage(4,"wait other player sets their workers"));
+                send(new ReturnMessage(4,"wait other player set their workers"));
                 server.putInWaitP1();
                 askForCoordinates();
+                send(new ReturnMessage(4,"OK, now let's start!"));
                 notify(new Message(0, server.getWorkerPositions()));
             } else if (playerNumber == 2) {
-                send(new ReturnMessage(4,"waiting P1,P3 choosing their card..."));
-                server.putInWaitStart();
-                askForCoordinates();
-                if (server.getNPlayers() == 3) {
+                if (NPlayers == 3) {
+                    send(new ReturnMessage(4,"waiting P3 and P1 to choose his card...\n"));
+                    server.putInWaitStart();
+                    askForCoordinates();
+                    send(new ReturnMessage(4,"OK! now P3 and P1"));
                     server.removeFromWaitP3();
-                } else if (server.getNPlayers() == 2) {
+                } else if (NPlayers == 2) {
+                    send(new ReturnMessage(4,"waiting P1 to choose his card...\n"));
+                    server.putInWaitStart();
+                    askForCoordinates();
+                    send(new ReturnMessage(4,"OK! now P1 :"));
                     server.removeFromWaitP1();
                 }
             } else if (playerNumber == 3) {
-                send(new ReturnMessage(4,"wait other player sets their workers"));
+                send(new ReturnMessage(4,"waiting P1 to choose his card...\nwait " +
+                    "P2 set his workers"));
                 server.putInWaitP3();
                 askForCoordinates();
+                send(new ReturnMessage(4,"OK! now P1 :\n"));
                 server.removeFromWaitP1();
             }
 
+
+            /*creare notify finta per inizializzare il model e far si che i client ricevano le
+            * update adeguate tramite la action usata solo per reset: CurrentPlayerNumber*/
+            if(playerNumber==2){
+                server.putInWaitP2();
+                server.removeFromWaitP3();//who first come, wake up the others
+                notify(new Message(2,playerNumber));  //CURRENTPLAYERNUMBER
+                send(new ReturnMessage(4,"It's your turn\n\t choose a worker :\n"));
+            } else if(playerNumber==3){
+                server.putInWaitP3();
+                server.removeFromWaitP2();//who first come, wake up the others
+                send(new ReturnMessage(4,"Wait your turn\n\t"+server.getNicknamesByNumberOfTurns(server.getStartPlayer()))+"'s turn");
+            } else if(playerNumber==1){
+                server.removeFromWaitP2();//first player has to wake up
+                server.removeFromWaitP3();
+                send(new ReturnMessage(4,"Wait your turn\n\t"+server.getNicknamesByNumberOfTurns(server.getStartPlayer()))+"'s turn");
+            }
             //GAME STARTED
             while (isActive()) {
                 read = read();
@@ -175,9 +200,23 @@ public class SocketClientConnection extends Observable<Object> implements Client
             }
         } catch (IOException | NoSuchElementException | InterruptedException | ClassNotFoundException e) {
             System.err.println("Error!" + e.getMessage());
+            e.printStackTrace();
         } finally {
             close();
         }
+    }
+
+    private String godSelection(int n) throws IOException, ClassNotFoundException {
+        String read = read();
+        while (server.removeGods1(read)) {
+            if (n==3) {
+                send(new ReturnMessage(4, "you have entered a god card that doesn't exist, select your god between: " + server.getGods(0) + "\t" + server.getGods(1) + "\t" + server.getGods(2)));
+            } else {
+                send(new ReturnMessage(4,"you have entered a god card that doesn't exist, select your god between: " + server.getGods(0) + "\t" + server.getGods(1)));
+            }
+            read = read();
+        }
+        return read;
     }
 
     private void askForCoordinates() throws IOException, ClassNotFoundException {

@@ -15,6 +15,19 @@ import java.util.Scanner;
 public class Client {
     private String ip;
     private int port;
+    private Action a=Action.STRING;
+
+    public void setA(Action a) {
+        this.a = a;
+    }
+
+
+
+    public Action getA() {
+        return a;
+    }
+
+
 
     public Client(String ip, int port){
         this.ip = ip;
@@ -60,7 +73,6 @@ public class Client {
                 try {
                     while (isActive()) {
                         String inputObject = stdin.nextLine();
-                        socketOut.reset();
                         socketOut.writeObject(new Message(4,inputObject));
                         socketOut.flush();
                     }

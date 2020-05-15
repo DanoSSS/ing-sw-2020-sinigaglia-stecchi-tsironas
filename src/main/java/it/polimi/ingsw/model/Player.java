@@ -6,7 +6,7 @@ import it.polimi.ingsw.utils.Color;
 public class Player {
     private String nickname;
     private String color;
-    private int location;
+    private int id;
     private boolean IsChallenger;
     private Worker worker1;
     private Worker worker2;
@@ -57,5 +57,8 @@ public class Player {
 
     public boolean isChallenger() {
         return IsChallenger;
+    }
+    public int getId() {
+        return id;
     }
 }
