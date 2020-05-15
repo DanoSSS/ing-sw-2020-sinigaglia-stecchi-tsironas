@@ -16,6 +16,9 @@ public abstract class View extends Observable<Object> implements Observer<Object
         return player;
     }
 
+    protected void handleMessage(Object m){
+        notify(m);
 
+    }
 }
 

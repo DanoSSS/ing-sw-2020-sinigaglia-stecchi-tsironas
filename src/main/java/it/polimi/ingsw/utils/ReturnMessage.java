@@ -4,10 +4,11 @@ import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ReturnMessage {
+public class ReturnMessage implements Serializable {
 
     private Action action;
     private int nCurrentPlayer;

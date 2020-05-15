@@ -26,7 +26,8 @@ public class RemoteView extends View{
 
         @Override
         public void update(Object m) {
-            System.out.println("Received");      //debug here!!!
+            System.out.println("Received");     //debug here!!!
+            handleMessage(m);
         }
     }
 
@@ -38,7 +39,7 @@ public class RemoteView extends View{
     }
 
     @Override
-    public void update(Object message) {
+    public void update(Object message) {                //WORKERSET non stampa al secondo client in 2 giocatori da provare in 3
         Action a = ((ReturnMessage) message).getAction();
         Map<Worker,Coordinates> m;
 
@@ -46,15 +47,15 @@ public class RemoteView extends View{
             case CURRENTPLAYERNUMBER:
                 int currentplayer = ((ReturnMessage)message).getnCurrentPlayer();
                 if(this.numberRW == currentplayer){
-                    clientConnection.asyncSend("It's your turn!\nSelect your active worker:(x,y)");  //da mettere nella askActiveWorker
+                    clientConnection.asyncSend(new ReturnMessage(4,"It's your turn!\nSelect your active worker:(x,y)"));  //da mettere nella askActiveWorker
                 }else{
-                    clientConnection.asyncSend("Wait your turn!");
+                    clientConnection.asyncSend(new ReturnMessage(4,"Wait your turn!"));
                 }
             case WORKERSET:
                 m=((ReturnMessage)message).getWorkerPosition();
                 List<Worker> workers = new ArrayList<>(m.keySet());
                 for(int i=0;i<workers.size();i++) {
-                    clientConnection.asyncSend(workers.get(i).getIdWorker() + " set in cell " + m.get(workers.get(i)).getX() + "," + m.get(workers.get(i)).getY() );
+                    clientConnection.asyncSend(new ReturnMessage(4,workers.get(i).getIdWorker() + " set in cell " + m.get(workers.get(i)).getX() + "," + m.get(workers.get(i)).getY() ));
                 }
         }
     }

@@ -3,13 +3,15 @@ package it.polimi.ingsw.utils;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Message {
+public class Message implements Serializable {
 
     private Action action;
     private ArrayList<Coordinates> coordinatesInitWorkers;
     private Player player;
+    private String sentence;
 
 
     public Message(int nAction, ArrayList<Coordinates> coordinates){
@@ -17,9 +19,9 @@ public class Message {
         this.coordinatesInitWorkers = coordinates;
     }
 
-    public Message(int nAction,Player currentPlayer){
+    public Message(int nAction,String sentence){
         this.action = Action.values()[nAction];
-        this.player = currentPlayer;
+        this.sentence = sentence;
     }
 
     public Action getAction(){return action;}
@@ -27,5 +29,6 @@ public class Message {
      return coordinatesInitWorkers;
     }
     public Player getPlayer(){return player;}
+    public String getSentence(){return sentence;}
 
 }

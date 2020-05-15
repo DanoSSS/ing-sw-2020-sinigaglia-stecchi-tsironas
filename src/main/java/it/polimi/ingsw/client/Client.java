@@ -1,5 +1,9 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.utils.Action;
+import it.polimi.ingsw.utils.Message;
+import it.polimi.ingsw.utils.ReturnMessage;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -33,11 +37,11 @@ public class Client {
             public void run() {
                 try {
                     while (isActive()) {
-                        Object inputObject = socketIn.readObject();
-                        if(inputObject instanceof String){
-                            System.out.println((String)inputObject);
-                        } else {
-                            throw new IllegalArgumentException();
+                        ReturnMessage inputObject =(ReturnMessage) socketIn.readObject();
+                        Action a = inputObject.getAction();
+                        switch (a){
+                            case STRING:
+                            System.out.println(inputObject.getSentence());
                         }
                     }
                 } catch (Exception e){
@@ -49,14 +53,15 @@ public class Client {
         return t;
     }
 
-    public Thread asyncWriteToSocket(final Scanner stdin, final PrintWriter socketOut){
+    public Thread asyncWriteToSocket(final Scanner stdin, final ObjectOutputStream socketOut){
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     while (isActive()) {
                         String inputObject = stdin.nextLine();
-                        socketOut.println(inputObject);
+                        socketOut.reset();
+                        socketOut.writeObject(new Message(4,inputObject));
                         socketOut.flush();
                     }
                 }catch(Exception e){
@@ -72,7 +77,7 @@ public class Client {
         Socket socket = new Socket(ip, port);
         System.out.println("Connection established");
         ObjectInputStream SocketIn = new ObjectInputStream(socket.getInputStream());
-        PrintWriter SocketOut = new PrintWriter(socket.getOutputStream());
+        ObjectOutputStream SocketOut = new ObjectOutputStream(socket.getOutputStream());
         Scanner stdin = new Scanner(System.in);
 
         try{
