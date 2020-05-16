@@ -53,6 +53,7 @@ public class Client {
                     while (isActive()) {
                         ReturnMessage inputObject =(ReturnMessage) socketIn.readObject();
                         Action a = inputObject.getAction();
+                        System.out.println("received" + a.toString());
                         if (a==Action.STRING) {
                             System.out.println(inputObject.getSentence());
                         }else if(a==Action.CURRENTPLAYERNUMBER){}

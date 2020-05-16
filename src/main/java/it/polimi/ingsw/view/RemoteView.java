@@ -76,8 +76,8 @@ public class RemoteView extends View{
                 String[] players = ((ReturnMessage)message).getNicknames();
                 Integer[] idPlayers = ((ReturnMessage)message).getIdPlayers();
                 int idPlayerToStart= ((ReturnMessage)message).getnCurrentPlayer();
-                String nickname= players[numberRW];
-                int idPlayer= idPlayers[numberRW];
+                String nickname= players[numberRW-1];
+                int idPlayer= idPlayers[numberRW-1];
                 int NPlayer = workers.size()/2;
                 ClientController clientController= new ClientController(nickname,idPlayer,NPlayer,idPlayers,players);
 

@@ -37,7 +37,7 @@ public class SocketClientConnection extends Observable<Object> implements Client
     private synchronized String read() throws IOException, ClassNotFoundException {
         String s = null;
         Message recv = (Message)in.readObject();
-        s = (recv).getSentence();
+        s = recv.getSentence();
         return s;
     }
 
@@ -178,28 +178,29 @@ public class SocketClientConnection extends Observable<Object> implements Client
             /*send(new ReturnMessage(4,"OK, now let's start!"));
             creare notify finta per inizializzare il model e far si che i client ricevano le
             * update adeguate tramite la action usata solo per reset: CurrentPlayerNumber*/
-            if(playerNumber==2){
+  /*          if(playerNumber==2){
                 server.putInWaitP2();
                 server.removeFromWaitP3();//who first come, wake up the others
                // notify(new Message(2,playerNumber));  //CURRENTPLAYERNUMBER
-                send(new ReturnMessage(4,"It's your turn\n\t choose a worker :\n"));
+             //   send(new ReturnMessage(4,"It's your turn\n\t choose a worker :\n"));
             } else if(playerNumber==3){
                 server.putInWaitP3();
                 server.removeFromWaitP2();//who first come, wake up the others
-                send(new ReturnMessage(4,"Wait your turn\n\t"+server.getNicknamesByNumberOfTurns(server.getStartPlayer()))+"'s turn");
+              //  send(new ReturnMessage(4,"Wait your turn\n\t"+server.getNicknamesByNumberOfTurns(server.getStartPlayer()))+"'s turn");
             } else if(playerNumber==1){
                 server.removeFromWaitP2();//first player has to wake up
                 server.removeFromWaitP3();
-                send(new ReturnMessage(4,"Wait your turn\n\t"+server.getNicknamesByNumberOfTurns(server.getStartPlayer()))+"'s turn");
-            }
+              //  send(new ReturnMessage(4,"Wait your turn\n\t"+server.getNicknamesByNumberOfTurns(server.getStartPlayer()))+"'s turn");
+            }  */
             //GAME STARTED
 
             while (isActive()) {
-                if(playerNumber==1){System.out.println("11111");}
-                else if(playerNumber==2){System.out.println("2222");}
-                else if(playerNumber==2){System.out.println("33333");}
-                // read = read();
-               // notify(read);
+                //if(playerNumber==1){System.out.println("11111");}
+                //else if(playerNumber==2)
+                //{System.out.println("2222");}
+               // else if(playerNumber==2){System.out.println("33333");}
+                 read = read();
+                 notify(read);
 
             }
         } catch (IOException | NoSuchElementException | InterruptedException | ClassNotFoundException e) {
