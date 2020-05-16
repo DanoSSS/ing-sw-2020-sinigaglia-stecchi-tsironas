@@ -116,8 +116,8 @@ public class Server {
         God god2 = playerGodAssociation.get(keys.get(1));
         God god3 = playerGodAssociation.get(keys.get(2));
         Player player1 = new Player(keys.get(0), "RED",idWorker[0], idWorker[1], god1,2);
-        Player player2 = new Player(keys.get(1), "GREEN", idWorker[2], idWorker[3], god2,3);
-        Player player3 = new Player(keys.get(2), "BLUE", idWorker[4], idWorker[5], god3,1);
+        Player player2 = new Player(keys.get(1), "GREEN", idWorker[2], idWorker[3], god2,1);
+        Player player3 = new Player(keys.get(2), "BLUE", idWorker[4], idWorker[5], god3,3);
         players[0]= player1;
         players[1]= player2;
         players[2]= player3;

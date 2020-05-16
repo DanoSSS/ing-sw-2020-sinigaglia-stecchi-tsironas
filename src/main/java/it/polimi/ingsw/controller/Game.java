@@ -249,12 +249,13 @@ public class Game extends Observable<Object> implements Observer<Object> {
                     //String nicknameP1=players[messageFromPlayerNumber];
                     board.getObservableModel().notify(new ReturnMessage(3, workerPosition,players,idPlayers,NumberOfPlayers,firstToStartID));
                     //board.initRound(currentRound);
-                } else {
-                    int[] whoToSend = new int [1];
-                    whoToSend[0] = messageFromPlayerNumber; //set the number to response that it isn't his turn
-                    board.getObservableModel().notify(new ReturnMessage(4, whoToSend,"Wait the server is working on your game!"));
-
                 }
+               // else {
+                 //   int[] whoToSend = new int [1];
+                  //  whoToSend[0] = messageFromPlayerNumber; //set the number to response that it isn't his turn
+                   // board.getObservableModel().notify(new ReturnMessage(4, whoToSend,"Wait the server is working on your game!"));
+
+               // }
 
         }
     }

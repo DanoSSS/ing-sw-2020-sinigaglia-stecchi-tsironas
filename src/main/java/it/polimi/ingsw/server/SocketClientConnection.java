@@ -199,8 +199,8 @@ public class SocketClientConnection extends Observable<Object> implements Client
                 //else if(playerNumber==2)
                 //{System.out.println("2222");}
                // else if(playerNumber==2){System.out.println("33333");}
-                 read = read();
-                 notify(read);
+                Message recv = (Message)in.readObject();
+                send(new ReturnMessage(4,recv.getSentence()));
 
             }
         } catch (IOException | NoSuchElementException | InterruptedException | ClassNotFoundException e) {
