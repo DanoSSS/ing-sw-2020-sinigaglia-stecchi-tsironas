@@ -197,7 +197,7 @@ public class Game extends Observable<Object> implements Observer<Object> {
         UpdateRound();
     }
 
-    public void UpdateRound(){
+    public void UpdateRound(){              //da aggiornare current round in board e non in game
         currentRound++;
         if(NumberOfPlayers==2 && currentRound==3){
             currentRound=1;
@@ -219,45 +219,36 @@ public class Game extends Observable<Object> implements Observer<Object> {
             case INITWORKERS:
                 //imposta a board le posizioni degli worker
                 Map<Worker,Coordinates> workerPosition = new HashMap<>();
-                int messageFromPlayerNumber = ((Message)message).getPlayerValue();  //who sent the message ID
-                if(messageFromPlayerNumber==1) {
-                    for (Coordinates c : ((Message) message).getInitWorkerList()) {
+                for (Coordinates c : ((Message) message).getInitWorkerList()) {
                         //0,1,2,3,4,5
-                        id++;    //2,3,4,5,0,1
-                        if (NumberOfPlayers == 3) {
-                            if (flag == 2) {
-                                player++;
-                            }      //when list of coordinates is at 4th position -> idworker0 -> player1
-                            else if (flag == 4) {
-                                player = 0;
-                                id = 0;
-                            }
-                        } else if (NumberOfPlayers == 2) {
-                            if (flag == 2) {
-                                id = 0;
-                                player--;
-                            }     //when list of coordinates is at 2th position -> idworker0 -> player1
+                    id++;    //2,3,4,5,0,1
+                    if (NumberOfPlayers == 3) {
+                        if (flag == 2) {
+                            player++;
+                        }      //when list of coordinates is at 4th position -> idworker0 -> player1
+                        else if (flag == 4) {
+                            player = 0;
+                            id = 0;
                         }
-                        workerPosition.put(board.getWorkerById(id), c);
-                        board.setWorker(c, id);
-                        flag++;
+                    } else if (NumberOfPlayers == 2) {
+                        if (flag == 2) {
+                            id = 0;
+                            player--;
+                        }     //when list of coordinates is at 2th position -> idworker0 -> player1
                     }
-                    String[] players = board.getPlayerNicknames();
-                    Integer[] idPlayers = board.getIdPlayers();
-                    int firstToStartID = 2;
-                    //int idPlayer1= idPlayers[messageFromPlayerNumber];
-                    //String nicknameP1=players[messageFromPlayerNumber];
-                    board.getObservableModel().notify(new ReturnMessage(3, workerPosition,players,idPlayers,NumberOfPlayers,firstToStartID));
-                    //board.initRound(currentRound);
+                    workerPosition.put(board.getWorkerById(id), c);
+                    board.setWorker(c, id);
+                    flag++;
                 }
-               // else {
-                 //   int[] whoToSend = new int [1];
-                  //  whoToSend[0] = messageFromPlayerNumber; //set the number to response that it isn't his turn
-                   // board.getObservableModel().notify(new ReturnMessage(4, whoToSend,"Wait the server is working on your game!"));
-
-               // }
-
+                String[] players = board.getPlayerNicknames();
+                Integer[] idPlayers = board.getIdPlayers();
+                int firstToStartID = 2;
+                //int idPlayer1= idPlayers[messageFromPlayerNumber];
+                //String nicknameP1=players[messageFromPlayerNumber];
+                board.getObservableModel().notify(new ReturnMessage(3, workerPosition,players,idPlayers,NumberOfPlayers,firstToStartID));
+                break;
         }
+
     }
 
 

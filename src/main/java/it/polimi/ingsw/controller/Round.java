@@ -5,13 +5,18 @@ import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.observer.Observer;
+import it.polimi.ingsw.utils.Action;
+import it.polimi.ingsw.utils.Message;
+import it.polimi.ingsw.utils.ReturnMessage;
 
 import java.util.ArrayList;
 
 public abstract class Round implements Observer<Object>{
-
      protected Board board;
      protected Player player;
+     protected Worker firstActiveWorker, otherActiveWorker;
+     protected ArrayList<Coordinates> possibleMoves,possibleBuilds;
+     int times=0;
 
     public Round(Board board, Player player) {
         this.board = board;
@@ -146,7 +151,35 @@ public abstract class Round implements Observer<Object>{
         return possiblesBuildsCoordinates;
     }
 
+    public void activeWorkerSelection(int id) {
+        firstActiveWorker = board.getWorkerById(id);
+        possibleMoves = canMove(firstActiveWorker);
+        if (possibleMoves.size() == 0) {
+            if(player.getWorker1().getIdWorker()==id) {
+                otherActiveWorker = player.getWorker2();
+                possibleMoves = canMove(otherActiveWorker);
+            }else {
+                otherActiveWorker = player.getWorker1();
+                possibleMoves =canMove(otherActiveWorker);
+            }
+            if (possibleMoves.size() == 0) {
+                board.getObservableModel().notify(new ReturnMessage(5)); //da gestire la perdita
+            }else{
+                board.setCurrentActiveWorkerAndPossibleMoves(otherActiveWorker, possibleMoves);
+            }
+        } else board.setCurrentActiveWorkerAndPossibleMoves(firstActiveWorker, possibleMoves);
+    }
+
+
 
     @Override
-    public abstract void update(Object message);
+    public void update(Object message) {
+        Action a = ((Message) message).getAction();
+        switch (a){
+            case SELECTACTIVEWORKER:                //deve poter scegliere solo i suoi active worker
+                int i=  ((Message) message).getIdWorker();
+                activeWorkerSelection(i);
+
+        }
+    }
 }

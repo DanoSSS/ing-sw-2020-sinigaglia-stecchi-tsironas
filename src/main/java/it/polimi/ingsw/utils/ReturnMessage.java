@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,11 +21,21 @@ public class ReturnMessage implements Serializable {
     private Integer idPlayers[];
     private int NPlayer;
     private final ClientController clientController;
+    private int currentActiveWorker;
+    private ArrayList<Coordinates> currentPossibleMoves;
 
 
     public ReturnMessage(int nAction,String sentence){
         this.action = Action.values()[nAction];
         this.sentence = sentence;
+        this.clientController=null;
+    }
+
+    public ReturnMessage(int nAction,int currentActiveWorker,ArrayList<Coordinates> currentPossibleMoves,int nCurrentPlayer){
+        this.action = Action.values()[nAction];
+        this.currentActiveWorker = currentActiveWorker;
+        this.currentPossibleMoves = currentPossibleMoves;
+        this.nCurrentPlayer = nCurrentPlayer;
         this.clientController=null;
     }
 
@@ -89,7 +100,6 @@ public class ReturnMessage implements Serializable {
         return sentence;
     }
 
-
     public int[] getWhoToSend() {
         return whoToSend;
     }
@@ -110,5 +120,11 @@ public class ReturnMessage implements Serializable {
         return clientController;
     }
 
+    public ArrayList<Coordinates> getCurrentPossibleMoves() {
+        return currentPossibleMoves;
+    }
 
+    public int getCurrentActiveWorker() {
+        return currentActiveWorker;
+    }
 }

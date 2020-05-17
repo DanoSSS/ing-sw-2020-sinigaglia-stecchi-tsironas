@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.Message;
 import it.polimi.ingsw.utils.ReturnMessage;
@@ -9,33 +10,29 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Client {
     private String ip;
     private int port;
-    private Action a=Action.STRING;
+    private Action clientAction;
     private ClientController clientController;
+    private boolean active = true;
 
-    public void setA(Action a) {
-        this.a = a;
+    public void setClientAction(Action a) {
+        this.clientAction = a;
     }
 
-
-
-    public Action getA() {
-        return a;
+    public Action getClientAction() {
+        return clientAction;
     }
-
-
 
     public Client(String ip, int port){
         this.ip = ip;
         this.port = port;
     }
-
-    private boolean active = true;
 
     public synchronized boolean isActive(){
         return active;
@@ -51,23 +48,33 @@ public class Client {
             public void run() {
                 try {
                     while (isActive()) {
-                        ReturnMessage inputObject =(ReturnMessage) socketIn.readObject();
+                        ReturnMessage inputObject = (ReturnMessage) socketIn.readObject();
                         Action a = inputObject.getAction();
                         System.out.println("received" + a.toString());
-                        if (a==Action.STRING) {
-                            System.out.println(inputObject.getSentence());
-                        }else if(a==Action.CURRENTPLAYERNUMBER){}
-                        else if (a==Action.SELECTACTIVEWORKER){}
-                        else if (a==Action.INITWORKERS){}
-                        else if(a==Action.WORKERSET){
-                            clientController = inputObject.getClientController().clone();
-                            for (int i=0;i<inputObject.getNicknames().length;i++){
-                                System.out.println(inputObject.getNicknames()[i]); //get the String[] with the output
-                            }
-                        }else {
+                        switch (a) {
+                            case STRING:
+                            case NOTYOURTURN:
+                            case SELECTACTIVEWORKER:
+                                setClientAction(a);
+                                System.out.println(inputObject.getSentence());
+                                break;
+                            case WORKERSET:
+                                setClientAction(a);
+                                clientController = inputObject.getClientController().clone();
+                                for (int i = 0; i < inputObject.getNicknames().length; i++) {
+                                    System.out.println(inputObject.getNicknames()[i]); //get the String[] with the output
+                                }
+                                break;
+                            case SELECTCOORDINATEMOVE:
+                                setClientAction(a);
+                                int id = inputObject.getCurrentActiveWorker();
+                                ArrayList<Coordinates> possibleMoves = inputObject.getCurrentPossibleMoves();
+                                System.out.println("your active worker is "+id+" select coordinate to move:\n");
+                                for(Coordinates c: possibleMoves){
+                                    System.out.println(c.getX()+","+c.getY()+"--");
+                                }
 
                         }
-
                     }
                 } catch (Exception e){
                     setActive(false);
@@ -85,7 +92,19 @@ public class Client {
                 try {
                     while (isActive()) {
                         String inputObject = stdin.nextLine();
-                        socketOut.writeObject(new Message(4,inputObject));
+                        switch (getClientAction()){
+                            case STRING:
+                                socketOut.writeObject(new Message(getClientAction().getValue(),inputObject));
+                                break;
+                            case SELECTACTIVEWORKER:
+                                int i=Integer.parseInt(inputObject);
+                                socketOut.writeObject(new Message(getClientAction().getValue(),i));
+                                break;
+                            case NOTYOURTURN:
+                                socketOut.writeObject(new Message(getClientAction().getValue(),inputObject));
+                                break;
+                        }
+
                         socketOut.flush();
                     }
                 }catch(Exception e){

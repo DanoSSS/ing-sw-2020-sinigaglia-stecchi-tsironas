@@ -28,9 +28,15 @@ public class RemoteView extends View{
 
         @Override
         public void update(Object m) {
-            System.out.println("Received");     //debug here!!!
-
-            handleMessage(m,player.getIdPlayer());  //CREARE getId() in Player, inizializzare questo valore id dei players
+            System.out.println("Received");
+            Action a =((Message) m).getAction();switch (a) {
+                case INITWORKERS:
+                case SELECTACTIVEWORKER:
+                    handleMessage(m, player.getIdPlayer());  //CREARE getId() in Player, inizializzare questo valore id dei players
+                    break;
+                case NOTYOURTURN:
+                    clientConnection.asyncSend(new ReturnMessage(4,"It's not your turn!wait"));
+            }
         }
     }
 
@@ -85,6 +91,12 @@ public class RemoteView extends View{
                     messageSettingWorkersPositions[i]= workers.get(i).getIdWorker() + " set in cell " + m.get(workers.get(i)).getX() + "," + m.get(workers.get(i)).getY();
                 }
                 clientConnection.asyncSend(new ReturnMessage(3,messageSettingWorkersPositions,clientController));
+                break;
+            case SELECTCOORDINATEMOVE:
+                int nCurrentPlayer = ((ReturnMessage)message).getnCurrentPlayer();
+                if(this.numberRW == nCurrentPlayer) {
+                    clientConnection.asyncSend(message);
+                }
                 break;
         }
     }

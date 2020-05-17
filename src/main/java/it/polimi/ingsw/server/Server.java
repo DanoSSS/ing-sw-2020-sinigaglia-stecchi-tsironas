@@ -325,17 +325,5 @@ public class Server {
         }
     }
 
-    public String getNicknamesByNumberOfTurns(int playerNumber) {
-        return nicknames.get(playerNumber-1);
-
-    }
-    public static int getStartPlayer() {
-        return startPlayer;
-    }
-
-    public int generateIdPlayer(){
-        return idGenerate++;
-    }
-
 }
 

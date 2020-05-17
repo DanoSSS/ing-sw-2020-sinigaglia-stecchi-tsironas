@@ -2,6 +2,8 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.utils.ReturnMessage;
 
+import java.util.ArrayList;
+
 public class Board{
     private int NumberOfPlayers;
     private static final int HEIGHT = 5;
@@ -9,9 +11,12 @@ public class Board{
     private Cell [][] board;
     private Worker[] workers = new Worker[6];
     private Player[] players;
-    //private Worker worker1,worker2,worker3,worker4,worker5,worker6;
     private int nround=0;
     private ObservableModel observableModel;
+    private Worker currentActiveWorker;
+    private ArrayList<Coordinates> currentPossibleMoves;
+    private int currentRound=2;
+
 
     public Board(Player[] players, Worker worker1, Worker worker2, Worker worker3, Worker worker4, int NPlayer) {
         this.players =players;
@@ -129,9 +134,7 @@ public class Board{
         board[coordinates.getX()][coordinates.getY()].setOccupied(true);
     }
 
-    public void initRound(int i){
-        observableModel.notify(new ReturnMessage(2,i));
-    }
+    public void initRound(int i){}
 
     public ObservableModel getObservableModel(){
         return observableModel;
@@ -153,6 +156,11 @@ public class Board{
         return idPlayers;
     }
 
+    public void setCurrentActiveWorkerAndPossibleMoves(Worker currentActiveWorker,ArrayList<Coordinates> currentPossibleMoves){
+        this.currentActiveWorker=currentActiveWorker;
+        this.currentPossibleMoves=currentPossibleMoves;
+        observableModel.notify(new ReturnMessage(6,currentActiveWorker.getIdWorker(),currentPossibleMoves,currentRound));
+    }
 
 
 

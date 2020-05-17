@@ -85,7 +85,7 @@ public class SocketClientConnection extends Observable<Object> implements Client
         int NPlayers = 0;
 
         try {
-            send(new ReturnMessage(4,"Welcome!\nWhat is your nickname?"));                   //for all players
+            send(new ReturnMessage(4,"Welcome to SANTORINI!A beatiful city but also a beautiful game!\nWhat is your nickname?"));                   //for all players
             String read = read();
             while (!server.nicknameCheck(read)) {
                 send(new ReturnMessage(4,"Your selected nickname is already in use.\nSelect an other nickname: "));                   //for all players
@@ -175,8 +175,8 @@ public class SocketClientConnection extends Observable<Object> implements Client
                 server.removeFromWaitP1();
             }
 
-            /*send(new ReturnMessage(4,"OK, now let's start!"));
-            creare notify finta per inizializzare il model e far si che i client ricevano le
+            //send(new ReturnMessage(4,"OK, now let's start!"));
+            /*creare notify finta per inizializzare il model e far si che i client ricevano le
             * update adeguate tramite la action usata solo per reset: CurrentPlayerNumber*/
   /*          if(playerNumber==2){
                 server.putInWaitP2();
@@ -193,15 +193,19 @@ public class SocketClientConnection extends Observable<Object> implements Client
               //  send(new ReturnMessage(4,"Wait your turn\n\t"+server.getNicknamesByNumberOfTurns(server.getStartPlayer()))+"'s turn");
             }  */
             //GAME STARTED
-
+            if(playerNumber==2){
+                send(new ReturnMessage(1,"it's your turn!\nselect active worker:"));
+            }
+            if(playerNumber==3 || playerNumber==1){
+                send(new ReturnMessage(2,"wait your turn"));
+            }
             while (isActive()) {
                 //if(playerNumber==1){System.out.println("11111");}
                 //else if(playerNumber==2)
                 //{System.out.println("2222");}
                // else if(playerNumber==2){System.out.println("33333");}
                 Message recv = (Message)in.readObject();
-                send(new ReturnMessage(4,recv.getSentence()));
-
+                notify(recv);
             }
         } catch (IOException | NoSuchElementException | InterruptedException | ClassNotFoundException e) {
             System.err.println("Error!" + e.getMessage());
@@ -227,7 +231,6 @@ public class SocketClientConnection extends Observable<Object> implements Client
     private synchronized void askForCoordinates() throws IOException, ClassNotFoundException {
         try {
             send(new ReturnMessage(4,"set your first worker in coordinate: (x,y)"));
-
             String coordinate = read();
             String[] input = coordinate.split(",");
             while (!server.addWorkersPositions(Integer.parseInt(input[0]), Integer.parseInt(input[1]))) {

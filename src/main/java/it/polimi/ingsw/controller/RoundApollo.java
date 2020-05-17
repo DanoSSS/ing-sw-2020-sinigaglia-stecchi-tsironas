@@ -2,6 +2,8 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.observer.Observer;
+import it.polimi.ingsw.utils.Action;
+import it.polimi.ingsw.utils.Message;
 
 import java.util.ArrayList;
 
@@ -69,6 +71,7 @@ public class RoundApollo extends Round {
 
     @Override
     public void update(Object message) {
+
     }
 }
 
