@@ -182,6 +182,17 @@ public abstract class Round implements Observer<Object>{
         }else board.moveWorkerAndPossibleBuilds(oldC,newC,possibleBuilds);
     }
 
+    public void buildInCoordinate(Coordinates c){
+        int i;
+        doBuild(c);
+        if(board.getNround()!=0) {
+            i = board.getNround();
+            i--;
+            board.setNround(i);
+        }
+        else board.buildEndTurn(c);
+    }
+
     @Override
     public void update(Object message) {
         Action a = ((Message) message).getAction();
@@ -194,6 +205,9 @@ public abstract class Round implements Observer<Object>{
                 Coordinates moveC = ((Message) message).getCoordinates();
                 moveInCoordinate(moveC);
                 break;
+            case MOVEANDCOORDINATEBUILD:
+                Coordinates buildC = ((Message) message).getCoordinates();
+                buildInCoordinate(buildC);
 
 
         }

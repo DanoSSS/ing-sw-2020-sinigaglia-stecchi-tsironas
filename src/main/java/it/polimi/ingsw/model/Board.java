@@ -155,6 +155,16 @@ public class Board{
         return idPlayers;
     }
 
+    public int UpdateRound(){
+        currentRound++;
+        if(NumberOfPlayers==2 && currentRound==3){
+            currentRound=1;
+        }
+        else if(NumberOfPlayers==3 && currentRound==4){
+            currentRound=1;
+        }
+        return currentRound;
+    }
 
     public Worker getCurrentActiveWorker() {
         return currentActiveWorker;
@@ -175,6 +185,13 @@ public class Board{
         observableModel.notify(new ReturnMessage(7,currentActiveWorker.getIdWorker(),oldC,newC,currentPossibleBuilds,currentRound));
     }
 
+    public void buildEndTurn(Coordinates c){
+        int oldRound = currentRound;
+        int newRound = UpdateRound();
+        int level = getLevel(c);
+        observableModel.notify(new ReturnMessage(8,currentActiveWorker.getIdWorker(),c,level,oldRound,newRound));
+
+    }
 
 }
 

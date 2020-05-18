@@ -86,16 +86,34 @@ public class Client {
                                 break;
                             case MOVEANDCOORDINATEBUILD:
                                 id = inputObject.getCurrentActiveWorker();
+                                clientController.setCurrentRoundIdPlayer(inputObject.getnCurrentPlayer());
                                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
                                     setClientAction(a);
                                     ArrayList<Coordinates> possibleBuilds = inputObject.getCurrentPossibleMoves();
-                                    System.out.println("your worker "+id+" is now in coordinate "+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+"\nSelect coordinate to build among the following:");
+                                    System.out.println("your worker"+id+" is now in coordinate "+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+"\nSelect coordinate to build among the following:");
                                     for(Coordinates c: possibleBuilds){
                                         System.out.println(c.getX()+","+c.getY());
                                     }
                                 }else{
-                                    int n=clientController.getIdPlayer();
-                                    System.out.println("player"+n+" moves his worker "+id+" in cell:"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY());
+                                    int n=clientController.getCurrentRoundIdPlayer();
+                                    System.out.println("player"+n+" moves his worker"+id+" in cell:"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY());
+                                }
+                                break;
+                            case BUILDENDTURN:
+                                id = inputObject.getCurrentActiveWorker();
+                                int n =inputObject.getnCurrentPlayer();
+                                if(clientController.getIdPlayer()==inputObject.getnCurrentPlayer()){
+                                    System.out.println("your worker"+id+"build in "+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+" level:"+inputObject.getLevel());
+                                    setClientAction(Action.NOTYOURTURN);
+                                    System.out.println("wait your turn");
+                                }else if(clientController.getIdPlayer()==inputObject.getNextNPlayer()){
+                                    System.out.println("player"+n+" build with his worker"+id+" in cell:"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+" level:"+inputObject.getLevel());
+                                    setClientAction(Action.SELECTACTIVEWORKER);
+                                    System.out.println("it's your turn!\nselect active worker:");
+                                }else{
+                                    System.out.println("player"+n+" build with his worker"+id+" in cell:"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+" level:"+inputObject.getLevel());
+                                    setClientAction(Action.NOTYOURTURN);
+                                    System.out.println("wait your turn");
                                 }
                                 break;
 
@@ -119,20 +137,22 @@ public class Client {
                         String inputObject = stdin.nextLine();
                         switch (getClientAction()){
                             case STRING:
+                            case NOTYOURTURN:
                                 socketOut.writeObject(new Message(getClientAction().getValue(),inputObject));
                                 break;
                             case SELECTACTIVEWORKER:
                                 int i=Integer.parseInt(inputObject);
                                 socketOut.writeObject(new Message(getClientAction().getValue(),i));
                                 break;
-                            case NOTYOURTURN:
-                                socketOut.writeObject(new Message(getClientAction().getValue(),inputObject));
-                                break;
                             case SELECTCOORDINATEMOVE:
+                            case MOVEANDCOORDINATEBUILD:
                                 String[] input = inputObject.split(",");
-                                Coordinates cToMove = new Coordinates(Integer.parseInt(input[0]),Integer.parseInt(input[1]));
-                                socketOut.writeObject(new Message(getClientAction().getValue(),cToMove));
+                                Coordinates coordinates = new Coordinates(Integer.parseInt(input[0]),Integer.parseInt(input[1]));
+                                socketOut.writeObject(new Message(getClientAction().getValue(),coordinates));
                                 break;
+
+
+
                         }
 
                         socketOut.flush();

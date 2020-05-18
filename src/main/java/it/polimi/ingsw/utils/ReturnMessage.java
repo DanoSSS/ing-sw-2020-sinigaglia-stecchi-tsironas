@@ -26,6 +26,18 @@ public class ReturnMessage implements Serializable {
     private Coordinates coordinate;
     private Coordinates coordinateOld;
 
+    public int getLevel() {
+        return level;
+    }
+
+    private int level;
+
+    public int getNextNPlayer() {
+        return nextNPlayer;
+    }
+
+    private int nextNPlayer;
+
 
 
     public ReturnMessage(int nAction,String sentence){
@@ -52,6 +64,16 @@ public class ReturnMessage implements Serializable {
         this.action = Action.values()[nAction];
         this.whoToSend = whoToSent;
         this.sentence = sentence;
+        this.clientController = null;
+    }
+
+    public ReturnMessage(int nAction,int currentActiveWorker,Coordinates coordinate,int level,int nCurrentPlayer,int nextNPlayer){
+        this.action = Action.values()[nAction];
+        this.currentActiveWorker = currentActiveWorker;
+        this.coordinate = coordinate;
+        this.level = level;
+        this.nCurrentPlayer = nCurrentPlayer;
+        this.nextNPlayer = nextNPlayer;
         this.clientController = null;
     }
 

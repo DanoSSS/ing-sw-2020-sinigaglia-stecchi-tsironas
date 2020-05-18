@@ -191,24 +191,7 @@ public class Game extends Observable<Object> implements Observer<Object> {
         return round.get(player);
     }
 
-    //function that select
-    public void SelectRound(Player currentPlayer) {
-        round.get(currentPlayer).ExecuteRound(GameOver);
-        UpdateRound();
-    }
 
-    public void UpdateRound(){              //da aggiornare current round in board e non in game
-        currentRound++;
-        if(NumberOfPlayers==2 && currentRound==3){
-            currentRound=1;
-            board.initRound(currentRound);
-        }
-        else if(NumberOfPlayers==3 && currentRound==4){
-            currentRound=1;
-            board.initRound(currentRound);
-        }
-        else{board.initRound(currentRound);}
-    }
 
     @Override
     public void update(Object message) {

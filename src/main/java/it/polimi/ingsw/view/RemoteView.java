@@ -33,10 +33,11 @@ public class RemoteView extends View{
                 case INITWORKERS:
                 case SELECTACTIVEWORKER:
                 case SELECTCOORDINATEMOVE:
+                case MOVEANDCOORDINATEBUILD:
                     handleMessage(m, player.getIdPlayer());  //CREARE getId() in Player, inizializzare questo valore id dei players
                     break;
                 case NOTYOURTURN:
-                    clientConnection.asyncSend(new ReturnMessage(4,"It's not your turn!wait"));
+                    clientConnection.asyncSend(new ReturnMessage(2,"It's not your turn!wait"));
                     break;
             }
         }
@@ -101,6 +102,7 @@ public class RemoteView extends View{
                 }
                 break;
             case MOVEANDCOORDINATEBUILD:
+            case BUILDENDTURN:
                 clientConnection.asyncSend((ReturnMessage)message);
                 break;
 
