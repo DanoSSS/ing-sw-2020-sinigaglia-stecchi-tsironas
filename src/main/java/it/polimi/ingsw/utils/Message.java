@@ -14,6 +14,7 @@ public class Message implements Serializable {
     private String sentence;
     private int idWorker;
     private int playerValue;
+    private Coordinates coordinates;
 
     public Message(int nAction, ArrayList<Coordinates> coordinates){
         this.action = Action.values()[nAction];
@@ -27,6 +28,11 @@ public class Message implements Serializable {
     public Message (int nAction, int idWorker){
         this.action = Action.values()[nAction];
         this.idWorker = idWorker;
+    }
+
+    public Message (int nAction, Coordinates coordinates){
+        this.action = Action.values()[nAction];
+        this.coordinates = coordinates;
     }
 
 
@@ -44,6 +50,9 @@ public class Message implements Serializable {
     public String getSentence(){return sentence;}
     public int getIdWorker() {
         return idWorker;
+    }
+    public Coordinates getCoordinates(){
+        return coordinates;
     }
 
 }

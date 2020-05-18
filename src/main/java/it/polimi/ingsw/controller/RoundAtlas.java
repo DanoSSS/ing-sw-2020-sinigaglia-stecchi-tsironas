@@ -50,11 +50,6 @@ public class RoundAtlas extends Round {
         return gamestatus;
     }
 
-    @Override
-    public void update(Object message) {
-
-    }
-
     public boolean askDomeOrNot(){
         boolean dome=true;
         //chiedere alla view se si vuole costruire un dome usando il potere a prescindere dal livello

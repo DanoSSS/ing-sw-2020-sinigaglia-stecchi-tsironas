@@ -69,10 +69,7 @@ public class RoundApollo extends Round {
         return GameOver;
     }
 
-    @Override
-    public void update(Object message) {
 
-    }
 }
 
 

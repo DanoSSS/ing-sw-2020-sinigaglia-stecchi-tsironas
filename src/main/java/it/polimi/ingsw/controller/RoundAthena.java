@@ -40,12 +40,6 @@ public class RoundAthena extends Round {
         return gamestatus;
     }
 
-    @Override
-    public void update(Object message) {
-
-    }
-
-
     public ArrayList<Coordinates> canMove(Worker worker) {
         Coordinates coordinates, newCoordinates;
         int x, y;

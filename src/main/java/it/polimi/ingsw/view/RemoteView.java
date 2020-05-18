@@ -32,10 +32,12 @@ public class RemoteView extends View{
             Action a =((Message) m).getAction();switch (a) {
                 case INITWORKERS:
                 case SELECTACTIVEWORKER:
+                case SELECTCOORDINATEMOVE:
                     handleMessage(m, player.getIdPlayer());  //CREARE getId() in Player, inizializzare questo valore id dei players
                     break;
                 case NOTYOURTURN:
                     clientConnection.asyncSend(new ReturnMessage(4,"It's not your turn!wait"));
+                    break;
             }
         }
     }
@@ -56,7 +58,7 @@ public class RemoteView extends View{
 
         switch (a) {
             case STRING:
-                int[] playerToSend = ((ReturnMessage)message).getWhoToSend();
+               /* int[] playerToSend = ((ReturnMessage)message).getWhoToSend();
                 int playerToSend1;
                 for (int value : playerToSend) {
                     if (value == getPlayer().getIdPlayer()) {
@@ -65,7 +67,7 @@ public class RemoteView extends View{
                 }
                 if(playerToSend[0]==getPlayer().getIdPlayer()){   //if the player is that one who received the ErrorMessage
                     clientConnection.asyncSend(new ReturnMessage(4,((ReturnMessage)message).getSentence()));
-                }
+                }*/
                 break;
             /*case CURRENTPLAYERNUMBER:
                 int currentplayer = ((ReturnMessage)message).getnCurrentPlayer();
@@ -95,9 +97,13 @@ public class RemoteView extends View{
             case SELECTCOORDINATEMOVE:
                 int nCurrentPlayer = ((ReturnMessage)message).getnCurrentPlayer();
                 if(this.numberRW == nCurrentPlayer) {
-                    clientConnection.asyncSend(message);
+                    clientConnection.asyncSend((ReturnMessage)message);
                 }
                 break;
+            case MOVEANDCOORDINATEBUILD:
+                clientConnection.asyncSend((ReturnMessage)message);
+                break;
+
         }
     }
 }

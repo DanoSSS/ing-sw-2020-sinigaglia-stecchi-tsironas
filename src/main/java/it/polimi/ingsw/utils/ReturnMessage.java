@@ -23,6 +23,9 @@ public class ReturnMessage implements Serializable {
     private final ClientController clientController;
     private int currentActiveWorker;
     private ArrayList<Coordinates> currentPossibleMoves;
+    private Coordinates coordinate;
+    private Coordinates coordinateOld;
+
 
 
     public ReturnMessage(int nAction,String sentence){
@@ -62,22 +65,22 @@ public class ReturnMessage implements Serializable {
         this.clientController = null;
     }
 
+    public ReturnMessage(int nAction,int currentActiveWorker,Coordinates oldC,Coordinates newC,ArrayList<Coordinates> currentPossibleBuilds,int nCurrentPlayer){
+        this.action = Action.values()[nAction];
+        this.currentActiveWorker = currentActiveWorker;
+        this.coordinateOld = oldC;
+        this.coordinate = newC;
+        this.currentPossibleMoves = currentPossibleBuilds;
+        this.nCurrentPlayer = nCurrentPlayer;
+        this.clientController = null;
+    }
+
 
     public ReturnMessage (int nAction, String[] workersSettingInBoard, ClientController clientController){
         this.clientController=clientController;
         this.action=Action.values()[nAction];
         this.nicknames = workersSettingInBoard.clone();
     }
-
-    public ReturnMessage(int idPlayer, String nickname, String[] nicknames, Integer[] idPlayers, int NPlayer){
-        this.idPlayers=idPlayers.clone();
-        this.nicknames=nicknames.clone();
-        this.NPlayer=NPlayer;
-        this.nCurrentPlayer=idPlayer;
-        this.sentence=nickname;
-        this.clientController=new ClientController(nickname,idPlayer,NPlayer,idPlayers,nicknames);
-}
-
 
     public ReturnMessage(int nAction){
         this.action = Action.values()[nAction];
@@ -87,44 +90,42 @@ public class ReturnMessage implements Serializable {
     public Map<Worker, Coordinates> getWorkerPosition() {
         return workerPosition;
     }
-
     public int getnCurrentPlayer() {
         return nCurrentPlayer;
     }
-
     public Action getAction() {
         return action;
     }
-
     public String getSentence() {
         return sentence;
     }
-
     public int[] getWhoToSend() {
         return whoToSend;
     }
-
     public String[] getNicknames() {
         return nicknames;
     }
-
     public Integer[] getIdPlayers() {
         return idPlayers;
     }
-
     public int getNPlayer() {
         return NPlayer;
     }
-
     public ClientController getClientController() {
         return clientController;
     }
-
     public ArrayList<Coordinates> getCurrentPossibleMoves() {
         return currentPossibleMoves;
     }
-
     public int getCurrentActiveWorker() {
         return currentActiveWorker;
     }
+    public Coordinates getCoordinateOld() {
+        return coordinateOld;
+    }
+    public Coordinates getCoordinate() {
+        return coordinate;
+    }
+
+
 }

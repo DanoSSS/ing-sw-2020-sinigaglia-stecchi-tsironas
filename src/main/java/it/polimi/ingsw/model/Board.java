@@ -14,7 +14,7 @@ public class Board{
     private int nround=0;
     private ObservableModel observableModel;
     private Worker currentActiveWorker;
-    private ArrayList<Coordinates> currentPossibleMoves;
+    private ArrayList<Coordinates> currentPossibleMoves, currentPossibleBuilds;
     private int currentRound=2;
 
 
@@ -108,7 +108,6 @@ public class Board{
         worker.setCell(coordinates.getX(),coordinates.getY());
         board[coordinates.getX()][coordinates.getY()].setWorker(worker);
         board[coordinates.getX()][coordinates.getY()].setOccupied(true);
-        // observableModel.Notify();        commento da togliere messo solo per i test
     }
 
     //method to know which worker is in the cell x,y
@@ -156,12 +155,21 @@ public class Board{
         return idPlayers;
     }
 
+
+    public Worker getCurrentActiveWorker() {
+        return currentActiveWorker;
+    }
+
     public void setCurrentActiveWorkerAndPossibleMoves(Worker currentActiveWorker,ArrayList<Coordinates> currentPossibleMoves){
         this.currentActiveWorker=currentActiveWorker;
         this.currentPossibleMoves=currentPossibleMoves;
         observableModel.notify(new ReturnMessage(6,currentActiveWorker.getIdWorker(),currentPossibleMoves,currentRound));
     }
 
+    public void moveWorkerAndPossibleBuilds(Coordinates oldC,Coordinates newC,ArrayList<Coordinates> currentPossibleBuilds){
+        this.currentPossibleBuilds=currentPossibleBuilds;
+        observableModel.notify(new ReturnMessage(7,currentActiveWorker.getIdWorker(),oldC,newC,currentPossibleBuilds,currentRound));
+    }
 
 
 }

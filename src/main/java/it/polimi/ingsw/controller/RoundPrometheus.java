@@ -70,11 +70,6 @@ public class RoundPrometheus extends Round {
         return gamestatus;
     }
 
-    @Override
-    public void update(Object message) {
-
-    }
-
     public boolean askIfWantBuildBefore(){
         boolean buildBefore=true;
         //chiede se vuole costruire prima di muovere sapendo di non poter salire

@@ -144,7 +144,7 @@ public class SocketClientConnection extends Observable<Object> implements Client
                 server.removeFromWait();
             }//END CARDS
 
-            server.lobby(this, name, God.valueOf(read));
+            server.lobby(this, name, God.valueOf(read),playerNumber);
 
             if (playerNumber == 1) {
                 send(new ReturnMessage(4,"wait other player set their workers"));
@@ -174,36 +174,7 @@ public class SocketClientConnection extends Observable<Object> implements Client
                 send(new ReturnMessage(4,"OK! now P1 :\n"));
                 server.removeFromWaitP1();
             }
-
-            //send(new ReturnMessage(4,"OK, now let's start!"));
-            /*creare notify finta per inizializzare il model e far si che i client ricevano le
-            * update adeguate tramite la action usata solo per reset: CurrentPlayerNumber*/
-  /*          if(playerNumber==2){
-                server.putInWaitP2();
-                server.removeFromWaitP3();//who first come, wake up the others
-               // notify(new Message(2,playerNumber));  //CURRENTPLAYERNUMBER
-             //   send(new ReturnMessage(4,"It's your turn\n\t choose a worker :\n"));
-            } else if(playerNumber==3){
-                server.putInWaitP3();
-                server.removeFromWaitP2();//who first come, wake up the others
-              //  send(new ReturnMessage(4,"Wait your turn\n\t"+server.getNicknamesByNumberOfTurns(server.getStartPlayer()))+"'s turn");
-            } else if(playerNumber==1){
-                server.removeFromWaitP2();//first player has to wake up
-                server.removeFromWaitP3();
-              //  send(new ReturnMessage(4,"Wait your turn\n\t"+server.getNicknamesByNumberOfTurns(server.getStartPlayer()))+"'s turn");
-            }  */
-            //GAME STARTED
-            if(playerNumber==2){
-                send(new ReturnMessage(1,"it's your turn!\nselect active worker:"));
-            }
-            if(playerNumber==3 || playerNumber==1){
-                send(new ReturnMessage(2,"wait your turn"));
-            }
             while (isActive()) {
-                //if(playerNumber==1){System.out.println("11111");}
-                //else if(playerNumber==2)
-                //{System.out.println("2222");}
-               // else if(playerNumber==2){System.out.println("33333");}
                 Message recv = (Message)in.readObject();
                 notify(recv);
             }

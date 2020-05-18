@@ -59,20 +59,35 @@ public class Client {
                                 System.out.println(inputObject.getSentence());
                                 break;
                             case WORKERSET:
-                                setClientAction(a);
                                 clientController = inputObject.getClientController().clone();
-                                for (int i = 0; i < inputObject.getNicknames().length; i++) {
-                                    System.out.println(inputObject.getNicknames()[i]); //get the String[] with the output
+                                if(clientController.getIdPlayer()==2) {
+                                    for (int i = 0; i < inputObject.getNicknames().length; i++) {
+                                        System.out.println(inputObject.getNicknames()[i]); //get the String[] with the output
+                                    }
+                                    setClientAction(Action.SELECTACTIVEWORKER);
+                                    System.out.println("it's your turn!\nselect active worker:");
+                                }
+                                else if(clientController.getIdPlayer()==1 || clientController.getIdPlayer()==3){
+                                    for (int i = 0; i < inputObject.getNicknames().length; i++) {
+                                        System.out.println(inputObject.getNicknames()[i]); //get the String[] with the output
+                                    }
+                                    setClientAction(Action.NOTYOURTURN);
+                                    System.out.println("wait your turn");
                                 }
                                 break;
                             case SELECTCOORDINATEMOVE:
                                 setClientAction(a);
                                 int id = inputObject.getCurrentActiveWorker();
                                 ArrayList<Coordinates> possibleMoves = inputObject.getCurrentPossibleMoves();
-                                System.out.println("your active worker is "+id+" select coordinate to move:\n");
+                                System.out.println("your active worker is "+id+" select coordinate to move among the following:");
                                 for(Coordinates c: possibleMoves){
-                                    System.out.println(c.getX()+","+c.getY()+"--");
+                                    System.out.println(c.getX()+","+c.getY());
                                 }
+                                break;
+                            case MOVEANDCOORDINATEBUILD:
+                                //da scrivere differenza client
+                                //System.out.println("prova");
+                                break;
 
                         }
                     }
@@ -102,6 +117,11 @@ public class Client {
                                 break;
                             case NOTYOURTURN:
                                 socketOut.writeObject(new Message(getClientAction().getValue(),inputObject));
+                                break;
+                            case SELECTCOORDINATEMOVE:
+                                String[] input = inputObject.split(",");
+                                Coordinates cToMove = new Coordinates(Integer.parseInt(input[0]),Integer.parseInt(input[1]));
+                                socketOut.writeObject(new Message(getClientAction().getValue(),cToMove));
                                 break;
                         }
 

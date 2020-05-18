@@ -20,14 +20,7 @@ public class ClientController implements Serializable {
         this.nickname = nickname;
         this.NPlayers = NPlayers;
         this.idPlayers = idPlayers.clone();
-        if (NPlayers == 2) {
-            this.otherNickname= new String[1] ;
-            this.otherNickname[0]=nicknames[0];
-        }    else if(NPlayers==3){
-            this.otherNickname= new String[2];
-            this.otherNickname[0] = nicknames[0];
-            this.otherNickname[1] = nicknames[1];
-        }
+        this.otherNickname = nicknames;
         }
 
     public ClientController(String nickname, int idPlayer, int nPlayers, Integer[] idPlayers, String[] otherNickname, int currentRoundIdPlayer, Action turnInfo) {
@@ -39,7 +32,6 @@ public class ClientController implements Serializable {
         this.currentRoundIdPlayer=currentRoundIdPlayer;
         this.turnInfo=turnInfo;
     }
-
 
     public int getIdPlayer(int i) {
         return idPlayers[i];

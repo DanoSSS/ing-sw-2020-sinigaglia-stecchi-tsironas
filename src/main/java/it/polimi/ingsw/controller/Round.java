@@ -130,7 +130,6 @@ public abstract class Round implements Observer<Object>{
         return possiblesMovesCoordinates;
     }
 
-
     public ArrayList<Coordinates> canBuild(Worker worker) {
         Coordinates coordinates, newCoordinates;
         int x, y;
@@ -170,15 +169,32 @@ public abstract class Round implements Observer<Object>{
         } else board.setCurrentActiveWorkerAndPossibleMoves(firstActiveWorker, possibleMoves);
     }
 
+    public void moveInCoordinate(Coordinates newC){
+        boolean win= false;
+        Coordinates oldC = board.getCurrentActiveWorker().getCoordinates();
+        win=doMove(newC,win,board.getCurrentActiveWorker());
+        if(win){
 
+        }
+        possibleBuilds=canBuild(board.getCurrentActiveWorker());
+        if (possibleBuilds.size() == 0) {
+            board.getObservableModel().notify(new ReturnMessage(5)); //da gestire la perdita
+        }else board.moveWorkerAndPossibleBuilds(oldC,newC,possibleBuilds);
+    }
 
     @Override
     public void update(Object message) {
         Action a = ((Message) message).getAction();
         switch (a){
             case SELECTACTIVEWORKER:                //deve poter scegliere solo i suoi active worker
-                int i=  ((Message) message).getIdWorker();
+                int i =  ((Message) message).getIdWorker();
                 activeWorkerSelection(i);
+                break;
+            case SELECTCOORDINATEMOVE:
+                Coordinates moveC = ((Message) message).getCoordinates();
+                moveInCoordinate(moveC);
+                break;
+
 
         }
     }

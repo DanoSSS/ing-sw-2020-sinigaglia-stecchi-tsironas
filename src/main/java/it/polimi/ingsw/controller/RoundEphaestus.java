@@ -54,11 +54,6 @@ public class RoundEphaestus extends Round {
         return gamestatus;
     }
 
-    @Override
-    public void update(Object message) {
-
-    }
-
     public boolean askIfBUildSecond(){
         boolean buildSecond=true;
         //chiedere se si vuole costruire una seconda volta nello stesso posto a patto che non sia una cupola come da potere

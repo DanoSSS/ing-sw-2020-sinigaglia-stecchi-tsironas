@@ -20,6 +20,7 @@ public class Server {
     private Map<String, ClientConnection> waitingConnection = new HashMap<>();
     private Map<ClientConnection, ClientConnection> playingConnection = new HashMap<>();
     private Map<String, God> playerGodAssociation = new HashMap<>();
+    private Map<String, Integer>playerIdAssociation = new HashMap<>();
     private int idGenerate=0;
     int nPlayers=0;
     private int nPlayersConnected = 0;
@@ -45,9 +46,10 @@ public class Server {
         waitingConnection.keySet().removeIf(s -> waitingConnection.get(s) == c);
     }
 
-    public synchronized void lobby(ClientConnection c, String name, God god) {
+    public synchronized void lobby(ClientConnection c, String name, God god,int idplayer) {
         waitingConnection.put(name, c);
         playerGodAssociation.put(name, god);
+        playerIdAssociation.put(name,idplayer);
         if (waitingConnection.size() == 2 && nPlayers == 2) {               // 2 players
             System.out.println("entrato in lobby nel ramo nplayer == 2");
             List<String> keys = new ArrayList<>(waitingConnection.keySet());
@@ -81,12 +83,26 @@ public class Server {
     public void startGameAndObservers2(List<String> keys){
         int[] idWorker = {0,1,2,3};
         Player[] players = new Player[2];
-        ClientConnection c1 = waitingConnection.get(keys.get(0));
-        ClientConnection c2 = waitingConnection.get(keys.get(1));
+        Player player1=null;
+        Player player2=null;
+        ClientConnection c1=null;
+        ClientConnection c2=null;
         //God god1 = playerGodAssociation.get(keys.get(0));
         //God god2 = playerGodAssociation.get(keys.get(1));
-        Player player1 = new Player(keys.get(0), "RED", idWorker[0], idWorker[1], playerGodAssociation.get(keys.get(0)),2);
-        Player player2 = new Player(keys.get(1), "GREEN", idWorker[2], idWorker[3], playerGodAssociation.get(keys.get(1)),1);
+        for(int i=0;i<2;i++){
+            switch (playerIdAssociation.get(keys.get(i))){
+                case 1:
+                    c1 = waitingConnection.get(keys.get(i));
+                    player1 = new Player(keys.get(i), "RED", idWorker[0], idWorker[1], playerGodAssociation.get(keys.get(i)),playerIdAssociation.get(keys.get(i)));
+                    break;
+                case 2:
+                    c2 = waitingConnection.get(keys.get(i));
+                    player2 = new Player(keys.get(i), "GREEN", idWorker[2], idWorker[3], playerGodAssociation.get(keys.get(i)),playerIdAssociation.get(keys.get(i)));
+                    break;
+            }
+        }
+        //Player player1 = new Player(keys.get(0), "RED", idWorker[0], idWorker[1], playerGodAssociation.get(keys.get(0)),playerIdAssociation.get(keys.get(0)));
+        //Player player2 = new Player(keys.get(1), "GREEN", idWorker[2], idWorker[3], playerGodAssociation.get(keys.get(1)),playerIdAssociation.get(keys.get(1)));
         players[0] = player1;
         players[1] = player2;
         View player1View = new RemoteView(player1, c1, player1.getIdPlayer());
@@ -109,15 +125,27 @@ public class Server {
     public void startGameAndObservers3(List<String> keys){
         int[] idWorker = {0,1,2,3,4,5};
         Player[] players = new Player[3];
-        ClientConnection c1 = waitingConnection.get(keys.get(0));
-        ClientConnection c2 = waitingConnection.get(keys.get(1));
-        ClientConnection c3 = waitingConnection.get(keys.get(2));
-        God god1 = playerGodAssociation.get(keys.get(0));
-        God god2 = playerGodAssociation.get(keys.get(1));
-        God god3 = playerGodAssociation.get(keys.get(2));
-        Player player1 = new Player(keys.get(0), "RED",idWorker[0], idWorker[1], god1,2);
-        Player player2 = new Player(keys.get(1), "GREEN", idWorker[2], idWorker[3], god2,1);
-        Player player3 = new Player(keys.get(2), "BLUE", idWorker[4], idWorker[5], god3,3);
+        Player player1=null;
+        Player player2=null;
+        Player player3=null;
+        ClientConnection c1=null;
+        ClientConnection c2=null;
+        ClientConnection c3=null;
+        for(int i=0;i<3;i++){
+            switch (playerIdAssociation.get(keys.get(i))){
+                case 1:
+                    c1 = waitingConnection.get(keys.get(i));
+                    player1 = new Player(keys.get(i), "RED", idWorker[0], idWorker[1], playerGodAssociation.get(keys.get(i)),playerIdAssociation.get(keys.get(i)));
+                    break;
+                case 2:
+                    c2 = waitingConnection.get(keys.get(i));
+                    player2 = new Player(keys.get(i), "GREEN", idWorker[2], idWorker[3], playerGodAssociation.get(keys.get(i)),playerIdAssociation.get(keys.get(i)));
+                    break;
+                case 3:
+                    c3 = waitingConnection.get(keys.get(i));
+                    player3 = new Player(keys.get(i), "BLUE", idWorker[4], idWorker[5], playerGodAssociation.get(keys.get(i)),playerIdAssociation.get(keys.get(i)));
+            }
+        }
         players[0]= player1;
         players[1]= player2;
         players[2]= player3;

@@ -10,13 +10,6 @@ public class RoundPan extends Round {
         super(board, player);
     }
 
-
-
-    @Override
-    public void update(Object message) {
-
-    }
-
     public boolean doMove(Coordinates moveCoordinates,boolean GameOver,Worker activeWorker){
         Coordinates oldCoordinates;
         int x=activeWorker.getCoordinates().getX();

@@ -101,8 +101,5 @@ public class RoundArtemis extends Round {
     }
 
 
-    @Override
-    public void update(Object message) {
 
-    }
 }

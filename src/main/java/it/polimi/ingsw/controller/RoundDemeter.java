@@ -57,11 +57,6 @@ public class RoundDemeter extends Round {
         return gamestatus;
     }
 
-    @Override
-    public void update(Object message) {
-
-    }
-
     public boolean askIfBuildSecond(){
         boolean buildSecond=true;
         //chiede se vuole costruire una seconda volta ma non nello stesso spazio
