@@ -15,12 +15,13 @@ public class ClientController implements Serializable {
     //private final ViewClient view;
 
 
-    public ClientController(String nickname, int idPlayer, int NPlayers, Integer[] idPlayers, String[] nicknames) {
+    public ClientController(String nickname, int idPlayer, int NPlayers, Integer[] idPlayers, String[] nicknames,int currentPlayer) {
         this.idPlayer = idPlayer;
         this.nickname = nickname;
         this.NPlayers = NPlayers;
         this.idPlayers = idPlayers.clone();
         this.otherNickname = nicknames;
+        this.currentRoundIdPlayer=currentPlayer;
         }
 
     public ClientController(String nickname, int idPlayer, int nPlayers, Integer[] idPlayers, String[] otherNickname, int currentRoundIdPlayer, Action turnInfo) {

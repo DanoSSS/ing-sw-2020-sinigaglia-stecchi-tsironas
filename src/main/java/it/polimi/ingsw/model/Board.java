@@ -160,6 +160,10 @@ public class Board{
         return currentActiveWorker;
     }
 
+    public int getCurrentRound() {
+        return currentRound;
+    }
+
     public void setCurrentActiveWorkerAndPossibleMoves(Worker currentActiveWorker,ArrayList<Coordinates> currentPossibleMoves){
         this.currentActiveWorker=currentActiveWorker;
         this.currentPossibleMoves=currentPossibleMoves;

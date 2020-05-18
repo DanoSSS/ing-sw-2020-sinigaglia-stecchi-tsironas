@@ -242,7 +242,7 @@ public class Game extends Observable<Object> implements Observer<Object> {
                 }
                 String[] players = board.getPlayerNicknames();
                 Integer[] idPlayers = board.getIdPlayers();
-                int firstToStartID = 2;
+                int firstToStartID = board.getCurrentRound();
                 //int idPlayer1= idPlayers[messageFromPlayerNumber];
                 //String nicknameP1=players[messageFromPlayerNumber];
                 board.getObservableModel().notify(new ReturnMessage(3, workerPosition,players,idPlayers,NumberOfPlayers,firstToStartID));

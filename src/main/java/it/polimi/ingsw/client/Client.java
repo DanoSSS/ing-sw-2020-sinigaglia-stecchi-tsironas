@@ -60,14 +60,14 @@ public class Client {
                                 break;
                             case WORKERSET:
                                 clientController = inputObject.getClientController().clone();
-                                if(clientController.getIdPlayer()==2) {
+                                if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
                                     for (int i = 0; i < inputObject.getNicknames().length; i++) {
                                         System.out.println(inputObject.getNicknames()[i]); //get the String[] with the output
                                     }
                                     setClientAction(Action.SELECTACTIVEWORKER);
                                     System.out.println("it's your turn!\nselect active worker:");
                                 }
-                                else if(clientController.getIdPlayer()==1 || clientController.getIdPlayer()==3){
+                                else {
                                     for (int i = 0; i < inputObject.getNicknames().length; i++) {
                                         System.out.println(inputObject.getNicknames()[i]); //get the String[] with the output
                                     }
@@ -85,8 +85,18 @@ public class Client {
                                 }
                                 break;
                             case MOVEANDCOORDINATEBUILD:
-                                //da scrivere differenza client
-                                //System.out.println("prova");
+                                id = inputObject.getCurrentActiveWorker();
+                                if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
+                                    setClientAction(a);
+                                    ArrayList<Coordinates> possibleBuilds = inputObject.getCurrentPossibleMoves();
+                                    System.out.println("your worker "+id+" is now in coordinate "+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+"\nSelect coordinate to build among the following:");
+                                    for(Coordinates c: possibleBuilds){
+                                        System.out.println(c.getX()+","+c.getY());
+                                    }
+                                }else{
+                                    int n=clientController.getIdPlayer();
+                                    System.out.println("player"+n+" moves his worker "+id+" in cell:"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY());
+                                }
                                 break;
 
                         }
