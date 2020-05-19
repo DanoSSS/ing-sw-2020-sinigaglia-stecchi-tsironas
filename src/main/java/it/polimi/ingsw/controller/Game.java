@@ -1,6 +1,5 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
@@ -199,7 +198,7 @@ public class Game extends Observable<Object> implements Observer<Object> {
         int flag=0,id=1,player=1; //0
 
         switch (a){
-            case INITWORKERS:
+            case INIT_WORKERS:
                 //imposta a board le posizioni degli worker
                 Map<Worker,Coordinates> workerPosition = new HashMap<>();
                 for (Coordinates c : ((Message) message).getInitWorkerList()) {

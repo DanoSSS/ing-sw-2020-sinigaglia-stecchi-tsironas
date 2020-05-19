@@ -197,17 +197,18 @@ public abstract class Round implements Observer<Object>{
     public void update(Object message) {
         Action a = ((Message) message).getAction();
         switch (a){
-            case SELECTACTIVEWORKER:                //deve poter scegliere solo i suoi active worker
+            case SELECT_ACTIVE_WORKER:                //deve poter scegliere solo i suoi active worker
                 int i =  ((Message) message).getIdWorker();
                 activeWorkerSelection(i);
                 break;
-            case SELECTCOORDINATEMOVE:
+            case SELECT_COORDINATE_MOVE:
                 Coordinates moveC = ((Message) message).getCoordinates();
                 moveInCoordinate(moveC);
                 break;
-            case MOVEANDCOORDINATEBUILD:
+            case MOVE_AND_COORDINATE_BUILD:
                 Coordinates buildC = ((Message) message).getCoordinates();
                 buildInCoordinate(buildC);
+                break;
 
 
         }

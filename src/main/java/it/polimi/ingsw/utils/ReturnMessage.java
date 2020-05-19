@@ -39,18 +39,73 @@ public class ReturnMessage implements Serializable {
     private int nextNPlayer;
 
 
-
+    //case STRING
     public ReturnMessage(int nAction,String sentence){
         this.action = Action.values()[nAction];
         this.sentence = sentence;
         this.clientController=null;
     }
 
+    //case SELECTCOORDINATEMOVE
     public ReturnMessage(int nAction,int currentActiveWorker,ArrayList<Coordinates> currentPossibleMoves,int nCurrentPlayer){
         this.action = Action.values()[nAction];
         this.currentActiveWorker = currentActiveWorker;
         this.currentPossibleMoves = currentPossibleMoves;
         this.nCurrentPlayer = nCurrentPlayer;
+        this.clientController=null;
+    }
+
+    //case BUILDENDTURN
+    public ReturnMessage(int nAction,int currentActiveWorker,Coordinates coordinate,int level,int nCurrentPlayer,int nextNPlayer){
+        this.action = Action.values()[nAction];
+        this.currentActiveWorker = currentActiveWorker;
+        this.coordinate = coordinate;
+        this.level = level;
+        this.nCurrentPlayer = nCurrentPlayer;
+        this.nextNPlayer = nextNPlayer;
+        this.clientController = null;
+    }
+
+    //case MOVEANDCOORDINATEBUILD
+    public ReturnMessage(int nAction,int currentActiveWorker,Coordinates oldC,Coordinates newC,ArrayList<Coordinates> currentPossibleBuilds,int nCurrentPlayer){
+        this.action = Action.values()[nAction];
+        this.currentActiveWorker = currentActiveWorker;
+        this.coordinateOld = oldC;
+        this.coordinate = newC;
+        this.currentPossibleMoves = currentPossibleBuilds;
+        this.nCurrentPlayer = nCurrentPlayer;
+        this.clientController = null;
+    }
+
+    //case ACTIVEWORKER
+    public ReturnMessage (int nAction, String[] workersSettingInBoard, ClientController clientController){
+        this.clientController=clientController;
+        this.action=Action.values()[nAction];
+        this.nicknames = workersSettingInBoard.clone();
+    }
+
+    //case WORKERSET
+    public ReturnMessage(int nAction, Map<Worker, Coordinates> workerPosition, String[] nicknames, Integer[] idPlayers, int NPlayer,int firstToStartID) {
+        this.action = Action.values()[nAction];
+        this.workerPosition = workerPosition;
+        this.nicknames=nicknames.clone();
+        this.idPlayers=idPlayers.clone();
+        this.nCurrentPlayer=firstToStartID;
+        this.NPlayer=NPlayer;
+        this.clientController = null;
+    }
+
+    //case ARTEMIS
+    public ReturnMessage(int nAction,Coordinates coordinate,int currentActiveWorker,ArrayList<Coordinates> currentPossibleMoves) {
+        this.action = Action.values()[nAction];
+        this.coordinate = coordinate;
+        this.currentActiveWorker = currentActiveWorker;
+        this.currentPossibleMoves = currentPossibleMoves;
+        this.clientController = null;
+    }
+
+    public ReturnMessage(int nAction){
+        this.action = Action.values()[nAction];
         this.clientController=null;
     }
 
@@ -65,48 +120,6 @@ public class ReturnMessage implements Serializable {
         this.whoToSend = whoToSent;
         this.sentence = sentence;
         this.clientController = null;
-    }
-
-    public ReturnMessage(int nAction,int currentActiveWorker,Coordinates coordinate,int level,int nCurrentPlayer,int nextNPlayer){
-        this.action = Action.values()[nAction];
-        this.currentActiveWorker = currentActiveWorker;
-        this.coordinate = coordinate;
-        this.level = level;
-        this.nCurrentPlayer = nCurrentPlayer;
-        this.nextNPlayer = nextNPlayer;
-        this.clientController = null;
-    }
-
-    public ReturnMessage(int nAction, Map<Worker, Coordinates> workerPosition, String[] nicknames, Integer[] idPlayers, int NPlayer,int firstToStartID) {
-        this.action = Action.values()[nAction];
-        this.workerPosition = workerPosition;
-        this.nicknames=nicknames.clone();
-        this.idPlayers=idPlayers.clone();
-        this.nCurrentPlayer=firstToStartID;
-        this.NPlayer=NPlayer;
-        this.clientController = null;
-    }
-
-    public ReturnMessage(int nAction,int currentActiveWorker,Coordinates oldC,Coordinates newC,ArrayList<Coordinates> currentPossibleBuilds,int nCurrentPlayer){
-        this.action = Action.values()[nAction];
-        this.currentActiveWorker = currentActiveWorker;
-        this.coordinateOld = oldC;
-        this.coordinate = newC;
-        this.currentPossibleMoves = currentPossibleBuilds;
-        this.nCurrentPlayer = nCurrentPlayer;
-        this.clientController = null;
-    }
-
-
-    public ReturnMessage (int nAction, String[] workersSettingInBoard, ClientController clientController){
-        this.clientController=clientController;
-        this.action=Action.values()[nAction];
-        this.nicknames = workersSettingInBoard.clone();
-    }
-
-    public ReturnMessage(int nAction){
-        this.action = Action.values()[nAction];
-        this.clientController=null;
     }
 
     public Map<Worker, Coordinates> getWorkerPosition() {

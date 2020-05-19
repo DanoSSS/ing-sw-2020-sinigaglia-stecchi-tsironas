@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.Player;
@@ -30,13 +29,14 @@ public class RemoteView extends View{
         public void update(Object m) {
             System.out.println("Received");
             Action a =((Message) m).getAction();switch (a) {
-                case INITWORKERS:
-                case SELECTACTIVEWORKER:
-                case SELECTCOORDINATEMOVE:
-                case MOVEANDCOORDINATEBUILD:
+                case INIT_WORKERS:
+                case SELECT_ACTIVE_WORKER:
+                case SELECT_COORDINATE_MOVE:
+                case MOVE_AND_COORDINATE_BUILD:
+                case ARTEMIS_FIRST_MOVE:
                     handleMessage(m, player.getIdPlayer());  //CREARE getId() in Player, inizializzare questo valore id dei players
                     break;
-                case NOTYOURTURN:
+                case NOT_YOUR_TURN:
                     clientConnection.asyncSend(new ReturnMessage(2,"It's not your turn!wait"));
                     break;
             }
@@ -77,7 +77,7 @@ public class RemoteView extends View{
                 }else{
                     clientConnection.asyncSend(new ReturnMessage(4,"Wait your turn!"));
                 }*/
-            case WORKERSET:
+            case WORKER_SET:
                 m=((ReturnMessage)message).getWorkerPosition();
                 List<Worker> workers = new ArrayList<>(m.keySet());
                 String[] messageSettingWorkersPositions = workers.size()==4 ? new String[4] : new String[6];
@@ -95,14 +95,11 @@ public class RemoteView extends View{
                 }
                 clientConnection.asyncSend(new ReturnMessage(3,messageSettingWorkersPositions,clientController));
                 break;
-            case SELECTCOORDINATEMOVE:
-                int nCurrentPlayer = ((ReturnMessage)message).getnCurrentPlayer();
-                if(this.numberRW == nCurrentPlayer) {
-                    clientConnection.asyncSend((ReturnMessage)message);
-                }
-                break;
-            case MOVEANDCOORDINATEBUILD:
-            case BUILDENDTURN:
+            case SELECT_COORDINATE_MOVE:
+            case MOVE_AND_COORDINATE_BUILD:
+            case BUILD_END_TURN:
+            case ARTEMIS_FIRST_MOVE:
+            case ARTEMIS_SECOND_MOVE:
                 clientConnection.asyncSend((ReturnMessage)message);
                 break;
 

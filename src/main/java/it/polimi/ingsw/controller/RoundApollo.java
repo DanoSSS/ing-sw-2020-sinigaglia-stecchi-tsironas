@@ -47,7 +47,6 @@ public class RoundApollo extends Round {
         return possiblesMovesCoordinates;
     }
 
-
     public boolean doMove(Coordinates moveCoordinates,boolean GameOver,Worker activeWorker) {
         Coordinates oldCoordinates;
         int x=activeWorker.getCoordinates().getX();
@@ -68,7 +67,6 @@ public class RoundApollo extends Round {
         }
         return GameOver;
     }
-
 
 }
 
