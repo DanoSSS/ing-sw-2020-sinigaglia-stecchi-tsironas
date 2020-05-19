@@ -46,10 +46,6 @@ public class Player {
 
     }
 
-        /*public void SetActiveWorker(Worker worker) {
-            worker.setActiveWorker(true);
-        }*/
-
     public String getNickname(){return nickname;}
 
     public God getGod() {

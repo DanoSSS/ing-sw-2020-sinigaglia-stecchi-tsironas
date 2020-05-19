@@ -40,7 +40,6 @@ public class Worker {
     public void setCell(int x, int y) { // uguale alla locateworker
         coordinates.setX(x);
         coordinates.setY(y);
-
     }
 
     public int getIdWorker() {
