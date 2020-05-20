@@ -98,11 +98,12 @@ public class ReturnMessage implements Serializable {
     }
 
     //case ARTEMIS
-    public ReturnMessage(int nAction,Coordinates coordinate,int currentActiveWorker,ArrayList<Coordinates> currentPossibleMoves) {
+    public ReturnMessage(int nAction,Coordinates coordinateOld,Coordinates coordinate,int currentActiveWorker,ArrayList<Coordinates> currentPossibleMoves) {
         this.action = Action.values()[nAction];
         this.coordinate = coordinate;
         this.currentActiveWorker = currentActiveWorker;
         this.currentPossibleMoves = currentPossibleMoves;
+        this.coordinateOld=coordinateOld;
         this.clientController = null;
     }
 
@@ -163,11 +164,8 @@ public class ReturnMessage implements Serializable {
     public Coordinates getCoordinate() {
         return coordinate;
     }
-    public String getDome(){
-        if(dome){
-            return "yes";
-        }
-        else return "no";
+    public boolean getDome(){
+        return dome;
     }
 
 

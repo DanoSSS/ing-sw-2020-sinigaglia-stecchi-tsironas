@@ -45,13 +45,15 @@ public class RoundArtemis extends Round {
 
     public void firstMoveArtemis(Coordinates newC) {
         boolean win = false;
-        oldCoordinate = board.getCurrentActiveWorker().getCoordinates();
+        int x=board.getCurrentActiveWorker().getCoordinates().getX();
+        int y=board.getCurrentActiveWorker().getCoordinates().getY();
+        oldCoordinate = new Coordinates(x,y);
         win = doMove(newC, win, board.getCurrentActiveWorker());
         if (win) {
 
         } else {
             ArrayList<Coordinates> secondPossibleMove = canMoveSecond(board.getCurrentActiveWorker(), oldCoordinate);
-            board.getObservableModel().notify(new ReturnMessage(9, newC, board.getCurrentActiveWorker().getIdWorker(), secondPossibleMove));
+            board.getObservableModel().notify(new ReturnMessage(9,oldCoordinate, newC, board.getCurrentActiveWorker().getIdWorker(), secondPossibleMove));
         }
     }
 
@@ -67,7 +69,9 @@ public class RoundArtemis extends Round {
         }else{
             String[] input = answer.split(",");
             coordinates = new Coordinates(Integer.parseInt(input[0]),Integer.parseInt(input[1]));
-            oldCoordinate = board.getCurrentActiveWorker().getCoordinates();
+            int x=board.getCurrentActiveWorker().getCoordinates().getX();
+            int y=board.getCurrentActiveWorker().getCoordinates().getY();
+            oldCoordinate = new Coordinates(x,y);
             win=doMove(coordinates,win,board.getCurrentActiveWorker());
             if(win){
 

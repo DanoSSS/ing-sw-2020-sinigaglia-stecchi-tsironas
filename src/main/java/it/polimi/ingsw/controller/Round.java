@@ -170,7 +170,10 @@ public abstract class Round implements Observer<Object>{
 
     public void moveInCoordinate(Coordinates newC){
         boolean win= false;
-        Coordinates oldC = board.getCurrentActiveWorker().getCoordinates();
+        Coordinates oldC;
+        int x=board.getCurrentActiveWorker().getCoordinates().getX();
+        int y=board.getCurrentActiveWorker().getCoordinates().getY();
+        oldC = new Coordinates(x,y);
         win=doMove(newC,win,board.getCurrentActiveWorker());
         if(win){
 

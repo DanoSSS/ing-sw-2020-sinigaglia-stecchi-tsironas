@@ -19,6 +19,7 @@ public class Client {
     private Action clientAction;
     private ClientController clientController;
     private boolean active = true;
+    private CellMessage[][] board;
 
     public void setClientAction(Action a) {
         this.clientAction = a;
@@ -59,11 +60,13 @@ public class Client {
                                 break;
                             case WORKER_SET:
                                 clientController = inputObject.getClientController().clone();
+                                board = clientController.getBoard();
                                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
                                     for (int i = 0; i < inputObject.getNicknames().length; i++) {
                                         System.out.println(inputObject.getNicknames()[i]); //get the String[] with the output
                                     }
                                     setClientAction(Action.SELECT_ACTIVE_WORKER);
+                                    print(board);
                                     System.out.println("it's your turn!\nselect active worker:");
                                 }
                                 else {
@@ -71,6 +74,7 @@ public class Client {
                                         System.out.println(inputObject.getNicknames()[i]); //get the String[] with the output
                                     }
                                     setClientAction(Action.NOT_YOUR_TURN);
+                                    print(board);
                                     System.out.println("wait your turn");
                                 }
                                 break;
@@ -91,39 +95,50 @@ public class Client {
                                 break;
                             case MOVE_AND_COORDINATE_BUILD:
                                 id = inputObject.getCurrentActiveWorker();
+                                clientController.setWorkerCellMessage(id,inputObject.getCoordinate().getX()*2+1,inputObject.getCoordinate().getY());
+                                clientController.freeWorkerCellMessage(inputObject.getCoordinateOld().getX()*2+1,inputObject.getCoordinateOld().getY());
                                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
                                     setClientAction(a);
                                     ArrayList<Coordinates> possibleBuilds = inputObject.getCurrentPossibleMoves();
+                                    print(board);
                                     System.out.println("your worker"+id+" is now in coordinate "+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+"\nSelect coordinate to build among the following:");
                                     for(Coordinates c: possibleBuilds){
                                         System.out.println(c.getX()+","+c.getY());
                                     }
                                 }else{
                                     int n=clientController.getCurrentRoundIdPlayer();
+                                    print(board);
                                     System.out.println("player"+n+" moves his worker"+id+" in cell:"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY());
                                 }
                                 break;
                             case BUILD_END_TURN:
                                 id = inputObject.getCurrentActiveWorker();
+                                clientController.buildCellMessage(inputObject.getCoordinate().getX()*2,inputObject.getCoordinate().getY(),inputObject.getDome());
                                 int n =inputObject.getnCurrentPlayer();
                                 if(clientController.getIdPlayer()==inputObject.getnCurrentPlayer()){
+                                    print(board);
                                     System.out.println("your worker"+id+"build in "+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+" level:"+inputObject.getLevel()+" dome:"+inputObject.getDome());
                                     setClientAction(Action.NOT_YOUR_TURN);
                                     System.out.println("wait your turn");
                                 }else if(clientController.getIdPlayer()==inputObject.getNextNPlayer()){
-                                    System.out.println("player"+n+" build with his worker"+id+" in cell:"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+" level:"+inputObject.getLevel());
+                                    print(board);
+                                    System.out.println("player"+n+" build with his worker"+id+" in cell:"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+" level:"+inputObject.getLevel()+" dome:"+inputObject.getDome());
                                     setClientAction(Action.SELECT_ACTIVE_WORKER);
                                     System.out.println("it's your turn!\nselect active worker:");
                                 }else{
-                                    System.out.println("player"+n+" build with his worker"+id+" in cell:"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+" level:"+inputObject.getLevel());
+                                    print(board);
+                                    System.out.println("player"+n+" build with his worker"+id+" in cell:"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+" level:"+inputObject.getLevel()+" dome:"+inputObject.getDome());
                                     setClientAction(Action.NOT_YOUR_TURN);
                                     System.out.println("wait your turn");
                                 }
                                 break;
                             case ARTEMIS_FIRST_MOVE:
                                 id = inputObject.getCurrentActiveWorker();
+                                clientController.setWorkerCellMessage(id,inputObject.getCoordinate().getX()*2+1,inputObject.getCoordinate().getY());
+                                clientController.freeWorkerCellMessage(inputObject.getCoordinateOld().getX()*2+1,inputObject.getCoordinateOld().getY());
                                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()){
                                     setClientAction(a);
+                                    print(board);
                                     System.out.println("your worker"+id+" is now in cell "+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY());
                                     if(inputObject.getCurrentPossibleMoves().size() != 0){
                                         System.out.println("If you want activate power and move second select coordinate among the following otherwise write NO");
@@ -133,6 +148,7 @@ public class Client {
                                     }else System.out.println("you cannot activate Artemis power and move second");
                                 }else {
                                     n=clientController.getCurrentRoundIdPlayer();
+                                    print(board);
                                     System.out.println("player"+n+" moves his worker in cell"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY());
 
                                 }
@@ -148,7 +164,10 @@ public class Client {
                                             System.out.println(c.getX()+","+c.getY());
                                         }
                                     }else{
+                                        clientController.setWorkerCellMessage(id,inputObject.getCoordinate().getX()*2+1,inputObject.getCoordinate().getY());
+                                        clientController.freeWorkerCellMessage(inputObject.getCoordinateOld().getX()*2+1,inputObject.getCoordinateOld().getY());
                                         bool=true;
+                                        print(board);
                                         System.out.println("your worker"+id+" is now in coordinate "+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+"\nSelect coordinate to build among the following:");
                                         for(Coordinates c: inputObject.getCurrentPossibleMoves()){
                                             System.out.println(c.getX()+","+c.getY());
@@ -157,6 +176,7 @@ public class Client {
                                 }else {
                                     n = clientController.getCurrentRoundIdPlayer();
                                     if (bool) {
+                                        print(board);
                                         System.out.println("player"+n+" moves his worker in cell" + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY());
                                     } else {
                                         System.out.println("player"+n+" do not use his power");
@@ -165,15 +185,19 @@ public class Client {
                                 break;
                             case BUILD_ATLAS:
                                 id = inputObject.getCurrentActiveWorker();
+                                clientController.setWorkerCellMessage(id,inputObject.getCoordinate().getX()*2+1,inputObject.getCoordinate().getY());
+                                clientController.freeWorkerCellMessage(inputObject.getCoordinateOld().getX()*2+1,inputObject.getCoordinateOld().getY());
                                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
                                     setClientAction(a);
                                     ArrayList<Coordinates> possibleBuilds = inputObject.getCurrentPossibleMoves();
+                                    print(board);
                                     System.out.println("your worker"+id+" is now in coordinate "+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+"\nSelect coordinate to build among the following.\n(If you want activate power and build a dome write dome follow by coordinate otherwise write std follow by coordinate)");
                                     for(Coordinates c: possibleBuilds){
                                         System.out.println(c.getX()+","+c.getY());
                                     }
                                 }else{
                                     n=clientController.getCurrentRoundIdPlayer();
+                                    print(board);
                                     System.out.println("player"+n+" moves his worker"+id+" in cell:"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY());
                                 }
                                 break;
@@ -228,6 +252,18 @@ public class Client {
         });
         t.start();
         return t;
+    }
+
+    public void print(CellMessage[][] board){
+        System.out.println("---------------------------------------------");
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 5; j++){
+                System.out.print("|  "+board[i][j]+"  |");
+            }System.out.println();
+            if(i>0 && i%2!=0) {
+                System.out.println("---------------------------------------------");
+            }
+        }
     }
 
     public void run() throws IOException {
