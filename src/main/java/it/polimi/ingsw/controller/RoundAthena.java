@@ -10,36 +10,6 @@ public class RoundAthena extends Round {
         super(board, player);
     }
 
-
-    public boolean ExecuteRound(boolean Gameover) {
-        boolean gamestatus;
-        int i;
-        Worker activeWorker, newActiveWorker;
-        ArrayList<Coordinates> possibleMoves, possibleBuilds;
-        Coordinates moveCoordinates, buildCoordinates;
-        activeWorker = askActiveWorker();
-        possibleMoves = canMove(activeWorker);        //arraylist of possible coordinates where worker can move(da passare alla view)
-        if (possibleMoves.size() == 0) {
-            do {
-                newActiveWorker = askOtherWorker();
-            } while (newActiveWorker != activeWorker);
-            activeWorker = newActiveWorker;
-            possibleMoves = canMove(activeWorker);
-            if (possibleMoves.size() == 0) {
-                return false;       // se ci sono due giocatori vince l'altro, se sono in tre eliminare il giocatore
-            }
-        }
-        moveCoordinates = askCoordinatesToMove(possibleMoves);
-        gamestatus = doMove(moveCoordinates, Gameover, activeWorker);
-        possibleBuilds = canBuild(activeWorker);        //arraylist of possible coordinates where worker can build(da passare alla view)
-        if (possibleBuilds.size() == 0) {
-            return false;       // se ci sono due giocatori vince l'altro, se sono in tre eliminare il giocatore
-        }
-        buildCoordinates = askCoordinatesToBuild(possibleBuilds);
-        doBuild(buildCoordinates);
-        return gamestatus;
-    }
-
     public ArrayList<Coordinates> canMove(Worker worker) {
         Coordinates coordinates, newCoordinates;
         int x, y;
@@ -59,7 +29,6 @@ public class RoundAthena extends Round {
         }
         return possiblesMovesCoordinates;
     }
-
 
     public boolean doMove(Coordinates moveCoordinates,boolean GameOver,Worker activeWorker) {
         int count;
@@ -84,7 +53,5 @@ public class RoundAthena extends Round {
         }
         return GameOver;
     }
-
-
 
 }

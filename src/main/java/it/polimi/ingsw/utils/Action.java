@@ -12,7 +12,8 @@ package it.polimi.ingsw.utils;
     MOVE_AND_COORDINATE_BUILD(7),
     BUILD_END_TURN(8),
     ARTEMIS_FIRST_MOVE(9),
-    ARTEMIS_SECOND_MOVE(10);
+    ARTEMIS_SECOND_MOVE(10),
+    BUILD_ATLAS(11);
 
     private int value;
 

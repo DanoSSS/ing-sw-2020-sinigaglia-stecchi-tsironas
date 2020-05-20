@@ -4,58 +4,16 @@ import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.utils.Action;
+import it.polimi.ingsw.utils.Message;
 
 import java.util.ArrayList;
 
 public class RoundAtlas extends Round {
 
-
     public RoundAtlas(Board board, Player player){
         super(board, player);
     }
-
-
-    public boolean ExecuteRound(boolean Gameover) {
-        boolean gamestatus,domePower;
-        int i;
-        Worker activeWorker,newActiveWorker;
-        ArrayList<Coordinates> possibleMoves,possibleBuilds;
-        Coordinates moveCoordinates,buildCoordinates;
-        activeWorker = askActiveWorker();
-        possibleMoves=canMove(activeWorker);        //arraylist of possible coordinates where worker can move(da passare alla view)
-        if(possibleMoves.size()==0){
-            do{
-                newActiveWorker=askOtherWorker();
-            }while(newActiveWorker!=activeWorker);
-            activeWorker=newActiveWorker;
-            possibleMoves=canMove(activeWorker);
-            if(possibleMoves.size()==0){
-                return false;       // se ci sono due giocatori vince l'altro, se sono in tre eliminare il giocatore
-            }
-        }
-        moveCoordinates=askCoordinatesToMove(possibleMoves);
-        gamestatus=doMove(moveCoordinates,Gameover,activeWorker);
-        possibleBuilds = canBuild(activeWorker);        //arraylist of possible coordinates where worker can build(da passare alla view)
-        if(possibleBuilds.size()==0){
-            return false;       // se ci sono due giocatori vince l'altro, se sono in tre eliminare il giocatore
-        }
-        buildCoordinates = askCoordinatesToBuild(possibleBuilds);
-        domePower=askDomeOrNot();
-        doBuild(buildCoordinates,domePower);
-        if(board.getNround()!=0) {
-            i = board.getNround();
-            i--;
-            board.setNround(i);
-        }
-        return gamestatus;
-    }
-
-    public boolean askDomeOrNot(){
-        boolean dome=true;
-        //chiedere alla view se si vuole costruire un dome usando il potere a prescindere dal livello
-        return dome;
-    }
-
 
     public void doBuild(Coordinates buildCoordinate,boolean domePower) {
         if (domePower) {
@@ -65,6 +23,50 @@ public class RoundAtlas extends Round {
             if (board.getLevel(buildCoordinate) == 4) {
                 board.setDome(buildCoordinate);
             }
+        }
+    }
+
+    public void buildDomeorNot(String input){
+        boolean domePower=false;
+        int i;
+        String[] inputAnswer = input.split(" ");
+        String[] sC = inputAnswer[1].split(",");
+        Coordinates coordinates = new Coordinates(Integer.parseInt(sC[0]),Integer.parseInt(sC[1]));
+        if(inputAnswer[0].equals("dome")){
+            domePower = true;
+            doBuild(coordinates,domePower);
+        }else if(inputAnswer[1].equals("std")){
+            domePower = false;
+            doBuild(coordinates,domePower);
+        }
+        if(board.getNround()!=0) {
+            i = board.getNround();
+            i--;
+            board.setNround(i);
+        }
+        board.buildEndTurn(coordinates);
+    }
+
+    @Override
+    public void update(Object message) {
+        Action a = ((Message) message).getAction();
+        switch (a){
+            case SELECT_ACTIVE_WORKER:                //deve poter scegliere solo i suoi active worker
+                int i =  ((Message) message).getIdWorker();
+                activeWorkerSelection(i);
+                break;
+            case SELECT_COORDINATE_MOVE:
+                Coordinates moveC = ((Message) message).getCoordinates();
+                moveInCoordinate(moveC);
+                break;
+            case MOVE_AND_COORDINATE_BUILD:
+                Coordinates buildC = ((Message) message).getCoordinates();
+                buildInCoordinate(buildC);
+                break;
+            case BUILD_ATLAS:
+                String input = ((Message) message).getSentence();
+                buildDomeorNot(input);
+                break;
         }
     }
 

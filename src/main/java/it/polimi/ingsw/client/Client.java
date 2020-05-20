@@ -107,7 +107,7 @@ public class Client {
                                 id = inputObject.getCurrentActiveWorker();
                                 int n =inputObject.getnCurrentPlayer();
                                 if(clientController.getIdPlayer()==inputObject.getnCurrentPlayer()){
-                                    System.out.println("your worker"+id+"build in "+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+" level:"+inputObject.getLevel());
+                                    System.out.println("your worker"+id+"build in "+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+" level:"+inputObject.getLevel()+" dome:"+inputObject.getDome());
                                     setClientAction(Action.NOT_YOUR_TURN);
                                     System.out.println("wait your turn");
                                 }else if(clientController.getIdPlayer()==inputObject.getNextNPlayer()){
@@ -163,6 +163,20 @@ public class Client {
                                     }
                                 }
                                 break;
+                            case BUILD_ATLAS:
+                                id = inputObject.getCurrentActiveWorker();
+                                if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
+                                    setClientAction(a);
+                                    ArrayList<Coordinates> possibleBuilds = inputObject.getCurrentPossibleMoves();
+                                    System.out.println("your worker"+id+" is now in coordinate "+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+"\nSelect coordinate to build among the following.\n(If you want activate power and build a dome write dome follow by coordinate otherwise write std follow by coordinate)");
+                                    for(Coordinates c: possibleBuilds){
+                                        System.out.println(c.getX()+","+c.getY());
+                                    }
+                                }else{
+                                    n=clientController.getCurrentRoundIdPlayer();
+                                    System.out.println("player"+n+" moves his worker"+id+" in cell:"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY());
+                                }
+                                break;
 
                         }
                     }
@@ -186,6 +200,7 @@ public class Client {
                             case STRING:
                             case NOT_YOUR_TURN:
                             case ARTEMIS_FIRST_MOVE:
+                            case BUILD_ATLAS:
                                 socketOut.writeObject(new Message(getClientAction().getValue(),inputObject));
                                 break;
                             case SELECT_ACTIVE_WORKER:

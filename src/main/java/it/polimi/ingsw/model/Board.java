@@ -133,8 +133,6 @@ public class Board{
         board[coordinates.getX()][coordinates.getY()].setOccupied(true);
     }
 
-    public void initRound(int i){}
-
     public ObservableModel getObservableModel(){
         return observableModel;
     }
@@ -182,14 +180,17 @@ public class Board{
 
     public void moveWorkerAndPossibleBuilds(Coordinates oldC,Coordinates newC,ArrayList<Coordinates> currentPossibleBuilds){
         this.currentPossibleBuilds=currentPossibleBuilds;
-        observableModel.notify(new ReturnMessage(7,currentActiveWorker.getIdWorker(),oldC,newC,currentPossibleBuilds,currentRound));
+        if(players[currentRound-1].getGod()==God.ATLAS){
+            observableModel.notify(new ReturnMessage(11,currentActiveWorker.getIdWorker(),oldC,newC,currentPossibleBuilds,currentRound));
+        }else observableModel.notify(new ReturnMessage(7,currentActiveWorker.getIdWorker(),oldC,newC,currentPossibleBuilds,currentRound));
     }
 
     public void buildEndTurn(Coordinates c){
         int oldRound = currentRound;
         int newRound = UpdateRound();
         int level = getLevel(c);
-        observableModel.notify(new ReturnMessage(8,currentActiveWorker.getIdWorker(),c,level,oldRound,newRound));
+        boolean dome = isDome(c);
+        observableModel.notify(new ReturnMessage(8,currentActiveWorker.getIdWorker(),c,level,oldRound,newRound,dome));
 
     }
 

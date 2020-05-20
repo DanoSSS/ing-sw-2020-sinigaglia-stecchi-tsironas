@@ -25,6 +25,7 @@ public class ReturnMessage implements Serializable {
     private ArrayList<Coordinates> currentPossibleMoves;
     private Coordinates coordinate;
     private Coordinates coordinateOld;
+    private boolean dome;
 
     public int getLevel() {
         return level;
@@ -56,13 +57,14 @@ public class ReturnMessage implements Serializable {
     }
 
     //case BUILDENDTURN
-    public ReturnMessage(int nAction,int currentActiveWorker,Coordinates coordinate,int level,int nCurrentPlayer,int nextNPlayer){
+    public ReturnMessage(int nAction,int currentActiveWorker,Coordinates coordinate,int level,int nCurrentPlayer,int nextNPlayer,boolean dome){
         this.action = Action.values()[nAction];
         this.currentActiveWorker = currentActiveWorker;
         this.coordinate = coordinate;
         this.level = level;
         this.nCurrentPlayer = nCurrentPlayer;
         this.nextNPlayer = nextNPlayer;
+        this.dome = dome;
         this.clientController = null;
     }
 
@@ -160,6 +162,12 @@ public class ReturnMessage implements Serializable {
     }
     public Coordinates getCoordinate() {
         return coordinate;
+    }
+    public String getDome(){
+        if(dome){
+            return "yes";
+        }
+        else return "no";
     }
 
 

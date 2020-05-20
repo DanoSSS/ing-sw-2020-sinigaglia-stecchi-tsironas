@@ -13,69 +13,8 @@ import java.util.ArrayList;
 public class RoundArtemis extends Round {
     private Coordinates oldCoordinate;
 
-
     public RoundArtemis(Board board, Player player) {
         super(board, player);
-    }
-
-
-    public boolean ExecuteRound(boolean Gameover) {
-        boolean gamestatus,moveSecond;
-        int i;
-        Worker activeWorker,newActiveWorker;
-        ArrayList<Coordinates> possibleMoves,possibleBuilds;
-        Coordinates moveCoordinates,buildCoordinates,oldCoordinates;
-        activeWorker = askActiveWorker();
-        int x=activeWorker.getCoordinates().getX();
-        int y=activeWorker.getCoordinates().getY();
-        oldCoordinates = new Coordinates(x,y);
-        possibleMoves=canMove(activeWorker);        //arraylist of possible coordinates where worker can move(da passare alla view)
-        if(possibleMoves.size()==0){
-            do{
-                newActiveWorker=askOtherWorker();
-            }while(newActiveWorker!=activeWorker);
-            activeWorker=newActiveWorker;
-            x=activeWorker.getCoordinates().getX();
-            y=activeWorker.getCoordinates().getY();
-            oldCoordinates = new Coordinates(x,y);
-            possibleMoves=canMove(activeWorker);
-            if(possibleMoves.size()==0){
-                return false;       // se ci sono due giocatori vince l'altro, se sono in tre eliminare il giocatore
-            }
-        }
-        moveCoordinates=askCoordinatesToMove(possibleMoves);
-        gamestatus=doMove(moveCoordinates,Gameover,activeWorker);
-        moveSecond = askIfMoveSecond();
-        if (moveSecond){
-            possibleMoves=canMoveSecond(activeWorker,oldCoordinates);
-            if(possibleMoves.size()==0){
-                return false;       // se non si può muvoere far perdere o impedire di attivare il potere
-            }
-            moveCoordinates=askCoordinatesToMove(possibleMoves);
-            gamestatus=doMove(moveCoordinates,Gameover,activeWorker);
-        }
-        possibleBuilds = canBuild(activeWorker);        //arraylist of possible coordinates where worker can build(da passare alla view)
-        if(possibleBuilds.size()==0){
-            return false;       // se ci sono due giocatori vince l'altro, se sono in tre eliminare il giocatore
-        }
-        buildCoordinates = askCoordinatesToBuild(possibleBuilds);
-        doBuild(buildCoordinates);
-        if(board.getNround()!=0) {
-            i = board.getNround();
-            i--;
-            board.setNround(i);
-        }
-        return gamestatus;
-    }
-
-
-
-
-
-    public boolean askIfMoveSecond(){
-        boolean moveSecond=true;
-        //chiedere se si vuole muovere una seconda volta ma non nella posizione iniziale
-        return moveSecond;
     }
 
     public ArrayList<Coordinates> canMoveSecond(Worker worker,Coordinates oldCoordinates) {

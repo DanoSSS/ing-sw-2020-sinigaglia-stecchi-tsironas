@@ -57,7 +57,6 @@ public abstract class Round implements Observer<Object>{
         return gamestatus;
     }
 
-
     public Worker askActiveWorker() {
         Worker worker=null;
         //chiede alla view di selezionare l'altro worker
@@ -190,8 +189,9 @@ public abstract class Round implements Observer<Object>{
             i--;
             board.setNround(i);
         }
-        else board.buildEndTurn(c);
+        board.buildEndTurn(c);
     }
+
 
     @Override
     public void update(Object message) {
@@ -209,8 +209,6 @@ public abstract class Round implements Observer<Object>{
                 Coordinates buildC = ((Message) message).getCoordinates();
                 buildInCoordinate(buildC);
                 break;
-
-
         }
     }
 }
