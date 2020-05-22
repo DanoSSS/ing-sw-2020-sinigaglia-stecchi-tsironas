@@ -96,14 +96,4 @@ public class RoundPrometheus extends Round {
         return possiblesMovesCoordinates;
     }
 
-
-
-
-
-
-
-
-
-
-
 }

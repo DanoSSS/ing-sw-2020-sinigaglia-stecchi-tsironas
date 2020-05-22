@@ -99,6 +99,26 @@ public class ReturnMessage implements Serializable {
         this.clientController = null;
     }
 
+    //case END_TURN
+    public ReturnMessage(int nAction,int currentActiveWorker,int nCurrentPlayer,int nextNPlayer){
+        this.action = Action.values()[nAction];
+        this.currentActiveWorker = currentActiveWorker;
+        this.nCurrentPlayer = nCurrentPlayer;
+        this.nextNPlayer = nextNPlayer;
+        this.clientController = null;
+    }
+
+    //case FIRST_BUILD_DEMETER
+    public ReturnMessage(int nAction,int currentActiveWorker,Coordinates coordinates,int level,boolean dome,ArrayList<Coordinates> currentPossibleBuilds){
+        this.action = Action.values()[nAction];
+        this.currentActiveWorker = currentActiveWorker;
+        this.coordinate = coordinates;
+        this.level = level;
+        this.dome = dome;
+        this.currentPossibleMoves = currentPossibleBuilds;
+        this.clientController = null;
+    }
+
     public ReturnMessage(int nAction){
         this.action = Action.values()[nAction];
         this.clientController=null;

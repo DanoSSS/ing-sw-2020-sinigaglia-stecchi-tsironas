@@ -199,7 +199,6 @@ public abstract class Round implements Observer<Object>{
         board.buildEndTurn(c);
     }
 
-
     @Override
     public void update(Object message) {
         Action a = ((Message) message).getAction();
@@ -218,4 +217,5 @@ public abstract class Round implements Observer<Object>{
                 break;
         }
     }
+
 }

@@ -36,6 +36,7 @@ public class RemoteView extends View{
                 case ARTEMIS_FIRST_MOVE:
                 case BUILD_ATLAS:
                 case BUILD_EPHAESTUS:
+                case FIRST_BUILD_DEMETER:
                     handleMessage(m, player.getIdPlayer());  //CREARE getId() in Player, inizializzare questo valore id dei players
                     break;
                 case NOT_YOUR_TURN:
@@ -51,8 +52,6 @@ public class RemoteView extends View{
         this.numberRW = i;
         c.addObserver(new MessageReceiver(player));
     }
-
-
 
     @Override
     public void update(Object message) {                //WORKERSET non stampa al secondo client in 2 giocatori da provare in 3
@@ -107,9 +106,12 @@ public class RemoteView extends View{
             case ARTEMIS_SECOND_MOVE:
             case BUILD_ATLAS:
             case BUILD_EPHAESTUS:
+            case END_TURN:
+            case FIRST_BUILD_DEMETER:
                 clientConnection.asyncSend((ReturnMessage)message);
                 break;
 
         }
     }
+
 }

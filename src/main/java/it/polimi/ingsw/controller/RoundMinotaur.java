@@ -64,7 +64,6 @@ public class RoundMinotaur extends Round {
         return GameOver;
     }
 
-
     public boolean minotaurForcing (Coordinates workerCoordinates, Coordinates opponentCoordinates){
         int x,y;
         Coordinates newCoordinates;
@@ -86,6 +85,5 @@ public class RoundMinotaur extends Round {
         newCoordinates = new Coordinates(x, y);
         return newCoordinates;
     }
-
 
 }

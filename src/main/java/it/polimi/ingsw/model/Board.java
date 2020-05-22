@@ -168,6 +168,13 @@ public class Board{
         return currentActiveWorker;
     }
 
+    public void firstBuildDemeter(Coordinates c,ArrayList<Coordinates> currentPossibleBuilds){
+        this.currentPossibleBuilds=currentPossibleBuilds;
+        int level = getLevel(c);
+        boolean dome = isDome(c);
+        observableModel.notify(new ReturnMessage(14,currentActiveWorker.getIdWorker(),c,level,dome,currentPossibleBuilds));
+    }
+
     public int getCurrentRound() {
         return currentRound;
     }
@@ -187,13 +194,16 @@ public class Board{
         }else observableModel.notify(new ReturnMessage(7,currentActiveWorker.getIdWorker(),oldC,newC,currentPossibleBuilds,currentRound,oppWorker));
     }
 
-    public void buildEndTurn(Coordinates c){
+    public void buildEndTurn(Coordinates c) {
         int oldRound = currentRound;
         int newRound = UpdateRound();
-        int level = getLevel(c);
-        boolean dome = isDome(c);
-        observableModel.notify(new ReturnMessage(8,currentActiveWorker.getIdWorker(),c,level,oldRound,newRound,dome));
-
+        if (c != null) {
+            int level = getLevel(c);
+            boolean dome = isDome(c);
+            observableModel.notify(new ReturnMessage(8, currentActiveWorker.getIdWorker(), c, level, oldRound, newRound, dome));
+        } else {
+            observableModel.notify(new ReturnMessage(13, currentActiveWorker.getIdWorker(), oldRound, newRound));
+        }
     }
 
 }
