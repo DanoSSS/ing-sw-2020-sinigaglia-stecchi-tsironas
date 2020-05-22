@@ -3,7 +3,9 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.controller.Game;
 import it.polimi.ingsw.utils.Color;
 
-public class Player {
+import java.io.Serializable;
+
+public class Player implements Serializable {
     private String nickname;
     private String color;
     private int idPlayer;

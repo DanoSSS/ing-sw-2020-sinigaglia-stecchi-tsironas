@@ -170,10 +170,14 @@ public abstract class Round implements Observer<Object>{
 
     public void moveInCoordinate(Coordinates newC){
         boolean win= false;
+        Worker oppositeWorker=null;
         Coordinates oldC;
         int x=board.getCurrentActiveWorker().getCoordinates().getX();
         int y=board.getCurrentActiveWorker().getCoordinates().getY();
         oldC = new Coordinates(x,y);
+        if(board.isOccupied(newC)){
+            oppositeWorker=board.getWorker(newC);
+        }
         win=doMove(newC,win,board.getCurrentActiveWorker());
         if(win){
 
@@ -181,7 +185,7 @@ public abstract class Round implements Observer<Object>{
         possibleBuilds=canBuild(board.getCurrentActiveWorker());
         if (possibleBuilds.size() == 0) {
             board.getObservableModel().notify(new ReturnMessage(5)); //da gestire la perdita
-        }else board.moveWorkerAndPossibleBuilds(oldC,newC,possibleBuilds);
+        }else board.moveWorkerAndPossibleBuilds(oldC,newC,possibleBuilds,oppositeWorker);
     }
 
     public void buildInCoordinate(Coordinates c){

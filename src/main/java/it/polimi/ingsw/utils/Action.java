@@ -13,7 +13,8 @@ package it.polimi.ingsw.utils;
     BUILD_END_TURN(8),
     ARTEMIS_FIRST_MOVE(9),
     ARTEMIS_SECOND_MOVE(10),
-    BUILD_ATLAS(11);
+    BUILD_ATLAS(11),
+    BUILD_EPHAESTUS(12);
 
     private int value;
 

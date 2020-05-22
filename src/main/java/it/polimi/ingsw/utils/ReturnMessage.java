@@ -26,18 +26,9 @@ public class ReturnMessage implements Serializable {
     private Coordinates coordinate;
     private Coordinates coordinateOld;
     private boolean dome;
-
-    public int getLevel() {
-        return level;
-    }
-
     private int level;
-
-    public int getNextNPlayer() {
-        return nextNPlayer;
-    }
-
     private int nextNPlayer;
+    private Worker oppWorker;
 
 
     //case STRING
@@ -69,13 +60,14 @@ public class ReturnMessage implements Serializable {
     }
 
     //case MOVEANDCOORDINATEBUILD
-    public ReturnMessage(int nAction,int currentActiveWorker,Coordinates oldC,Coordinates newC,ArrayList<Coordinates> currentPossibleBuilds,int nCurrentPlayer){
+    public ReturnMessage(int nAction,int currentActiveWorker,Coordinates oldC,Coordinates newC,ArrayList<Coordinates> currentPossibleBuilds,int nCurrentPlayer,Worker oppWorker){
         this.action = Action.values()[nAction];
         this.currentActiveWorker = currentActiveWorker;
         this.coordinateOld = oldC;
         this.coordinate = newC;
         this.currentPossibleMoves = currentPossibleBuilds;
         this.nCurrentPlayer = nCurrentPlayer;
+        this.oppWorker = oppWorker;
         this.clientController = null;
     }
 
@@ -166,6 +158,15 @@ public class ReturnMessage implements Serializable {
     }
     public boolean getDome(){
         return dome;
+    }
+    public int getNextNPlayer() {
+        return nextNPlayer;
+    }
+    public int getLevel() {
+        return level;
+    }
+    public Worker getOppWorker(){
+        return oppWorker;
     }
 
 

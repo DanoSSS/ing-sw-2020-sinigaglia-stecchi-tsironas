@@ -35,6 +35,7 @@ public class RemoteView extends View{
                 case MOVE_AND_COORDINATE_BUILD:
                 case ARTEMIS_FIRST_MOVE:
                 case BUILD_ATLAS:
+                case BUILD_EPHAESTUS:
                     handleMessage(m, player.getIdPlayer());  //CREARE getId() in Player, inizializzare questo valore id dei players
                     break;
                 case NOT_YOUR_TURN:
@@ -105,6 +106,7 @@ public class RemoteView extends View{
             case ARTEMIS_FIRST_MOVE:
             case ARTEMIS_SECOND_MOVE:
             case BUILD_ATLAS:
+            case BUILD_EPHAESTUS:
                 clientConnection.asyncSend((ReturnMessage)message);
                 break;
 

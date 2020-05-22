@@ -2,7 +2,9 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.utils.Color;
 
-public class Worker {
+import java.io.Serializable;
+
+public class Worker implements Serializable {
     private int IdWorker;
     private boolean ActiveWorker=false;
     private String color;

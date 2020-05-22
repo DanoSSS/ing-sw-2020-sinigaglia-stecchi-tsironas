@@ -61,21 +61,21 @@ public class ClientController implements Serializable {
         board[x][y] = CellMessage.free;
     }
 
-    public void buildCellMessage(int x,int y,boolean dome) {
+    public void buildCellMessage(int x,int y,int level,boolean dome) {
         if (dome) {
             board[x][y] = CellMessage.DOME;
         } else {
-            switch (board[x][y].getMessage()) {
-                case "lv0":
+            switch (level) {
+                case 1:
                     board[x][y] = CellMessage.LV1;
                     break;
-                case "lv1":
+                case 2:
                     board[x][y] = CellMessage.LV2;
                     break;
-                case "lv2":
+                case 3:
                     board[x][y] = CellMessage.LV3;
                     break;
-                case "lv3":
+                case 4:
                     board[x][y] = CellMessage.DOME;
                     break;
             }

@@ -83,7 +83,7 @@ public class RoundArtemis extends Round {
                 }
             }
         }
-        board.getObservableModel().notify(new ReturnMessage(10,board.getCurrentActiveWorker().getIdWorker(),oldCoordinate,coordinates,possibleBuilds,board.getCurrentRound()));
+        board.getObservableModel().notify(new ReturnMessage(10,board.getCurrentActiveWorker().getIdWorker(),oldCoordinate,coordinates,possibleBuilds,board.getCurrentRound(),null));
     }
 
     @Override

@@ -178,11 +178,13 @@ public class Board{
         observableModel.notify(new ReturnMessage(6,currentActiveWorker.getIdWorker(),currentPossibleMoves,currentRound));
     }
 
-    public void moveWorkerAndPossibleBuilds(Coordinates oldC,Coordinates newC,ArrayList<Coordinates> currentPossibleBuilds){
+    public void moveWorkerAndPossibleBuilds(Coordinates oldC,Coordinates newC,ArrayList<Coordinates> currentPossibleBuilds,Worker oppWorker){
         this.currentPossibleBuilds=currentPossibleBuilds;
-        if(players[currentRound-1].getGod()==God.ATLAS){
-            observableModel.notify(new ReturnMessage(11,currentActiveWorker.getIdWorker(),oldC,newC,currentPossibleBuilds,currentRound));
-        }else observableModel.notify(new ReturnMessage(7,currentActiveWorker.getIdWorker(),oldC,newC,currentPossibleBuilds,currentRound));
+        if(players[currentRound-1].getGod()==God.ATLAS) {
+            observableModel.notify(new ReturnMessage(11, currentActiveWorker.getIdWorker(), oldC, newC, currentPossibleBuilds, currentRound, oppWorker));
+        }else if (players[currentRound-1].getGod()==God.EPHAESTUS){
+            observableModel.notify(new ReturnMessage(12, currentActiveWorker.getIdWorker(), oldC, newC, currentPossibleBuilds, currentRound, oppWorker));
+        }else observableModel.notify(new ReturnMessage(7,currentActiveWorker.getIdWorker(),oldC,newC,currentPossibleBuilds,currentRound,oppWorker));
     }
 
     public void buildEndTurn(Coordinates c){

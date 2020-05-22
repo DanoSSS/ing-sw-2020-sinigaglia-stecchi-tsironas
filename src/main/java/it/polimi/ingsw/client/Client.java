@@ -96,7 +96,15 @@ public class Client {
                             case MOVE_AND_COORDINATE_BUILD:
                                 id = inputObject.getCurrentActiveWorker();
                                 clientController.setWorkerCellMessage(id,inputObject.getCoordinate().getX()*2+1,inputObject.getCoordinate().getY());
-                                clientController.freeWorkerCellMessage(inputObject.getCoordinateOld().getX()*2+1,inputObject.getCoordinateOld().getY());
+                                if(inputObject.getOppWorker()!=null){
+                                    clientController.setWorkerCellMessage(inputObject.getOppWorker().getIdWorker(),inputObject.getOppWorker().getCoordinates().getX()*2+1,inputObject.getOppWorker().getCoordinates().getY());
+                                    if (inputObject.getOppWorker().getCoordinates().getX()!=inputObject.getCoordinateOld().getX() && inputObject.getOppWorker().getCoordinates().getY()!=inputObject.getCoordinateOld().getY()){
+                                        clientController.freeWorkerCellMessage(inputObject.getCoordinateOld().getX()*2+1,inputObject.getCoordinateOld().getY());
+                                    }
+                                }
+                                else {
+                                    clientController.freeWorkerCellMessage(inputObject.getCoordinateOld().getX()*2+1,inputObject.getCoordinateOld().getY());
+                                }
                                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
                                     setClientAction(a);
                                     ArrayList<Coordinates> possibleBuilds = inputObject.getCurrentPossibleMoves();
@@ -113,7 +121,7 @@ public class Client {
                                 break;
                             case BUILD_END_TURN:
                                 id = inputObject.getCurrentActiveWorker();
-                                clientController.buildCellMessage(inputObject.getCoordinate().getX()*2,inputObject.getCoordinate().getY(),inputObject.getDome());
+                                clientController.buildCellMessage(inputObject.getCoordinate().getX()*2,inputObject.getCoordinate().getY(),inputObject.getLevel(),inputObject.getDome());
                                 int n =inputObject.getnCurrentPlayer();
                                 if(clientController.getIdPlayer()==inputObject.getnCurrentPlayer()){
                                     print(board);
@@ -201,6 +209,24 @@ public class Client {
                                     System.out.println("player"+n+" moves his worker"+id+" in cell:"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY());
                                 }
                                 break;
+                            case BUILD_EPHAESTUS:
+                                id = inputObject.getCurrentActiveWorker();
+                                clientController.setWorkerCellMessage(id,inputObject.getCoordinate().getX()*2+1,inputObject.getCoordinate().getY());
+                                clientController.freeWorkerCellMessage(inputObject.getCoordinateOld().getX()*2+1,inputObject.getCoordinateOld().getY());
+                                if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
+                                    setClientAction(a);
+                                    ArrayList<Coordinates> possibleBuilds = inputObject.getCurrentPossibleMoves();
+                                    print(board);
+                                    System.out.println("your worker"+id+" is now in coordinate "+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+"\nSelect coordinate to build among the following.\n(If you want activate power and build a second time in the same space write yes follow by coordinate otherwise write no follow by coordinate)");
+                                    for(Coordinates c: possibleBuilds){
+                                        System.out.println(c.getX()+","+c.getY());
+                                    }
+                                }else{
+                                    n=clientController.getCurrentRoundIdPlayer();
+                                    print(board);
+                                    System.out.println("player"+n+" moves his worker"+id+" in cell:"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY());
+                                }
+                                break;
 
                         }
                     }
@@ -225,6 +251,7 @@ public class Client {
                             case NOT_YOUR_TURN:
                             case ARTEMIS_FIRST_MOVE:
                             case BUILD_ATLAS:
+                            case BUILD_EPHAESTUS:
                                 socketOut.writeObject(new Message(getClientAction().getValue(),inputObject));
                                 break;
                             case SELECT_ACTIVE_WORKER:
