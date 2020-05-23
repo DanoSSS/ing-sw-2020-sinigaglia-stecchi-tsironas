@@ -19,7 +19,7 @@ public class RoundDemeter extends Round {
     public ArrayList<Coordinates> canBuildSecond(Worker worker,Coordinates previousCoordinate) {
         Coordinates coordinates, newCoordinates;
         int x, y;
-        ArrayList<Coordinates> possiblesBuildsCoordinates = new ArrayList<Coordinates>();
+        ArrayList<Coordinates> possiblesBuildsCoordinates = new ArrayList<>();
         coordinates = worker.getCoordinates();
         x = coordinates.getX();
         y = coordinates.getY();

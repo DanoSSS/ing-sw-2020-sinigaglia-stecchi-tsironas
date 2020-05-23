@@ -3,11 +3,9 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.Message;
 
-import java.util.ArrayList;
 
 public class RoundEphaestus extends Round {
 

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.controller.Game;
+import it.polimi.ingsw.controller.Round;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.view.RemoteView;
 import it.polimi.ingsw.view.View;
@@ -87,6 +88,9 @@ public class Server {
         Player player2=null;
         ClientConnection c1=null;
         ClientConnection c2=null;
+        Round roundP1=null;
+        Round roundP2=null;
+
         //God god1 = playerGodAssociation.get(keys.get(0));
         //God god2 = playerGodAssociation.get(keys.get(1));
         for(int i=0;i<2;i++){
@@ -110,16 +114,16 @@ public class Server {
         Board board = new Board(players , player1.getWorker1(), player1.getWorker2(), player2.getWorker1(), player2.getWorker2(), nPlayers);
         board.setObservableModel(board);
         Game game = new Game(board,2,player1,player2);
-        game.RoundCreationP1(player1);
-        game.RoundCreationP2(player2);
+        game.RoundCreation(player1,roundP1);
+        game.RoundCreation(player2,roundP2);
         board.getObservableModel().addObserver(player1View);
         board.getObservableModel().addObserver(player2View);
         game.addObserver(player1View);
         game.addObserver(player2View);
         player1View.addObserver(game);
         player2View.addObserver(game);
-        player1View.addObserver(game.getRoundP1(player1));
-        player2View.addObserver(game.getRoundP2(player2));
+        player1View.addObserver(game.getRound(player1));
+        player2View.addObserver(game.getRound(player2));
     }
 
     public void startGameAndObservers3(List<String> keys){
@@ -131,6 +135,9 @@ public class Server {
         ClientConnection c1=null;
         ClientConnection c2=null;
         ClientConnection c3=null;
+        Round roundP1=null;
+        Round roundP2=null;
+        Round roundP3=null;
         for(int i=0;i<3;i++){
             switch (playerIdAssociation.get(keys.get(i))){
                 case 1:
@@ -155,9 +162,9 @@ public class Server {
         Board board = new Board(players,player1.getWorker1(), player1.getWorker2(), player2.getWorker1(), player2.getWorker2(), player3.getWorker1(), player3.getWorker2(), nPlayers);
         board.setObservableModel(board);
         Game game = new Game(board,3,player1,player2,player3);
-        game.RoundCreationP1(player1);
-        game.RoundCreationP2(player2);
-        game.RoundCreationP3(player3);
+        game.RoundCreation(player1,roundP1);
+        game.RoundCreation(player2,roundP2);
+        game.RoundCreation(player3,roundP3);
         board.getObservableModel().addObserver(player1View);
         board.getObservableModel().addObserver(player2View);
         board.getObservableModel().addObserver(player3View);
@@ -167,9 +174,9 @@ public class Server {
         game.addObserver(player1View);
         game.addObserver(player2View);
         game.addObserver(player3View);
-        player1View.addObserver(game.getRoundP1(player1));
-        player2View.addObserver(game.getRoundP2(player2));
-        player3View.addObserver(game.getRoundP3(player3));
+        player1View.addObserver(game.getRound(player1));
+        player2View.addObserver(game.getRound(player2));
+        player3View.addObserver(game.getRound(player3));
     }
 
     public synchronized void putInWaitP1() throws InterruptedException {

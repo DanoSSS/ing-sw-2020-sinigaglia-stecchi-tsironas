@@ -13,7 +13,7 @@ public class RoundAthena extends Round {
     public ArrayList<Coordinates> canMove(Worker worker) {
         Coordinates coordinates, newCoordinates;
         int x, y;
-        ArrayList<Coordinates> possiblesMovesCoordinates = new ArrayList<Coordinates>();
+        ArrayList<Coordinates> possiblesMovesCoordinates = new ArrayList<>();
         coordinates = worker.getCoordinates();
         x = coordinates.getX();
         y = coordinates.getY();
@@ -39,17 +39,11 @@ public class RoundAthena extends Round {
         if ((board.getLevel(moveCoordinates) - board.getLevel(oldCoordinates)) == 1) {
             count = board.getNumberOfPlayers();
             board.setNround(count - 1);
-            board.freeCellFromWorker(oldCoordinates);
-            board.moveWorker(moveCoordinates, activeWorker);
-            if (board.getLevel(moveCoordinates) == 3 && board.getLevel(oldCoordinates) == 2) {
-                GameOver = true;
-            }
-        } else {
-            board.freeCellFromWorker(oldCoordinates);
-            board.moveWorker(moveCoordinates, activeWorker);
-            if (board.getLevel(moveCoordinates) == 3 && board.getLevel(oldCoordinates) == 2) {
-                GameOver = true;
-            }
+        }
+        board.freeCellFromWorker(oldCoordinates);
+        board.moveWorker(moveCoordinates, activeWorker);
+        if (board.getLevel(moveCoordinates) == 3 && board.getLevel(oldCoordinates) == 2) {
+            GameOver = true;
         }
         return GameOver;
     }

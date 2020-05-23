@@ -16,7 +16,9 @@ package it.polimi.ingsw.utils;
     BUILD_ATLAS(11),
     BUILD_EPHAESTUS(12),
     END_TURN(13),
-    FIRST_BUILD_DEMETER(14);
+    FIRST_BUILD_DEMETER(14),
+    PROMETHEUS_CHOOSE(15),
+    FIRST_BUILD_PROMETHEUS(16);
 
     private int value;
 

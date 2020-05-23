@@ -1,9 +1,6 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.observer.Observer;
-import it.polimi.ingsw.utils.Action;
-import it.polimi.ingsw.utils.Message;
 
 import java.util.ArrayList;
 
@@ -16,7 +13,7 @@ public class RoundApollo extends Round {
     public ArrayList<Coordinates> canMove(Worker worker) {
         Coordinates coordinates, newCoordinates;
         int x, y;
-        ArrayList<Coordinates> possiblesMovesCoordinates = new ArrayList<Coordinates>();
+        ArrayList<Coordinates> possiblesMovesCoordinates = new ArrayList<>();
         coordinates = worker.getCoordinates();
         x = coordinates.getX();
         y = coordinates.getY();
@@ -55,15 +52,12 @@ public class RoundApollo extends Round {
         if (board.isOccupied(moveCoordinates)) {
             board.moveWorker(oldCoordinates, board.getWorker(moveCoordinates));
             board.moveWorker(moveCoordinates, activeWorker);
-            if (board.getLevel(moveCoordinates) == 3 && board.getLevel(oldCoordinates) == 2) {
-                GameOver = true;
-            }
         } else {
             board.moveWorker(moveCoordinates, activeWorker);
             board.freeCellFromWorker(oldCoordinates);
-            if (board.getLevel(moveCoordinates) == 3 && board.getLevel(oldCoordinates) == 2) {
-                GameOver = true;
-            }
+        }
+        if (board.getLevel(moveCoordinates) == 3 && board.getLevel(oldCoordinates) == 2) {
+            GameOver = true;
         }
         return GameOver;
     }

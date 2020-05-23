@@ -175,6 +175,20 @@ public class Board{
         observableModel.notify(new ReturnMessage(14,currentActiveWorker.getIdWorker(),c,level,dome,currentPossibleBuilds));
     }
 
+    public void setCurrentActiveWorkerAndChoosePrometheus(Worker activeWorker,ArrayList<Coordinates> currentPossibleMoves,ArrayList<Coordinates> currentPossibleBuilds){
+        this.currentActiveWorker=activeWorker;
+        this.currentPossibleMoves=currentPossibleMoves;
+        this.currentPossibleBuilds=currentPossibleBuilds;
+        observableModel.notify(new ReturnMessage(15,currentActiveWorker.getIdWorker(),currentPossibleMoves,currentPossibleBuilds,currentRound));
+    }
+
+    public void buildBeforePrometheus(Coordinates coordinates,ArrayList<Coordinates> possibleMoves){
+        int level = getLevel(coordinates);
+        boolean dome = isDome(coordinates);
+        this.currentPossibleMoves = possibleMoves;
+        observableModel.notify(new ReturnMessage(16,currentActiveWorker.getIdWorker(),coordinates,level,dome,possibleMoves));
+    }
+
     public int getCurrentRound() {
         return currentRound;
     }

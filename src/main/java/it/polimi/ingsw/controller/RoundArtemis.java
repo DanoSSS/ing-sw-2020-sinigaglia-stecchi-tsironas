@@ -20,7 +20,7 @@ public class RoundArtemis extends Round {
     public ArrayList<Coordinates> canMoveSecond(Worker worker,Coordinates oldCoordinates) {
         Coordinates coordinates, newCoordinates;
         int x, y;
-        ArrayList<Coordinates> possiblesMovesCoordinates = new ArrayList<Coordinates>();
+        ArrayList<Coordinates> possiblesMovesCoordinates = new ArrayList<>();
         coordinates = worker.getCoordinates();
         x = coordinates.getX();
         y = coordinates.getY();

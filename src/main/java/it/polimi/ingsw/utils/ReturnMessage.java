@@ -23,6 +23,7 @@ public class ReturnMessage implements Serializable {
     private final ClientController clientController;
     private int currentActiveWorker;
     private ArrayList<Coordinates> currentPossibleMoves;
+    private ArrayList<Coordinates> currentPossibleC2;
     private Coordinates coordinate;
     private Coordinates coordinateOld;
     private boolean dome;
@@ -137,6 +138,15 @@ public class ReturnMessage implements Serializable {
         this.clientController = null;
     }
 
+    public ReturnMessage(int nAction, int idWorker, ArrayList<Coordinates> currentPossibleMoves, ArrayList<Coordinates> currentPossibleBuilds, int currentRound) {
+        this.action = Action.values()[nAction];
+        this.currentActiveWorker = idWorker;
+        this.currentPossibleMoves = currentPossibleMoves;
+        this.currentPossibleC2 = currentPossibleBuilds;
+        this.nCurrentPlayer = currentRound;
+        this.clientController = null;
+    }
+
     public Map<Worker, Coordinates> getWorkerPosition() {
         return workerPosition;
     }
@@ -187,6 +197,9 @@ public class ReturnMessage implements Serializable {
     }
     public Worker getOppWorker(){
         return oppWorker;
+    }
+    public ArrayList<Coordinates> getCurrentPossibleC2(){
+        return currentPossibleC2;
     }
 
 

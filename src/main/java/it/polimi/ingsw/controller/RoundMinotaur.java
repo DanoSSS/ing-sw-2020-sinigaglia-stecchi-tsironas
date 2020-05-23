@@ -16,7 +16,7 @@ public class RoundMinotaur extends Round {
     public ArrayList<Coordinates> canMove(Worker worker) {
         Coordinates coordinates, newCoordinates;
         int x, y;
-        ArrayList<Coordinates> possiblesMovesCoordinates = new ArrayList<Coordinates>();
+        ArrayList<Coordinates> possiblesMovesCoordinates = new ArrayList<>();
         coordinates = worker.getCoordinates();
         x = coordinates.getX();
         y = coordinates.getY();
@@ -71,9 +71,7 @@ public class RoundMinotaur extends Round {
         y=(opponentCoordinates.getY()-workerCoordinates.getY())+opponentCoordinates.getY();
         if(x>=0 && x<=4 && y>=0 && y<=4){
             newCoordinates = new Coordinates(x,y);
-            if(!board.isOccupied(newCoordinates) && !board.isDome(newCoordinates)){
-                return true;
-            }else return false;
+            return !board.isOccupied(newCoordinates) && !board.isDome(newCoordinates);
         }else return false;
     }
 

@@ -23,66 +23,6 @@ public abstract class Round implements Observer<Object>{
         this.player = player;
     }
 
-    public boolean ExecuteRound(boolean Gameover) {
-        boolean gamestatus;
-        int i;
-        Worker activeWorker,newActiveWorker;
-        ArrayList<Coordinates> possibleMoves,possibleBuilds;
-        Coordinates moveCoordinates,buildCoordinates;
-        activeWorker = askActiveWorker();
-        possibleMoves=canMove(activeWorker);        //arraylist of possible coordinates where worker can move(da passare alla view)
-        if(possibleMoves.size()==0){
-            do{
-                newActiveWorker=askOtherWorker();
-            }while(newActiveWorker!=activeWorker);
-            activeWorker=newActiveWorker;
-            possibleMoves=canMove(activeWorker);
-            if(possibleMoves.size()==0){
-                return false;       // se ci sono due giocatori vince l'altro, se sono in tre eliminare il giocatore
-            }
-        }
-        moveCoordinates=askCoordinatesToMove(possibleMoves);
-        gamestatus=doMove(moveCoordinates,Gameover,activeWorker);
-        possibleBuilds = canBuild(activeWorker);        //arraylist of possible coordinates where worker can build(da passare alla view)
-        if(possibleBuilds.size()==0){
-            return false;       // se ci sono due giocatori vince l'altro, se sono in tre eliminare il giocatore
-        }
-        buildCoordinates = askCoordinatesToBuild(possibleBuilds);
-        doBuild(buildCoordinates);
-        if(board.getNround()!=0) {
-            i = board.getNround();
-            i--;
-            board.setNround(i);
-        }
-        return gamestatus;
-    }
-
-    public Worker askActiveWorker() {
-        Worker worker=null;
-        //chiede alla view di selezionare l'altro worker
-        return worker;
-    }
-
-    public Worker askOtherWorker() {
-        Worker worker=null;
-        //chiede alla view di selezionare l'altro worker
-        return worker;
-    }
-
-    public Coordinates askCoordinatesToMove(ArrayList<Coordinates> possibleCoordinates){
-        Coordinates coordinates=null;
-        //dare alla view arraylist e chiedere al player dove vuole andare se non si può passare da controller si fa
-        //un currentlypossiblemove in board
-        return coordinates;
-    }
-
-    public Coordinates askCoordinatesToBuild(ArrayList<Coordinates> possibleCoordinates){
-        Coordinates coordinates=null;
-        //dare alla view arraylist e chiedere al player dove vuole costruire se non si può passare da controller si fa
-        //un currentlypossiblebuild in board
-        return coordinates;
-    }
-
     public void doBuild(Coordinates buildCoordinate){
         board.setLevel(buildCoordinate);
         if(board.getLevel(buildCoordinate)==4) {
