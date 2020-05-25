@@ -50,7 +50,7 @@ public class RoundArtemis extends Round {
         oldCoordinate = new Coordinates(x,y);
         win = doMove(newC, win, board.getCurrentActiveWorker());
         if (win) {
-
+            board.winGame();
         } else {
             ArrayList<Coordinates> secondPossibleMove = canMoveSecond(board.getCurrentActiveWorker(), oldCoordinate);
             board.getObservableModel().notify(new ReturnMessage(9,oldCoordinate, newC, board.getCurrentActiveWorker().getIdWorker(), secondPossibleMove));
@@ -64,7 +64,7 @@ public class RoundArtemis extends Round {
         if(answer.equals("NO")){
             possibleBuilds = canBuild(board.getCurrentActiveWorker());
             if(possibleBuilds.size()==0){
-
+                board.loseGame();
             }
         }else{
             String[] input = answer.split(",");
@@ -74,12 +74,12 @@ public class RoundArtemis extends Round {
             oldCoordinate = new Coordinates(x,y);
             win=doMove(coordinates,win,board.getCurrentActiveWorker());
             if(win){
-
+                board.winGame();
             }
             else{
                 possibleBuilds = canBuild(board.getCurrentActiveWorker());
                 if(possibleBuilds.size()==0){
-
+                    board.loseGame();
                 }
             }
         }

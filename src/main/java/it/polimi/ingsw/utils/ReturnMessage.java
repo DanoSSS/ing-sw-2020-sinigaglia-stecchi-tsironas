@@ -29,7 +29,7 @@ public class ReturnMessage implements Serializable {
     private boolean dome;
     private int level;
     private int nextNPlayer;
-    private Worker oppWorker;
+    private Worker oppWorker,otherWorker;
 
 
     //case STRING
@@ -131,6 +131,15 @@ public class ReturnMessage implements Serializable {
         this.clientController = null;
     }
 
+    public ReturnMessage(int nAction,int nCurrentPlayer,int nextNPlayer,Worker wk1, Worker wk2){
+        this.action = Action.values()[nAction];
+        this.nCurrentPlayer = nCurrentPlayer;
+        this.nextNPlayer = nextNPlayer;
+        this.oppWorker = wk1;
+        this.otherWorker = wk2;
+        this.clientController = null;
+    }
+
     public ReturnMessage(int nAction, int whoToSent[], String sentence) {
         this.action = Action.values()[nAction];
         this.whoToSend = whoToSent;
@@ -201,6 +210,8 @@ public class ReturnMessage implements Serializable {
     public ArrayList<Coordinates> getCurrentPossibleC2(){
         return currentPossibleC2;
     }
-
+    public Worker getOtherWorker(){
+        return otherWorker;
+    }
 
 }

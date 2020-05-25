@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.Message;
-import it.polimi.ingsw.utils.ReturnMessage;
 
 import java.util.ArrayList;
 
@@ -51,7 +50,7 @@ public class RoundPrometheus extends Round {
             possibleBuilds = canBuild(otherActiveWorker);
             possibleMoves = canMove(otherActiveWorker);
             if (possibleMoves.size() == 0) {
-                board.getObservableModel().notify(new ReturnMessage(5)); //da gestire la perdita
+                board.loseGame();
             }else{
                 board.setCurrentActiveWorkerAndChoosePrometheus(otherActiveWorker, possibleMoves, possibleBuilds);
             }
@@ -67,7 +66,7 @@ public class RoundPrometheus extends Round {
             doBuild(coordinates);
             possibleMoves = canMoveAfterBuild(board.getCurrentActiveWorker());
             if(possibleMoves.size()==0){
-
+                board.loseGame();
             }
             board.buildBeforePrometheus(coordinates,possibleMoves);
         }else if(inputAnswer[0].equals("MOVE")){
@@ -75,10 +74,13 @@ public class RoundPrometheus extends Round {
             int x=board.getCurrentActiveWorker().getCoordinates().getX();
             int y=board.getCurrentActiveWorker().getCoordinates().getY();
             oldC = new Coordinates(x,y);
-            doMove(coordinates,win, board.getCurrentActiveWorker());
+            win = doMove(coordinates,win, board.getCurrentActiveWorker());
+            if(win){
+                board.winGame();
+            }
             possibleBuilds = canBuild(board.getCurrentActiveWorker());
             if(possibleBuilds.size()==0){
-
+                board.loseGame();
             }
             board.moveWorkerAndPossibleBuilds(oldC,coordinates,possibleBuilds,null);
         }

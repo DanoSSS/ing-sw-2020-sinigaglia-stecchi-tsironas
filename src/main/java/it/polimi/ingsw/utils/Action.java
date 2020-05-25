@@ -18,7 +18,9 @@ package it.polimi.ingsw.utils;
     END_TURN(13),
     FIRST_BUILD_DEMETER(14),
     PROMETHEUS_CHOOSE(15),
-    FIRST_BUILD_PROMETHEUS(16);
+    FIRST_BUILD_PROMETHEUS(16),
+    LOSE3P(17),
+    WIN(18);
 
     private int value;
 

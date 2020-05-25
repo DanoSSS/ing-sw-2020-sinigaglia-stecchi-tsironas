@@ -16,6 +16,7 @@ public class Board{
     private Worker currentActiveWorker;
     private ArrayList<Coordinates> currentPossibleMoves, currentPossibleBuilds;
     private int currentRound=2;
+    private int loseRound;
 
 
     public Board(Player[] players, Worker worker1, Worker worker2, Worker worker3, Worker worker4, int NPlayer) {
@@ -66,6 +67,14 @@ public class Board{
 
     public void setNumberOfPlayers(int numberOfPlayers) {
         NumberOfPlayers = numberOfPlayers;
+    }
+
+    public int getLoseRound() {
+        return loseRound;
+    }
+
+    public void setLoseRound(int loseRound) {
+        this.loseRound = loseRound;
     }
 
     public int getNround() {
@@ -155,6 +164,9 @@ public class Board{
 
     public int UpdateRound(){
         currentRound++;
+        if(currentRound==loseRound){
+            currentRound++;
+        }
         if(NumberOfPlayers==2 && currentRound==3){
             currentRound=1;
         }
@@ -220,5 +232,22 @@ public class Board{
         }
     }
 
+    public void loseGame(){
+        boolean flag=false;
+        if(getNumberOfPlayers()==3 &&!flag){
+            setLoseRound(currentRound);
+            flag=true;
+            int newRound=UpdateRound();
+            observableModel.notify(new ReturnMessage(17,loseRound,newRound,players[loseRound-1].getWorker1(),players[loseRound-1].getWorker2()));
+        }else if(getNumberOfPlayers()==3 && flag){
+            observableModel.notify(new ReturnMessage(5,currentRound));
+        }else{
+            observableModel.notify(new ReturnMessage(5,currentRound));
+        }
+    }
+
+    public void winGame(){
+        observableModel.notify(new ReturnMessage(18,currentRound));
+    }
 }
 

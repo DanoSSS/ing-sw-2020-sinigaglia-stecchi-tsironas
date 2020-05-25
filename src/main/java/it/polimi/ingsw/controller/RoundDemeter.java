@@ -40,7 +40,7 @@ public class RoundDemeter extends Round {
         doBuild(coordinates);
         possibleBuilds = canBuildSecond(board.getCurrentActiveWorker(), coordinates);
         if (possibleBuilds.size() == 0) {
-
+            board.loseGame();
         } else {
             board.firstBuildDemeter(coordinates, possibleBuilds);
         }

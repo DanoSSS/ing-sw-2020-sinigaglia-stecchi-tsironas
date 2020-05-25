@@ -101,7 +101,7 @@ public abstract class Round implements Observer<Object>{
                 possibleMoves =canMove(otherActiveWorker);
             }
             if (possibleMoves.size() == 0) {
-                board.getObservableModel().notify(new ReturnMessage(5)); //da gestire la perdita
+                board.loseGame();
             }else{
                 board.setCurrentActiveWorkerAndPossibleMoves(otherActiveWorker, possibleMoves);
             }
@@ -120,11 +120,11 @@ public abstract class Round implements Observer<Object>{
         }
         win=doMove(newC,win,board.getCurrentActiveWorker());
         if(win){
-
+            board.winGame();
         }
         possibleBuilds=canBuild(board.getCurrentActiveWorker());
         if (possibleBuilds.size() == 0) {
-            board.getObservableModel().notify(new ReturnMessage(5)); //da gestire la perdita
+            board.loseGame();
         }else board.moveWorkerAndPossibleBuilds(oldC,newC,possibleBuilds,oppositeWorker);
     }
 

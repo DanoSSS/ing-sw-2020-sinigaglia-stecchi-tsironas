@@ -23,7 +23,7 @@ public class RoundEphaestus extends Round {
             if(board.getLevel(coordinates)<3){
                     board.setLevel(coordinates);
             }else{
-
+                board.loseGame();
             }
         }else if(inputAnswer[0].equals("no")){
             doBuild(coordinates);

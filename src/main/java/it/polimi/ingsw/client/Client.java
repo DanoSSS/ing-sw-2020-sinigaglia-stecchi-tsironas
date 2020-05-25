@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.model.Coordinates;
+import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.server.ClientConnection;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.Message;
 import it.polimi.ingsw.utils.ReturnMessage;
@@ -47,6 +49,7 @@ public class Client {
             @Override
             public void run() {
                 try {
+                    int loseRound=5;
                     while (isActive()) {
                         ReturnMessage inputObject = (ReturnMessage) socketIn.readObject();
                         Action a = inputObject.getAction();
@@ -69,7 +72,7 @@ public class Client {
                                     print(board);
                                     System.out.println("it's your turn!\nselect active worker:");
                                 }
-                                else {
+                                else if(clientController.getIdPlayer() != loseRound){
                                     for (int i = 0; i < inputObject.getNicknames().length; i++) {
                                         System.out.println(inputObject.getNicknames()[i]); //get the String[] with the output
                                     }
@@ -89,7 +92,7 @@ public class Client {
                                         System.out.println(c.getX() + "," + c.getY());
                                     }
                                 }
-                                else{
+                                else if(clientController.getIdPlayer() != loseRound){
                                     int n=clientController.getCurrentRoundIdPlayer();
                                     System.out.println("player"+n+" select worker"+id);
                                 }
@@ -115,7 +118,7 @@ public class Client {
                                         System.out.println(c.getX()+","+c.getY());
                                     }
                                 }
-                                else{
+                                else if(clientController.getIdPlayer() != loseRound){
                                     int n=clientController.getCurrentRoundIdPlayer();
                                     print(board);
                                     System.out.println("player"+n+" moves his worker"+id+" in cell:"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY());
@@ -131,13 +134,13 @@ public class Client {
                                     setClientAction(Action.NOT_YOUR_TURN);
                                     System.out.println("wait your turn");
                                 }
-                                else if(clientController.getIdPlayer()==inputObject.getNextNPlayer()){
+                                else if(clientController.getIdPlayer()==inputObject.getNextNPlayer() && clientController.getIdPlayer() != loseRound){
                                     print(board);
                                     System.out.println("player"+n+" build with his worker"+id+" in cell:"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+" level:"+inputObject.getLevel()+" dome:"+inputObject.getDome());
                                     setClientAction(Action.SELECT_ACTIVE_WORKER);
                                     System.out.println("it's your turn!\nselect active worker:");
                                 }
-                                else{
+                                else if(clientController.getIdPlayer() != loseRound){
                                     print(board);
                                     System.out.println("player"+n+" build with his worker"+id+" in cell:"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+" level:"+inputObject.getLevel()+" dome:"+inputObject.getDome());
                                     setClientAction(Action.NOT_YOUR_TURN);
@@ -159,7 +162,7 @@ public class Client {
                                         }
                                     }else System.out.println("you cannot activate Artemis power and move second");
                                 }
-                                else {
+                                else if(clientController.getIdPlayer() != loseRound){
                                     n=clientController.getCurrentRoundIdPlayer();
                                     print(board);
                                     System.out.println("player"+n+" moves his worker in cell"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY());
@@ -187,7 +190,7 @@ public class Client {
                                         }
                                     }
                                 }
-                                else {
+                                else if(clientController.getIdPlayer() != loseRound){
                                     n = clientController.getCurrentRoundIdPlayer();
                                     if (bool) {
                                         print(board);
@@ -210,7 +213,7 @@ public class Client {
                                         System.out.println(c.getX()+","+c.getY());
                                     }
                                 }
-                                else{
+                                else if(clientController.getIdPlayer() != loseRound){
                                     n=clientController.getCurrentRoundIdPlayer();
                                     print(board);
                                     System.out.println("player"+n+" moves his worker"+id+" in cell:"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY());
@@ -229,7 +232,7 @@ public class Client {
                                         System.out.println(c.getX()+","+c.getY());
                                     }
                                 }
-                                else{
+                                else if(clientController.getIdPlayer() != loseRound){
                                     n=clientController.getCurrentRoundIdPlayer();
                                     print(board);
                                     System.out.println("player"+n+" moves his worker"+id+" in cell:"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY());
@@ -242,11 +245,11 @@ public class Client {
                                     setClientAction(Action.NOT_YOUR_TURN);
                                     System.out.println("wait your turn");
                                 }
-                                else if(clientController.getIdPlayer()==inputObject.getNextNPlayer()){
+                                else if(clientController.getIdPlayer()==inputObject.getNextNPlayer() && clientController.getIdPlayer() != loseRound){
                                     setClientAction(Action.SELECT_ACTIVE_WORKER);
                                     System.out.println("it's your turn!\nselect active worker:");
                                 }
-                                else{
+                                else if(clientController.getIdPlayer() != loseRound){
                                     setClientAction(Action.NOT_YOUR_TURN);
                                     System.out.println("wait your turn");
                                 }
@@ -264,7 +267,7 @@ public class Client {
                                         System.out.println(c.getX()+","+c.getY());
                                     }
                                 }
-                                else{
+                                else if(clientController.getIdPlayer() != loseRound){
                                     print(board);
                                     System.out.println("player"+n+" moves his worker"+id+" in cell:"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY());
                                 }
@@ -286,7 +289,7 @@ public class Client {
                                         System.out.println(c.getX() + "," + c.getY());
                                     }
                                 }
-                                else{
+                                else if(clientController.getIdPlayer() != loseRound){
                                     n=clientController.getCurrentRoundIdPlayer();
                                     System.out.println("player"+n+" select worker"+id);
                                 }
@@ -305,10 +308,48 @@ public class Client {
                                         System.out.println(c.getX() + "," + c.getY());
                                     }
                                 }
-                                else{
+                                else if(clientController.getIdPlayer() != loseRound){
                                     System.out.println("player"+n+" build with his power with his worker"+id+" in cell:"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+" level:"+inputObject.getLevel()+" dome:"+inputObject.getDome());
                                 }
                                 break;
+                            case LOSE3P:
+                                Worker wk1=inputObject.getOppWorker();
+                                clientController.freeWorkerCellMessage(wk1.getCoordinates().getX(),wk1.getCoordinates().getY());
+                                Worker wk2=inputObject.getOtherWorker();
+                                clientController.freeWorkerCellMessage(wk2.getCoordinates().getX(),wk2.getCoordinates().getY());
+                                loseRound=inputObject.getnCurrentPlayer();
+                                print(board);
+                                if(clientController.getIdPlayer()==inputObject.getnCurrentPlayer()){
+                                    setClientAction(Action.LOSE);
+                                    System.out.println("you lose, wait other player finish the game");
+                                }
+                                else if(clientController.getIdPlayer()==inputObject.getNextNPlayer()){
+                                    setClientAction(Action.SELECT_ACTIVE_WORKER);
+                                    System.out.println("player"+inputObject.getnCurrentPlayer()+" lose\nit's your turn!\nselect active worker:");
+                                }
+                                else{
+                                    System.out.println("player"+inputObject.getnCurrentPlayer()+" lose");
+                                }
+                                break;
+                            case LOSE:
+                                if(clientController.getIdPlayer()==inputObject.getnCurrentPlayer()){
+                                    setClientAction(a);
+                                    System.out.println("you lose.\nPress Q to exit");
+                                }
+                                else{
+                                    setClientAction(Action.WIN);
+                                    System.out.println("player"+inputObject.getnCurrentPlayer()+" lose.\nCONGRATULATIONS, YOU WIN!!!\nPress Q to exit");
+                                }
+                                break;
+                            case WIN:
+                                if(clientController.getIdPlayer()==inputObject.getnCurrentPlayer()){
+                                    setClientAction(a);
+                                    System.out.println("CONGRATULATIONS, YOU WIN!!!\nPress Q to exit");
+                                }
+                                else{
+                                    setClientAction(Action.LOSE);
+                                    System.out.println("player"+inputObject.getnCurrentPlayer()+"win.\nyou lose.\nPress Q to exit");
+                                }
                         }
                     }
                 } catch (Exception e){
@@ -335,6 +376,8 @@ public class Client {
                             case BUILD_EPHAESTUS:
                             case FIRST_BUILD_DEMETER:
                             case PROMETHEUS_CHOOSE:
+                            case LOSE:
+                            case WIN:
                                 socketOut.writeObject(new Message(getClientAction().getValue(),inputObject));
                                 break;
                             case SELECT_ACTIVE_WORKER:

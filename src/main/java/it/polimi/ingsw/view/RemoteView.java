@@ -43,6 +43,14 @@ public class RemoteView extends View{
                 case NOT_YOUR_TURN:
                     clientConnection.asyncSend(new ReturnMessage(2,"It's not your turn!wait"));
                     break;
+                case WIN:
+                case LOSE:
+                case STRING:
+                    if(((Message) m).getSentence().equals("q")){
+                        clientConnection.closeConnection();
+                    }else{
+                        clientConnection.asyncSend(new ReturnMessage(4,"press Q to exit"));
+                    }
             }
         }
     }
@@ -111,6 +119,9 @@ public class RemoteView extends View{
             case FIRST_BUILD_DEMETER:
             case PROMETHEUS_CHOOSE:
             case FIRST_BUILD_PROMETHEUS:
+            case LOSE:
+            case LOSE3P:
+            case WIN:
                 clientConnection.asyncSend((ReturnMessage)message);
                 break;
 
