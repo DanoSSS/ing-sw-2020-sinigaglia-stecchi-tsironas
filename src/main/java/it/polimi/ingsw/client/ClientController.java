@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.client.CLI.CellMessage;
 import it.polimi.ingsw.utils.Action;
 
 import java.io.Serializable;

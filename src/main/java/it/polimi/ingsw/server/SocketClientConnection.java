@@ -85,24 +85,24 @@ public class SocketClientConnection extends Observable<Object> implements Client
         int NPlayers = 0;
 
         try {
-            send(new ReturnMessage(4,"Welcome to SANTORINI!A beatiful city but also a beautiful game!\nWhat is your nickname?"));                   //for all players
+            send(new ReturnMessage(19,"Welcome to SANTORINI!A beatiful city but also a beautiful game!\nWhat is your nickname?"));                   //for all players
             String read = read();
             while (!server.nicknameCheck(read)) {
-                send(new ReturnMessage(4,"Your selected nickname is already in use.\nSelect an other nickname: "));                   //for all players
+                send(new ReturnMessage(20,"Your selected nickname is already in use.\nSelect an other nickname: "));                   //for all players
                 read = read();
             }
             name = read.valueOf(read.toCharArray(), 0, read.length());  //copia il nickname in name
             if (playerNumber == 1) {                                   //playerNOne
-                send(new ReturnMessage(4,"how many players?\n2 or 3?"));     //setting numberOfPlayers
+                send(new ReturnMessage(21,"how many players?\n2 or 3?"));     //setting numberOfPlayers
                 read = read();
                 NPlayers = Integer.parseInt(read);
                 server.setNPlayers(NPlayers);
 
-                send(new ReturnMessage(4,"select " + server.getNPlayers() + " gods between:\nAPOLLO, ARTEMIS, ATHENA, ATLAS, DEMETER, EPHAESTUS, MINOTAUR, PAN, PROMETHEUS"));   //Setting god cards
+                send(new ReturnMessage(22,"select " + server.getNPlayers() + " gods between:\nAPOLLO, ARTEMIS, ATHENA, ATLAS, DEMETER, EPHAESTUS, MINOTAUR, PAN, PROMETHEUS"));   //Setting god cards
                 read = read();
                 while (!server.setGods1(read)) {
                     server.clearGods();
-                    send(new ReturnMessage(4,"gods Cards doesn't exist or they has been misspelled:\nselect " + server.getNPlayers() + " gods between:\nAPOLLO, ARTEMIS, ATHENA, ATLAS, DEMETER, EPHAESTUS, MINOTAUR, PAN, PROMETHEUS"));
+                    send(new ReturnMessage(23,"gods Cards doesn't exist or they has been misspelled:\nselect " + server.getNPlayers() + " gods between:\nAPOLLO, ARTEMIS, ATHENA, ATLAS, DEMETER, EPHAESTUS, MINOTAUR, PAN, PROMETHEUS"));
                     read = read();
                 }
 
@@ -122,15 +122,14 @@ public class SocketClientConnection extends Observable<Object> implements Client
                 NPlayers = server.getNPlayers();
 
                 if (NPlayers == 3) {       //3
-                    send(new ReturnMessage(4,"select your god between: " + server.getGods(0) + "\t" + server.getGods(1) + "\t" + server.getGods(2)));
+                    send(new ReturnMessage(24,"select your god between: " + server.getGods(0) + "\t" + server.getGods(1) + "\t" + server.getGods(2)));
                     read = godSelection(NPlayers);
 
                     server.removeFromWaitP3();
                 }
                 else if (NPlayers == 2) {    //2
-                    send(new ReturnMessage(4,"select your god between: " + server.getGods(0) + " " + server.getGods(1)));
+                    send(new ReturnMessage(24,"select your god between: " + server.getGods(0) + " " + server.getGods(1)));
                     read = godSelection(NPlayers);
-
                     server.removeFromWait();
                 }
             }
@@ -138,7 +137,7 @@ public class SocketClientConnection extends Observable<Object> implements Client
                 send(new ReturnMessage(4,"wait the P1... is taking the cards"));
                 server.putInWaitP3(); //Wait P1 to choose the cards
                 NPlayers = server.getNPlayers();
-                send(new ReturnMessage(4,"select your god between: " + server.getGods(0) + " " + server.getGods(1)));
+                send(new ReturnMessage(24,"select your god between: " + server.getGods(0) + " " + server.getGods(1)));
                 read = godSelection(NPlayers);
 
                 server.removeFromWait();

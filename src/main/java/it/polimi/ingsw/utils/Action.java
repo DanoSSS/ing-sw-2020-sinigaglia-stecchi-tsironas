@@ -20,7 +20,13 @@ package it.polimi.ingsw.utils;
     PROMETHEUS_CHOOSE(15),
     FIRST_BUILD_PROMETHEUS(16),
     LOSE3P(17),
-    WIN(18);
+    WIN(18),
+    FIRST_MESSAGE(19),
+    NICKNAME_ALREADY_USED(20),
+    NUMBER_OF_PLAYERS(21),
+    SELECT_GODS_CHALLENGER(22),
+    WRONG_GODS(23),
+    CHOOSE_GOD(24);
 
     private int value;
 

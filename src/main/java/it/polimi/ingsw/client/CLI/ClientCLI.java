@@ -1,8 +1,8 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.client.CLI;
 
+import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.Worker;
-import it.polimi.ingsw.server.ClientConnection;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.Message;
 import it.polimi.ingsw.utils.ReturnMessage;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class Client {
+public class ClientCLI {
     private String ip;
     private int port;
     private Action clientAction;
@@ -31,7 +31,7 @@ public class Client {
         return clientAction;
     }
 
-    public Client(String ip, int port){
+    public ClientCLI(String ip, int port){
         this.ip = ip;
         this.port = port;
     }
@@ -56,8 +56,14 @@ public class Client {
                         System.out.println("received" + a.toString());
                         switch (a) {
                             case STRING:
+                            case FIRST_MESSAGE:
                             case NOT_YOUR_TURN:
                             case SELECT_ACTIVE_WORKER:
+                            case NUMBER_OF_PLAYERS:
+                            case WRONG_GODS:
+                            case CHOOSE_GOD:
+                            case NICKNAME_ALREADY_USED:
+                            case SELECT_GODS_CHALLENGER:
                                 setClientAction(a);
                                 System.out.println(inputObject.getSentence());
                                 break;
@@ -370,6 +376,7 @@ public class Client {
                         String inputObject = stdin.nextLine();
                         switch (getClientAction()){
                             case STRING:
+                            case FIRST_MESSAGE:
                             case NOT_YOUR_TURN:
                             case ARTEMIS_FIRST_MOVE:
                             case BUILD_ATLAS:
@@ -378,6 +385,12 @@ public class Client {
                             case PROMETHEUS_CHOOSE:
                             case LOSE:
                             case WIN:
+                            case NUMBER_OF_PLAYERS:
+                            case WRONG_GODS:
+                            case CHOOSE_GOD:
+                            case NICKNAME_ALREADY_USED:
+                            case SELECT_GODS_CHALLENGER:
+
                                 socketOut.writeObject(new Message(getClientAction().getValue(),inputObject));
                                 break;
                             case SELECT_ACTIVE_WORKER:
