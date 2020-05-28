@@ -85,6 +85,7 @@ public class ClientGUI  {
 
 
         try{
+            StartingFrame startingFrame = new StartingFrame();
             Thread t0 = asyncReadFromSocket(SocketIn);
             Thread t1 = asyncWriteToSocket(SocketOut);
             t0.join();
