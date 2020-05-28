@@ -3,8 +3,11 @@ package it.polimi.ingsw.client.GUI;
 import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.Action;
+import it.polimi.ingsw.utils.Message;
+import it.polimi.ingsw.utils.ReturnMessage;
 
 import javax.print.attribute.standard.NumberUp;
+import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -18,6 +21,25 @@ public class ClientGUI  {
     private Action clientAction;
     private ClientController clientController;
     private boolean active = true;
+    private SantoriniMainFrame santoriniMainFrame;
+    private StartingFrame startingFrame;
+    private ObjectOutputStream socketOut;
+
+    public StartingFrame getStartingFrame() {
+        return startingFrame;
+    }
+
+    public void setStartingFrame(StartingFrame startingFrame) {
+        this.startingFrame = startingFrame;
+    }
+
+    public SantoriniMainFrame getSantoriniMainFrame() {
+        return santoriniMainFrame;
+    }
+
+    public void setSantoriniMainFrame(SantoriniMainFrame santoriniMainFrame) {
+        this.santoriniMainFrame = santoriniMainFrame;
+    }
 
     public void setClientAction(Action a) {
         this.clientAction = a;
@@ -45,9 +67,9 @@ public class ClientGUI  {
             @Override
             public void run() {
                 try {
-
                     while (isActive()) {
-
+                        ReturnMessage inputObject = (ReturnMessage) socketIn.readObject();
+                        messageHandler(inputObject);
                     }
                 } catch (Exception e){
                         setActive(false);
@@ -58,16 +80,14 @@ public class ClientGUI  {
         return t;
     }
 
-    public Thread asyncWriteToSocket( final ObjectOutputStream socketOut){
+    public Thread asyncWriteToSocket(Message message){
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    while (isActive()) {
-
-                    }
-                }catch(Exception e){
-                    setActive(false);
+                    socketOut.writeObject(message);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -75,27 +95,37 @@ public class ClientGUI  {
         return t;
     }
 
+    public void messageHandler (ReturnMessage message){
+        Action a = message.getAction();
+        switch (a){
+            case FIRST_MESSAGE:
+
+                String inputValue = JOptionPane.showInputDialog("Choose your nickname");
+                asyncWriteToSocket(new Message(a.getValue(), inputValue));
+
+        }
+    }
 
 
     public void run() throws IOException {
         Socket socket = new Socket(ip, port);
         System.out.println("Connection established");
         ObjectInputStream SocketIn = new ObjectInputStream(socket.getInputStream());
-        ObjectOutputStream SocketOut = new ObjectOutputStream(socket.getOutputStream());
+        socketOut = new ObjectOutputStream(socket.getOutputStream());
 
 
         try{
-            StartingFrame startingFrame = new StartingFrame();
+            SantoriniMainFrame santoriniMainFrame = new SantoriniMainFrame();
+            StartingFrame startingFrame = new StartingFrame(santoriniMainFrame);
+            this.setSantoriniMainFrame(santoriniMainFrame);
+            this.setStartingFrame(startingFrame);
             Thread t0 = asyncReadFromSocket(SocketIn);
-            Thread t1 = asyncWriteToSocket(SocketOut);
             t0.join();
-            t1.join();
         } catch(InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         } finally {
 
             SocketIn.close();
-            SocketOut.close();
             socket.close();
         }
     }

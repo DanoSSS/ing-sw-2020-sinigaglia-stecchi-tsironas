@@ -9,11 +9,11 @@ import java.io.File;
 import java.io.IOException;
 
 public class StartingFrame extends JFrame {
-     /*   public static void main(String[] args) throws IOException {
-                StartingFrame startingFrame = new StartingFrame();
-        }*/
+        private boolean startBool = false;
+        private SantoriniMainFrame santoriniMainFrame;
 
-        public StartingFrame() throws IOException {
+        public StartingFrame(SantoriniMainFrame santoriniMainFrame) throws IOException {
+                this.santoriniMainFrame = santoriniMainFrame;
                 JPanel InitPanel = new JPanel();
                 JLabel ImageLabel = new JLabel();
                 ImageLabel.setSize(new Dimension(600,600));
@@ -31,6 +31,8 @@ public class StartingFrame extends JFrame {
                         public void mouseClicked(MouseEvent mouseEvent) {
                                 StartingFrame startingFrame = returnFrame();
                                 startingFrame.dispose();
+                                santoriniMainFrame.setVisible(true);
+                                startBool = true;
                         }
 
                         @Override
@@ -54,7 +56,7 @@ public class StartingFrame extends JFrame {
                         }
                 });
                 InitPanel.add(ImageLabel);
-                this.add(InitPanel);
+                this.getContentPane().add(InitPanel);
 
                 this.pack();
                 this.setMinimumSize(new Dimension(600,600));
@@ -66,4 +68,9 @@ public class StartingFrame extends JFrame {
         public StartingFrame returnFrame (){
                 return this;
         }
+
+        public boolean isStartBool() {
+                return startBool;
+        }
+
 }
