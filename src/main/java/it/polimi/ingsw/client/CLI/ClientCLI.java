@@ -63,6 +63,8 @@ public class ClientCLI {
                             case WRONG_GODS:
                             case NICKNAME_ALREADY_USED:
                             case SELECT_GODS_CHALLENGER:
+                            case SET_WORKER_POSITION:
+                            case ERROR_SET_WORKER_POSITION:
                                 setClientAction(a);
                                 System.out.println(inputObject.getSentence());
                                 break;
@@ -398,6 +400,8 @@ public class ClientCLI {
                             case CHOOSE_GOD:
                             case NICKNAME_ALREADY_USED:
                             case SELECT_GODS_CHALLENGER:
+                            case SET_WORKER_POSITION:
+                            case ERROR_SET_WORKER_POSITION:
                                 socketOut.writeObject(new Message(getClientAction().getValue(),inputObject));
                                 break;
                             case SELECT_ACTIVE_WORKER:

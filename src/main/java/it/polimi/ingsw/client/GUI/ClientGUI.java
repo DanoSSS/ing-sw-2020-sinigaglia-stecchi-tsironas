@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.ClientController;
+import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.Message;
@@ -142,6 +143,52 @@ public class ClientGUI  {
                     gods.add(message.getGod2());
                 }
                 gsf = new GodSelectionFrame(message.getNPlayer(),"SELECT YOUR GOD",gods,np,this);
+                break;
+            case SET_WORKER_POSITION:
+            case ERROR_SET_WORKER_POSITION:
+                ArrayList<String> pv = new ArrayList<>();
+         //       boolean flag=false;
+                for(int i=0;i<5;i++){
+                    for(int j=0;j<5;j++){
+           /*             if(message.getCurrentPossibleMoves().size()==0){
+                            pv.add(i + "," + j);
+                        }
+                        else {
+                            for (Coordinates c : message.getCurrentPossibleMoves()) {
+                                if (c.equals(new Coordinates(i, j))) {
+                                    flag =true;
+                                }
+                            }
+                            if(!flag){         */
+                                pv.add(i + "," + j);
+                //                flag=false;
+               //             }
+                //        }
+                    }
+                }
+                Object[] possibleValues1 = pv.toArray();
+                String m;
+                if(message.getAction()==Action.SET_WORKER_POSITION){
+                    if(message.getLevel()==1){
+                        m = "select coordinate for your first worker";
+                    }
+                    else {
+                        m = "select coordinate for your second worker";
+                    }
+                }
+                else{
+                    if(message.getLevel()==1){
+                        m = "error:this coordinate is not available,select again coordinate for your first worker";
+                    }
+                    else {
+                        m = "error:this coordinate is not available,select again coordinate for your second worker";
+                    }
+                }
+                Object selectedValue1 = JOptionPane.showInputDialog(null,
+                        m, "worker coordinates",
+                        JOptionPane.INFORMATION_MESSAGE, null,
+                        possibleValues1, possibleValues1[0]);
+                asyncWriteToSocket(new Message(a.getValue(), (String)selectedValue1));
                 break;
 
 

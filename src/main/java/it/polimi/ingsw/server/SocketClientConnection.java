@@ -198,20 +198,20 @@ public class SocketClientConnection extends Observable<Object> implements Client
 
     private synchronized void askForCoordinates() throws IOException, ClassNotFoundException {
         try {
-            send(new ReturnMessage(4,"set your first worker in coordinate: (x,y)"));
+            send(new ReturnMessage(25,"set your first worker in coordinate: (x,y)",server.getWorkerPositions(),1));
             String coordinate = read();
             String[] input = coordinate.split(",");
             while (!server.addWorkersPositions(Integer.parseInt(input[0]), Integer.parseInt(input[1]))) {
-                send(new ReturnMessage(4,"this cell is already occupied or is not in the board, set worker in new coordinate: (x,y) 0<=x<5 0<=y<5"));
+                send(new ReturnMessage(26,"this cell is already occupied or is not in the board, set worker in new coordinate: (x,y) 0<=x<5 0<=y<5",server.getWorkerPositions(),1));
                 coordinate = read();
                 input = coordinate.split(",");
             }
 
-            send(new ReturnMessage(4,"set your second worker in coordinate: (x,y)"));
+            send(new ReturnMessage(25,"set your second worker in coordinate: (x,y)",server.getWorkerPositions(),2));
             coordinate = read();
             input = coordinate.split(",");
             while (!server.addWorkersPositions(Integer.parseInt(input[0]), Integer.parseInt(input[1]))) {
-                send(new ReturnMessage(4,"this cell is already occupied or is not in the board, set worker in new coordinate: (x,y) 0<x<5 0<y<5"));
+                send(new ReturnMessage(26,"this cell is already occupied or is not in the board, set worker in new coordinate: (x,y) 0<x<5 0<y<5",server.getWorkerPositions(),2));
                 coordinate = read();
                 input = coordinate.split(",");
             }

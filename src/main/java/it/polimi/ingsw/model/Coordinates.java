@@ -27,7 +27,6 @@ public class Coordinates implements Serializable {
         this.y = y;
     }
 
-
     public boolean equals (Coordinates c){
         return (c.getX() == this.x && c.getY() == this.y);
     }

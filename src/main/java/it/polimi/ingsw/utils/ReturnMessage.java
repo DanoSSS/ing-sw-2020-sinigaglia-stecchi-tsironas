@@ -40,6 +40,17 @@ public class ReturnMessage implements Serializable {
         this.clientController=null;
     }
 
+    //case SET_WORKER_POSITION,ERROR_SET_WORKER_POSITIONS
+    public ReturnMessage(int nAction,String sentence,ArrayList<Coordinates> workerPositions, int n){
+        this.action = Action.values()[nAction];
+        this.sentence = sentence;
+        this.clientController=null;
+        this.currentPossibleMoves=workerPositions;
+        this.level=n;
+    }
+
+
+
     //case SELECTCOORDINATEMOVE
     public ReturnMessage(int nAction,int currentActiveWorker,ArrayList<Coordinates> currentPossibleMoves,int nCurrentPlayer){
         this.action = Action.values()[nAction];
