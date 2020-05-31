@@ -98,19 +98,21 @@ public class ClientGUI  {
         return t;
     }
 
-    public void messageHandler (ReturnMessage message){
+    public void messageHandler (ReturnMessage message) throws InterruptedException {
         Action a = message.getAction();
         switch (a){
             case FIRST_MESSAGE:
+                Thread.sleep(3000);
             case NICKNAME_ALREADY_USED:
                 String inputValue = JOptionPane.showInputDialog(message.getSentence());
                 asyncWriteToSocket(new Message(a.getValue(), inputValue));
                 break;
             case NUMBER_OF_PLAYERS:
                 Object[] possibleValues = { "2", "3" };
+                ImageIcon playerImage = new ImageIcon("src/main/resources/playernumber.jpg");
                 Object selectedValue = JOptionPane.showInputDialog(null,
                         "how many players?", "game setup",
-                        JOptionPane.INFORMATION_MESSAGE, null,
+                        JOptionPane.INFORMATION_MESSAGE, playerImage,
                         possibleValues, possibleValues[0]);
                 asyncWriteToSocket(new Message(a.getValue(), (String)selectedValue));
                 np = Integer.parseInt((String)selectedValue);
