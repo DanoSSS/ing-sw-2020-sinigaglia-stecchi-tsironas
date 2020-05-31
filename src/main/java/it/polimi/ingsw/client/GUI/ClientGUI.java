@@ -147,23 +147,25 @@ public class ClientGUI  {
             case SET_WORKER_POSITION:
             case ERROR_SET_WORKER_POSITION:
                 ArrayList<String> pv = new ArrayList<>();
-         //       boolean flag=false;
+
                 for(int i=0;i<5;i++){
                     for(int j=0;j<5;j++){
-           /*             if(message.getCurrentPossibleMoves().size()==0){
-                            pv.add(i + "," + j);
+                        if(message.getCurrentPossibleMoves().size()==0){
+                            pv.add(i+","+j);
                         }
                         else {
+                            Coordinates coordinate=(new Coordinates(i,j));
+                            boolean flag=false;
                             for (Coordinates c : message.getCurrentPossibleMoves()) {
-                                if (c.equals(new Coordinates(i, j))) {
+                                if (c.equals(coordinate)){
                                     flag =true;
                                 }
                             }
-                            if(!flag){         */
-                                pv.add(i + "," + j);
-                //                flag=false;
-               //             }
-                //        }
+                            if(!flag){
+                                pv.add(i+","+j);
+                                flag=false;
+                            }
+                        }
                     }
                 }
                 Object[] possibleValues1 = pv.toArray();
