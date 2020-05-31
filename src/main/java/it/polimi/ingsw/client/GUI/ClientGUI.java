@@ -206,7 +206,7 @@ public class ClientGUI  {
 
 
         try{
-            SantoriniMainFrame santoriniMainFrame = new SantoriniMainFrame();
+            SantoriniMainFrame santoriniMainFrame = new SantoriniMainFrame(this);
             StartingFrame startingFrame = new StartingFrame(santoriniMainFrame);
             this.setSantoriniMainFrame(santoriniMainFrame);
             this.setStartingFrame(startingFrame);
