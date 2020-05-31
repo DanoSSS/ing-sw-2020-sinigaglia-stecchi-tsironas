@@ -12,7 +12,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
+import java.util.TimerTask;
 
 
 public class ClientGUI  {
@@ -24,6 +26,7 @@ public class ClientGUI  {
     private SantoriniMainFrame santoriniMainFrame;
     private StartingFrame startingFrame;
     private ObjectOutputStream socketOut;
+    int np=0;
 
     public StartingFrame getStartingFrame() {
         return startingFrame;
@@ -99,13 +102,50 @@ public class ClientGUI  {
         Action a = message.getAction();
         switch (a){
             case FIRST_MESSAGE:
-
-                String inputValue = JOptionPane.showInputDialog("Choose your nickname");
+            case NICKNAME_ALREADY_USED:
+                String inputValue = JOptionPane.showInputDialog(message.getSentence());
                 asyncWriteToSocket(new Message(a.getValue(), inputValue));
+                break;
+            case NUMBER_OF_PLAYERS:
+                Object[] possibleValues = { "2", "3" };
+                Object selectedValue = JOptionPane.showInputDialog(null,
+                        "how many players?", "game setup",
+                        JOptionPane.INFORMATION_MESSAGE, null,
+                        possibleValues, possibleValues[0]);
+                asyncWriteToSocket(new Message(a.getValue(), (String)selectedValue));
+                np = Integer.parseInt((String)selectedValue);
+                break;
+            case SELECT_GODS_CHALLENGER:
+                ArrayList<String> gods = new ArrayList<>();
+                gods.add("APOLLO");
+                gods.add("ARTEMIS");
+                gods.add("ATHENA");
+                gods.add("ATLAS");
+                gods.add("DEMETER");
+                gods.add("EPHAESTUS");
+                gods.add("MINOTAUR");
+                gods.add("PAN");
+                gods.add("PROMETHEUS");
+                GodSelectionFrame gsf = new GodSelectionFrame(9,"SELECT "+np+" GODS BETWEEN:",gods,np,this);
+                break;
+            case CHOOSE_GOD:
+                gods = new ArrayList<>();
+                if(message.getNPlayer()==3){
+                    gods.add(message.getGod1());
+                    gods.add(message.getGod2());
+                    gods.add(message.getGod3());
+                }
+                else if(message.getNPlayer()==2){
+                    gods.add(message.getGod1());
+                    gods.add(message.getGod2());
+                }
+                gsf = new GodSelectionFrame(message.getNPlayer(),"SELECT YOUR GOD",gods,np,this);
+                break;
+
+
 
         }
     }
-
 
     public void run() throws IOException {
         Socket socket = new Socket(ip, port);

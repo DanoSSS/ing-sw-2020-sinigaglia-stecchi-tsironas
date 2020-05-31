@@ -59,6 +59,7 @@ public class StartingFrame extends JFrame {
                 this.getContentPane().add(InitPanel);
 
                 this.pack();
+                this.setLocationRelativeTo(null);
                 this.setMinimumSize(new Dimension(600,600));
                 this.setDefaultCloseOperation(EXIT_ON_CLOSE);
                 this.setVisible(true);

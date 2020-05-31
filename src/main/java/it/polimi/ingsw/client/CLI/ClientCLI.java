@@ -61,11 +61,19 @@ public class ClientCLI {
                             case SELECT_ACTIVE_WORKER:
                             case NUMBER_OF_PLAYERS:
                             case WRONG_GODS:
-                            case CHOOSE_GOD:
                             case NICKNAME_ALREADY_USED:
                             case SELECT_GODS_CHALLENGER:
                                 setClientAction(a);
                                 System.out.println(inputObject.getSentence());
+                                break;
+                            case CHOOSE_GOD:
+                                setClientAction(a);
+                                int j=inputObject.getNPlayer();
+                                if(j==3){
+                                    System.out.println("select your god between: " +inputObject.getGod1()+ "\t" +inputObject.getGod2()+ "\t" +inputObject.getGod3());
+                                }else{
+                                    System.out.println("select your god between: " +inputObject.getGod1()+ "\t" +inputObject.getGod2());
+                                }
                                 break;
                             case WORKER_SET:
                                 clientController = inputObject.getClientController().clone();
@@ -390,7 +398,6 @@ public class ClientCLI {
                             case CHOOSE_GOD:
                             case NICKNAME_ALREADY_USED:
                             case SELECT_GODS_CHALLENGER:
-
                                 socketOut.writeObject(new Message(getClientAction().getValue(),inputObject));
                                 break;
                             case SELECT_ACTIVE_WORKER:

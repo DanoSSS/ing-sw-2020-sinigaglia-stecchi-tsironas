@@ -30,6 +30,7 @@ public class ReturnMessage implements Serializable {
     private int level;
     private int nextNPlayer;
     private Worker oppWorker,otherWorker;
+    private String god1,god2,god3;
 
 
     //case STRING
@@ -156,6 +157,15 @@ public class ReturnMessage implements Serializable {
         this.clientController = null;
     }
 
+    public ReturnMessage(int nAction,int NPlayer,String god1,String god2,String god3){
+        this.action = Action.values()[nAction];
+        this.NPlayer = NPlayer;
+        this.god1 = god1;
+        this.god2 = god2;
+        this.god3 = god3;
+        this.clientController = null;
+    }
+
     public Map<Worker, Coordinates> getWorkerPosition() {
         return workerPosition;
     }
@@ -213,5 +223,15 @@ public class ReturnMessage implements Serializable {
     public Worker getOtherWorker(){
         return otherWorker;
     }
+    public String getGod1() {
+        return god1;
+    }
+    public String getGod2() {
+        return god2;
+    }
+    public String getGod3() {
+        return god3;
+    }
+
 
 }
