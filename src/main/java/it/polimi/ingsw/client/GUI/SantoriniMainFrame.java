@@ -10,11 +10,11 @@ public class SantoriniMainFrame extends JFrame {
     public SantoriniMainFrame (ClientGUI clientGUI){
         super();
         this.clientGUI=clientGUI;
-        this.setSize(600,600);
+        this.setSize(700,700);
         boardPanel = new BoardPanel(5,5,clientGUI);
         this.getContentPane().add(BorderLayout.CENTER,boardPanel);
         this.pack();
-        this.setMinimumSize(new Dimension(600,600));
+        this.setMinimumSize(new Dimension(700,700));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(false);
     }

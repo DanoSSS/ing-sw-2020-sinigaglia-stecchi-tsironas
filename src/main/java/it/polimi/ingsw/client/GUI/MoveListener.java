@@ -16,7 +16,7 @@ public class MoveListener implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
-        System.out.println("prova");
+        System.out.println("prova");             //da fare
     }
 
     @Override

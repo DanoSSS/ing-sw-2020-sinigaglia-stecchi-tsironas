@@ -194,10 +194,10 @@ public class ClientGUI  {
                         possibleValues1, possibleValues1[0]);
                 asyncWriteToSocket(new Message(a.getValue(), (String)selectedValue1));
                 break;
-            case WORKER_SET:
+            case WORKER_SET:   //da fare, cosi è soltanto una prova per settare un worker in una tile
                 clientController = message.getClientController().clone();
                 List<Worker> keys= new ArrayList<Worker>(message.getWorkerPosition().keySet());
-                santoriniMainFrame.getBoardPanel().drawImage(message.getWorkerPosition().get(keys.get(0)).getX(),message.getWorkerPosition().get(keys.get(0)).getY());
+                santoriniMainFrame.getBoardPanel().drawWorker(message.getWorkerPosition().get(keys.get(0)).getX(),message.getWorkerPosition().get(keys.get(0)).getY(),1);
                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()){
                     setClientAction(Action.SELECT_ACTIVE_WORKER);
                 }

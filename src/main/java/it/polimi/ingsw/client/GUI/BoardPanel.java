@@ -35,9 +35,11 @@ public class BoardPanel extends JPanel {
         }
     }
 
-    public void drawImage(int x,int y){  //TODO: in bade all id worker che riceve come parametro passera un worker diverso
-        tile[x][y].removeAll();
-        workerPlayer1 = new ImageIcon("src/main/resources/wkblue.png");
-        tile[x][y].add(workerPlayer1);
+    public void drawWorker(int x,int y,int colorWorker) throws IOException {  //da vedere e sistemare insieme
+        tile[x][y].addWorker(colorWorker);
+    }
+
+    public void removeWorker(int x, int y){    //da vedere e sistemare insieme
+        tile[x][y].removeWorker();
     }
 }
