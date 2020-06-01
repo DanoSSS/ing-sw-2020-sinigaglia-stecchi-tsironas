@@ -14,6 +14,7 @@ public class TilePanel extends JPanel {
     private int y;
     private int level=0;
     private JLabel workerLabel;
+    private int idWorker=-1;
 
     public TilePanel(int x, int y, BoardPanel boardGUI) {
         super();
@@ -21,27 +22,40 @@ public class TilePanel extends JPanel {
         this.y = y;
         this.boardGUI = boardGUI;
         addMouseListener((MouseListener) new MoveListener(x, y, boardGUI));
-        this.setBackground(new Color(3,192,60));
-        this.setBorder(BorderFactory.createLineBorder(Color.white,3));
+        this.setBackground(new Color(210,210,210));
+        this.setBorder(BorderFactory.createLineBorder(Color.cyan,3));
         JLabel levelLabel = new JLabel(Integer.toString(level));
         this.add(BorderLayout.NORTH,levelLabel);
     }
 
-    public void addWorker(int colorWorker) throws IOException {   //da vedere e sistemare insieme
+    public void addWorker(int idWorker) throws IOException {   //da vedere e sistemare insieme
         workerLabel= new JLabel();
         workerLabel.setSize(this.getSize());
-        this.add(BorderLayout.CENTER,workerLabel);
-        if(colorWorker==1){
-            BufferedImage img = null;
-            img = ImageIO.read(new File("arts/wkblue.png"));
-            Image dimg = img.getScaledInstance(80, 80, Image.SCALE_SMOOTH);
-            ImageIcon imageIcon = new ImageIcon(dimg);
-            workerLabel.setIcon(imageIcon);
+        this.add(BorderLayout.SOUTH,workerLabel);
+        BufferedImage img = null;
+        ImageIcon image1=null;
+        if(idWorker==1 || idWorker==0) {
+             image1 = new ImageIcon(getClass().getResource("/wkred.png"));
         }
+        else if(idWorker==2 || idWorker==3){
+            image1 = new ImageIcon(getClass().getResource("/wkgreen.png"));
+        }
+        else if(idWorker==4 || idWorker==5){
+            image1 = new ImageIcon(getClass().getResource("/wkblue1.png"));
+        }
+        Image dimg = image1.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
+        image1 = new ImageIcon(dimg);
+        workerLabel.setIcon(image1);
+        this.idWorker=idWorker;
         workerLabel.setVisible(true);
     }
 
     public void removeWorker(){      //da vedere e sistemare insieme
         this.remove(workerLabel);
     }
+
+    public int getIdWorker() {
+        return idWorker;
+    }
+
 }

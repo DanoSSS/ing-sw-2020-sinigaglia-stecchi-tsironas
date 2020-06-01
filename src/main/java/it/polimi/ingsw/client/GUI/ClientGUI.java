@@ -194,17 +194,37 @@ public class ClientGUI  {
                         possibleValues1, possibleValues1[0]);
                 asyncWriteToSocket(new Message(a.getValue(), (String)selectedValue1));
                 break;
-            case WORKER_SET:   //da fare, cosi è soltanto una prova per settare un worker in una tile
+            case WORKER_SET:
                 clientController = message.getClientController().clone();
                 List<Worker> keys= new ArrayList<Worker>(message.getWorkerPosition().keySet());
-                santoriniMainFrame.getBoardPanel().drawWorker(message.getWorkerPosition().get(keys.get(0)).getX(),message.getWorkerPosition().get(keys.get(0)).getY(),1);
+                if(keys.size()==4){
+                    for(int i=0;i<4;i++){
+                        int x=message.getWorkerPosition().get(keys.get(i)).getX();
+                        int y=message.getWorkerPosition().get(keys.get(i)).getY();
+
+                        santoriniMainFrame.getBoardPanel().drawWorker(x,y,keys.get(i).getIdWorker());
+                    }
+                }
+                else if(keys.size()==6) {
+                    for (int i=0;i<6;i++) {
+                        int x=message.getWorkerPosition().get(keys.get(i)).getX();
+                        int y=message.getWorkerPosition().get(keys.get(i)).getY();
+                        santoriniMainFrame.getBoardPanel().drawWorker(x,y, keys.get(i).getIdWorker());
+                    }
+                }
                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()){
                     setClientAction(Action.SELECT_ACTIVE_WORKER);
+                    santoriniMainFrame.getLog().setText("It's your turn!\nSelect your active worker!");
                 }
                 else if(clientController.getIdPlayer() != clientController.getCurrentRoundIdPlayer()) {
                     setClientAction(Action.NOT_YOUR_TURN);
+                    santoriniMainFrame.getLog().setText("Wait your turn!");
                 }
         }
+    }
+
+    public ClientController getClientController() {
+        return clientController;
     }
 
     public void run() throws IOException {

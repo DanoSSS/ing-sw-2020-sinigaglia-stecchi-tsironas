@@ -1,5 +1,8 @@
 package it.polimi.ingsw.client.GUI;
 
+import it.polimi.ingsw.model.Coordinates;
+import it.polimi.ingsw.model.Worker;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -7,15 +10,16 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import it.polimi.ingsw.utils.Action;
+import it.polimi.ingsw.utils.Message;
+
+import java.util.Map;
+
 
 public class BoardPanel extends JPanel {
     private TilePanel[][] tile;
     protected final int nRow;
     protected final int nColumn;
-    private ImageIcon workerPlayer1;
-    private ImageIcon workerPlayer2;
-    private ImageIcon workerPlayer3;
-    private ArrayList<TilePanel> workerPositions;
     private ClientGUI clientGUI;
 
     public BoardPanel(int nRow,int nColumn,ClientGUI clientGUI) {
@@ -35,11 +39,27 @@ public class BoardPanel extends JPanel {
         }
     }
 
-    public void drawWorker(int x,int y,int colorWorker) throws IOException {  //da vedere e sistemare insieme
-        tile[x][y].addWorker(colorWorker);
+    public void drawWorker(int x,int y,int idWorker) throws IOException {  //da vedere e sistemare insieme
+        tile[x][y].addWorker(idWorker);
+
     }
 
     public void removeWorker(int x, int y){    //da vedere e sistemare insieme
         tile[x][y].removeWorker();
+    }
+
+    public void handleClick(int x, int y) {
+        Action a = clientGUI.getClientAction();
+        switch (a){
+            case SELECT_ACTIVE_WORKER:
+                if(!clientGUI.getClientController().checkIdWorker(tile[x][y].getIdWorker())){
+                    JOptionPane.showMessageDialog(null, "this is not your worker,pick yours!", "Wrong Worker", JOptionPane.ERROR_MESSAGE);
+                }
+                clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(),tile[x][y].getIdWorker()));
+                break;
+            case NOT_YOUR_TURN:
+                JOptionPane.showMessageDialog(null, "WAIT! IT'S NOT YOUR TURN!!", "not your turn", JOptionPane.ERROR_MESSAGE);
+                break;
+        }
     }
 }
