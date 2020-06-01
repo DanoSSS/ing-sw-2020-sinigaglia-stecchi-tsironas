@@ -80,18 +80,15 @@ public class ClientCLI {
                             case WORKER_SET:
                                 clientController = inputObject.getClientController().clone();
                                 board = clientController.getBoard();
+                                for (int i = 0; i < inputObject.getNicknames().length; i++) {
+                                    System.out.println(inputObject.getNicknames()[i]); //get the String[] with the output
+                                }
                                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
-                                    for (int i = 0; i < inputObject.getNicknames().length; i++) {
-                                        System.out.println(inputObject.getNicknames()[i]); //get the String[] with the output
-                                    }
                                     setClientAction(Action.SELECT_ACTIVE_WORKER);
                                     print(board);
                                     System.out.println("it's your turn!\nselect active worker:");
                                 }
-                                else if(clientController.getIdPlayer() != loseRound){
-                                    for (int i = 0; i < inputObject.getNicknames().length; i++) {
-                                        System.out.println(inputObject.getNicknames()[i]); //get the String[] with the output
-                                    }
+                                else if(clientController.getIdPlayer() != clientController.getCurrentRoundIdPlayer()){
                                     setClientAction(Action.NOT_YOUR_TURN);
                                     print(board);
                                     System.out.println("wait your turn");

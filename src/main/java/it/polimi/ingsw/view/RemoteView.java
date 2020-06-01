@@ -106,7 +106,7 @@ public class RemoteView extends View{
                     int y=m.get(workers.get(i)).getY();
                     clientController.setWorkerCellMessage(workers.get(i).getIdWorker(),x,y);
                 }
-                clientConnection.asyncSend(new ReturnMessage(3,messageSettingWorkersPositions,clientController));
+                clientConnection.asyncSend(new ReturnMessage(3,messageSettingWorkersPositions,clientController,m));
                 break;
             case SELECT_COORDINATE_MOVE:
             case MOVE_AND_COORDINATE_BUILD:

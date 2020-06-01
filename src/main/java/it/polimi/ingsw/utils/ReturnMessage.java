@@ -84,14 +84,15 @@ public class ReturnMessage implements Serializable {
         this.clientController = null;
     }
 
-    //case ACTIVEWORKER
-    public ReturnMessage (int nAction, String[] workersSettingInBoard, ClientController clientController){
+    //case WORKERSET
+    public ReturnMessage (int nAction, String[] workersSettingInBoard, ClientController clientController,Map<Worker, Coordinates> workerPosition){
         this.clientController=clientController;
         this.action=Action.values()[nAction];
         this.nicknames = workersSettingInBoard.clone();
+        this.workerPosition = workerPosition;
     }
 
-    //case WORKERSET
+    //case WORKERSET,message receiver
     public ReturnMessage(int nAction, Map<Worker, Coordinates> workerPosition, String[] nicknames, Integer[] idPlayers, int NPlayer,int firstToStartID) {
         this.action = Action.values()[nAction];
         this.workerPosition = workerPosition;

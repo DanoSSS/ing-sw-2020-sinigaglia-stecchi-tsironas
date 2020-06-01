@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.model.Coordinates;
+import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.Message;
@@ -14,6 +15,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.TimerTask;
 
@@ -99,7 +101,7 @@ public class ClientGUI  {
         return t;
     }
 
-    public void messageHandler (ReturnMessage message) throws InterruptedException {
+    public void messageHandler (ReturnMessage message) throws InterruptedException, IOException {
         Action a = message.getAction();
         switch (a){
             case FIRST_MESSAGE:
@@ -110,7 +112,7 @@ public class ClientGUI  {
                 break;
             case NUMBER_OF_PLAYERS:
                 Object[] possibleValues = { "2", "3" };
-                ImageIcon playerImage = new ImageIcon("src/main/resources/playernumber.jpg");
+                ImageIcon playerImage = new ImageIcon("src/main/resources/playernumber.png");
                 Object selectedValue = JOptionPane.showInputDialog(null,
                         "how many players?", "game setup",
                         JOptionPane.INFORMATION_MESSAGE, playerImage,
@@ -192,9 +194,16 @@ public class ClientGUI  {
                         possibleValues1, possibleValues1[0]);
                 asyncWriteToSocket(new Message(a.getValue(), (String)selectedValue1));
                 break;
-
-
-
+            case WORKER_SET:
+                clientController = message.getClientController().clone();
+                List<Worker> keys= new ArrayList<Worker>(message.getWorkerPosition().keySet());
+                santoriniMainFrame.getBoardPanel().drawImage(message.getWorkerPosition().get(keys.get(0)).getX(),message.getWorkerPosition().get(keys.get(0)).getY());
+                if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()){
+                    setClientAction(Action.SELECT_ACTIVE_WORKER);
+                }
+                else if(clientController.getIdPlayer() != clientController.getCurrentRoundIdPlayer()) {
+                    setClientAction(Action.NOT_YOUR_TURN);
+                }
         }
     }
 
@@ -215,7 +224,6 @@ public class ClientGUI  {
         } catch(InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         } finally {
-
             SocketIn.close();
             socket.close();
         }

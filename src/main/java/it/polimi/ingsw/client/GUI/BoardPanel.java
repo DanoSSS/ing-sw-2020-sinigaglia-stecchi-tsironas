@@ -1,7 +1,11 @@
 package it.polimi.ingsw.client.GUI;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class BoardPanel extends JPanel {
@@ -29,5 +33,11 @@ public class BoardPanel extends JPanel {
                 this.add(tile[i][j]);
             }
         }
+    }
+
+    public void drawImage(int x,int y){  //TODO: in bade all id worker che riceve come parametro passera un worker diverso
+        tile[x][y].removeAll();
+        workerPlayer1 = new ImageIcon("src/main/resources/wkblue.png");
+        tile[x][y].add(workerPlayer1);
     }
 }
