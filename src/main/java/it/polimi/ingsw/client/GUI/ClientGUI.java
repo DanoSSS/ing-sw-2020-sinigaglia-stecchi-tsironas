@@ -214,11 +214,11 @@ public class ClientGUI  {
                 }
                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()){
                     setClientAction(Action.SELECT_ACTIVE_WORKER);
-                    santoriniMainFrame.getLog().setText("It's your turn!\nSelect your active worker!");
+                    santoriniMainFrame.getLog().append("It's your turn!\nSelect your active worker!");
                 }
                 else if(clientController.getIdPlayer() != clientController.getCurrentRoundIdPlayer()) {
                     setClientAction(Action.NOT_YOUR_TURN);
-                    santoriniMainFrame.getLog().setText("Wait your turn!");
+                    santoriniMainFrame.getLog().append("Wait your turn!");
                 }
         }
     }
