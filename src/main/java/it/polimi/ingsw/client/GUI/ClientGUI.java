@@ -103,6 +103,7 @@ public class ClientGUI  {
 
     public void messageHandler (ReturnMessage message) throws InterruptedException, IOException {
         Action a = message.getAction();
+        int loseRound=-1;
         switch (a){
             case FIRST_MESSAGE:
                 Thread.sleep(3000);
@@ -220,6 +221,56 @@ public class ClientGUI  {
                     setClientAction(Action.NOT_YOUR_TURN);
                     santoriniMainFrame.getLog().append("Wait your turn!");
                 }
+                break;
+            case SELECT_COORDINATE_MOVE:
+                clientController.setCurrentRoundIdPlayer(message.getnCurrentPlayer());
+                int id = message.getCurrentActiveWorker();
+                if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
+                    setClientAction(a);
+                    ArrayList<Coordinates> possibleMoves = message.getCurrentPossibleMoves();
+                    santoriniMainFrame.getLog().append("\nYour active worker is " + id + "\nSelect coordinate to move");
+                    santoriniMainFrame.getBoardPanel().drawPossibleBorder(possibleMoves);
+                }else if(clientController.getIdPlayer() != loseRound) {
+                    int n = clientController.getCurrentRoundIdPlayer();
+                    santoriniMainFrame.getLog().append("\nplayer" +n+ "select worker" +id);
+                }
+                break;
+            case MOVE_AND_COORDINATE_BUILD:
+                santoriniMainFrame.getBoardPanel().setDefaultBorder();
+                id = message.getCurrentActiveWorker();
+                santoriniMainFrame.getBoardPanel().drawWorker(message.getCoordinate().getX(),message.getCoordinate().getY(),id);
+                if(message.getOppWorker()!=null){
+                    santoriniMainFrame.getBoardPanel().drawWorker(message.getOppWorker().getCoordinates().getX(),message.getOppWorker().getCoordinates().getY(),message.getOppWorker().getIdWorker());
+                    if (message.getOppWorker().getCoordinates().getX()!=message.getCoordinateOld().getX() && message.getOppWorker().getCoordinates().getY()!=message.getCoordinateOld().getY()){
+                        santoriniMainFrame.getBoardPanel().removeWorker(message.getCoordinateOld().getX(),message.getCoordinateOld().getY());
+                    }
+                }
+                else {
+                    santoriniMainFrame.getBoardPanel().removeWorker(message.getCoordinateOld().getX(),message.getCoordinateOld().getY());
+                }
+                if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
+                    setClientAction(a);
+                    ArrayList<Coordinates> possibleBuilds = message.getCurrentPossibleMoves();
+                    santoriniMainFrame.getLog().append("\nSelect coordinate to build");
+                    santoriniMainFrame.getBoardPanel().drawPossibleBorder(possibleBuilds);
+                }
+                break;
+            case BUILD_END_TURN:
+                santoriniMainFrame.getBoardPanel().setDefaultBorder();
+                santoriniMainFrame.getBoardPanel().drawLevel(message.getCoordinate().getX(),message.getCoordinate().getY(),message.getLevel(),message.getDome());
+                if(clientController.getIdPlayer()==message.getnCurrentPlayer()){
+                    setClientAction(Action.NOT_YOUR_TURN);
+                    santoriniMainFrame.getLog().append("\nWait your turn");
+                }
+                else if(clientController.getIdPlayer()==message.getNextNPlayer() && clientController.getIdPlayer() != loseRound){
+                    setClientAction(Action.SELECT_ACTIVE_WORKER);
+                    santoriniMainFrame.getLog().append("\nIt's your turn!\nselect active worker:");
+                }
+                else if(clientController.getIdPlayer() != loseRound){
+                    setClientAction(Action.NOT_YOUR_TURN);
+                    santoriniMainFrame.getLog().append("\nWait your turn");
+                }
+                break;
         }
     }
 

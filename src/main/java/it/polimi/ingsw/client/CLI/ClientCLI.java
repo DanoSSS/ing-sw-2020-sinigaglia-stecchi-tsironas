@@ -49,7 +49,7 @@ public class ClientCLI {
             @Override
             public void run() {
                 try {
-                    int loseRound=5;
+                    int loseRound=-1;
                     while (isActive()) {
                         ReturnMessage inputObject = (ReturnMessage) socketIn.readObject();
                         Action a = inputObject.getAction();
