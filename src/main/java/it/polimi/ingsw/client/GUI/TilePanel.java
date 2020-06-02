@@ -15,6 +15,7 @@ public class TilePanel extends JPanel {
     private int level=0;
     private JLabel workerLabel;
     private int idWorker=-1;
+    private Dimension d;
 
     public TilePanel(int x, int y, BoardPanel boardGUI) {
         super();
@@ -22,6 +23,8 @@ public class TilePanel extends JPanel {
         this.y = y;
         this.boardGUI = boardGUI;
         addMouseListener((MouseListener) new MoveListener(x, y, boardGUI));
+        d = new Dimension(115,115);
+        this.setPreferredSize(d);
         this.setBackground(new Color(210,210,210));
         this.setBorder(BorderFactory.createLineBorder(Color.cyan,3));
         JLabel levelLabel = new JLabel(Integer.toString(level));
@@ -41,7 +44,7 @@ public class TilePanel extends JPanel {
             image1 = new ImageIcon(getClass().getResource("/wkgreen.png"));
         }
         else if(idWorker==4 || idWorker==5){
-            image1 = new ImageIcon(getClass().getResource("/wkblue1.png"));
+            image1 = new ImageIcon(getClass().getResource("/wkblue.png"));
         }
         Image dimg = image1.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
         image1 = new ImageIcon(dimg);

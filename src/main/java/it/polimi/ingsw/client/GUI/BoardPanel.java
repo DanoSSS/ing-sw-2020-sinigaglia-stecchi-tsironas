@@ -53,12 +53,12 @@ public class BoardPanel extends JPanel {
         switch (a){
             case SELECT_ACTIVE_WORKER:
                 if(!clientGUI.getClientController().checkIdWorker(tile[x][y].getIdWorker())){
-                    JOptionPane.showMessageDialog(null, "this is not your worker,pick yours!", "Wrong Worker", JOptionPane.ERROR_MESSAGE);
+                    clientGUI.getSantoriniMainFrame().getLog().append( "\nThis is not your worker!\nPick yours!");
                 }
                 clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(),tile[x][y].getIdWorker()));
                 break;
             case NOT_YOUR_TURN:
-                JOptionPane.showMessageDialog(null, "WAIT! IT'S NOT YOUR TURN!!", "not your turn", JOptionPane.ERROR_MESSAGE);
+                clientGUI.getSantoriniMainFrame().getLog().append("\nWAIT! It's not your turn!");
                 break;
         }
     }
