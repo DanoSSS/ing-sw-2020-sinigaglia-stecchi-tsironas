@@ -47,12 +47,14 @@ public class BoardPanel extends JPanel {
         //repaint in clientGUI
     }
 
-    public void drawWorker(int x, int y, int idWorker) throws IOException {  //da vedere e sistemare insieme
-        Coordinates oldC;
-        if (idWorker > 0 && idWorker==activeWorker) {
+    public void drawWorker(int x, int y, int idWorker) throws IOException {//da vedere e sistemare insieme
+        tile[x][y].addWorker(idWorker);
+    }
+        /*Coordinates oldC;
+        if (idWorker >= 0 && idWorker==activeWorker) {
             if(tile[x][y].getIdWorker()==idWorker){
                 return; //cannot move in the same position as the worker
-            } else if(tile[x][y].getIdWorker()>0 && tile[x][y].getIdWorker()!=idWorker) {
+            } else if(tile[x][y].getIdWorker()>=0 && tile[x][y].getIdWorker()!=idWorker) {
                 removeWorker(x,y);
                 tile[x][y].addWorker(idWorker);
             } else {
@@ -70,7 +72,7 @@ public class BoardPanel extends JPanel {
             tile[x][y].addWorker(idWorker);
         }
         revalidate();
-    }
+    }*/
 
     public void removeWorker(int x, int y) {    //da vedere e sistemare insieme
         tile[x][y].removeWorker();

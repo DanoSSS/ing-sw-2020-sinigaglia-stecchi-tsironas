@@ -241,17 +241,13 @@ public class ClientGUI  {
             case MOVE_AND_COORDINATE_BUILD:
                 santoriniMainFrame.getBoardPanel().setDefaultBorder();
                 id = message.getCurrentActiveWorker();
+                santoriniMainFrame.getBoardPanel().removeWorker(message.getCoordinate().getX(),message.getCoordinate().getY());
                 santoriniMainFrame.getBoardPanel().drawWorker(message.getCoordinate().getX(),message.getCoordinate().getY(),id);
+                santoriniMainFrame.getBoardPanel().removeWorker(message.getCoordinateOld().getX(), message.getCoordinateOld().getY());
                 santoriniMainFrame.getBoardPanel().repaint();
-                if(message.getOppWorker()!=null){
-                    santoriniMainFrame.getBoardPanel().drawWorker(message./*getOppWorker().getCoordinates().*/getCoordinate().getX(),message./*getOppWorker().getCoordinates().*/getCoordinate().getY(),message.getOppWorker().getIdWorker()); //mi servono le coordinate del IDWORKER che fa lsa MOVE per poter metterci il vecchio IDworker che ha soprastato
+                if(message.getOppWorker()!=null) {
+                    santoriniMainFrame.getBoardPanel().drawWorker(message.getOppWorker().getCoordinates().getX(), message.getOppWorker().getCoordinates().getY(), message.getOppWorker().getIdWorker());
                     santoriniMainFrame.getBoardPanel().repaint();
-                    if (message.getOppWorker().getCoordinates().getX()!=message.getCoordinateOld().getX() && message.getOppWorker().getCoordinates().getY()!=message.getCoordinateOld().getY()){
-                        santoriniMainFrame.getBoardPanel().removeWorker(message.getCoordinateOld().getX(),message.getCoordinateOld().getY());
-                    }
-                }
-                else {
-                    santoriniMainFrame.getBoardPanel().removeWorker(message.getCoordinateOld().getX(),message.getCoordinateOld().getY());
                 }
                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
                     setClientAction(a);
