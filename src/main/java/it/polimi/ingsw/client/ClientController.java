@@ -173,4 +173,12 @@ public class ClientController implements Serializable {
         }
         return false;
     }
+
+    public boolean checkPresenceWorker(int idWorker) {
+        if (idWorker>0){
+            return false;
+        } else{
+            return true;
+        }
+    }
 }

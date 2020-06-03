@@ -1,38 +1,49 @@
 package it.polimi.ingsw.client.GUI;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 public class StartingFrame extends JFrame {
-        private boolean startBool = false;
         private SantoriniMainFrame santoriniMainFrame;
 
         public StartingFrame(SantoriniMainFrame santoriniMainFrame) throws IOException {
                 this.santoriniMainFrame = santoriniMainFrame;
                 JPanel InitPanel = new JPanel();
                 JLabel ImageLabel = new JLabel();
-                ImageLabel.setSize(new Dimension(600,600));
+                ImageLabel.setSize(new Dimension(500,490));
                 JButton StartGame = new JButton("Start game");
-                ImageIcon SantoriniImage = new ImageIcon("src/main/resources/santorini.png");
+                ImageIcon SantoriniImage = new ImageIcon(getClass().getResource("/santorini.png"));
+
+                int w = SantoriniImage.getIconWidth();
+                int h = SantoriniImage.getIconHeight();
+                int targetWidth = ImageLabel.getWidth();
+                int targetHeight = ImageLabel.getHeight();
+                do {
+                if (w > targetWidth) {
+                    w =w-60;
+                    if (w < targetWidth) {
+                        w = targetWidth;
+                    }
+                }
+                if (h > targetHeight) {
+                    h =h-60;
+                    if (h < targetHeight) {
+                        h = targetHeight;
+                    }
+                }
+                Image img = SantoriniImage.getImage().getScaledInstance(w,h,Image.SCALE_SMOOTH);
+                SantoriniImage = new ImageIcon(img);
+            } while (w != targetWidth || h != targetHeight);
                 ImageLabel.setIcon(SantoriniImage);
 
-        /*        BufferedImage img = null;
-                img = ImageIO.read(new File("resources/santorini.png"));
-                Image dimg = img.getScaledInstance(ImageLabel.getWidth(), ImageLabel.getHeight(), Image.SCALE_SMOOTH);
-                ImageIcon imageIcon = new ImageIcon(dimg);
-                ImageLabel.setIcon(imageIcon); */
                 InitPanel.addMouseListener(new MouseListener() {
                         @Override
                         public void mouseClicked(MouseEvent mouseEvent) {
                                 StartingFrame startingFrame = returnFrame();
                                 startingFrame.dispose();
                                 santoriniMainFrame.setVisible(true);
-                                startBool = true;
                         }
 
                         @Override
@@ -60,7 +71,7 @@ public class StartingFrame extends JFrame {
 
                 this.pack();
                 this.setLocationRelativeTo(null);
-                this.setMinimumSize(new Dimension(600,600));
+                this.setMinimumSize(new Dimension(390,380));
                 this.setDefaultCloseOperation(EXIT_ON_CLOSE);
                 this.setVisible(true);
 
@@ -68,10 +79,6 @@ public class StartingFrame extends JFrame {
 
         public StartingFrame returnFrame (){
                 return this;
-        }
-
-        public boolean isStartBool() {
-                return startBool;
         }
 
 }

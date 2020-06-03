@@ -203,14 +203,16 @@ public class ClientGUI  {
                         int x=message.getWorkerPosition().get(keys.get(i)).getX();
                         int y=message.getWorkerPosition().get(keys.get(i)).getY();
 
-                        santoriniMainFrame.getBoardPanel().drawWorker(x,y,keys.get(i).getIdWorker());
+                        santoriniMainFrame.getBoardPanel().drawFirstWorker(x,y,keys.get(i).getIdWorker());
+                        santoriniMainFrame.repaint();
                     }
                 }
                 else if(keys.size()==6) {
                     for (int i=0;i<6;i++) {
                         int x=message.getWorkerPosition().get(keys.get(i)).getX();
                         int y=message.getWorkerPosition().get(keys.get(i)).getY();
-                        santoriniMainFrame.getBoardPanel().drawWorker(x,y, keys.get(i).getIdWorker());
+                        santoriniMainFrame.getBoardPanel().drawFirstWorker(x,y, keys.get(i).getIdWorker());
+                        santoriniMainFrame.repaint();
                     }
                 }
                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()){
@@ -239,8 +241,10 @@ public class ClientGUI  {
                 santoriniMainFrame.getBoardPanel().setDefaultBorder();
                 id = message.getCurrentActiveWorker();
                 santoriniMainFrame.getBoardPanel().drawWorker(message.getCoordinate().getX(),message.getCoordinate().getY(),id);
+                santoriniMainFrame.getBoardPanel().repaint();
                 if(message.getOppWorker()!=null){
                     santoriniMainFrame.getBoardPanel().drawWorker(message.getOppWorker().getCoordinates().getX(),message.getOppWorker().getCoordinates().getY(),message.getOppWorker().getIdWorker());
+                    santoriniMainFrame.getBoardPanel().repaint();
                     if (message.getOppWorker().getCoordinates().getX()!=message.getCoordinateOld().getX() && message.getOppWorker().getCoordinates().getY()!=message.getCoordinateOld().getY()){
                         santoriniMainFrame.getBoardPanel().removeWorker(message.getCoordinateOld().getX(),message.getCoordinateOld().getY());
                     }

@@ -1,13 +1,9 @@
 package it.polimi.ingsw.client.GUI;
 
-import it.polimi.ingsw.client.CLI.CellMessage;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 public class TilePanel extends JPanel {
@@ -38,7 +34,6 @@ public class TilePanel extends JPanel {
         workerLabel= new JLabel();
         workerLabel.setSize(this.getSize());
         this.add(BorderLayout.SOUTH,workerLabel);
-        BufferedImage img = null;
         ImageIcon image1=null;
         if(idWorker==1 || idWorker==0) {
              image1 = new ImageIcon(getClass().getResource("/wkred.png"));
@@ -49,14 +44,37 @@ public class TilePanel extends JPanel {
         else if(idWorker==4 || idWorker==5){
             image1 = new ImageIcon(getClass().getResource("/wkblue.png"));
         }
-        Image dimg = image1.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
-        image1 = new ImageIcon(dimg);
+
+
+        int w = image1.getIconWidth();
+        int h = image1.getIconHeight();
+        int targetWidth = workerLabel.getWidth();
+        int targetHeight = workerLabel.getHeight();
+        do {
+            if (w > targetWidth) {
+                w =w-60;
+                if (w < targetWidth) {
+                    w = targetWidth;
+                }
+            }
+            if (h > targetHeight) {
+                h =h-60;
+                if (h < targetHeight) {
+                    h = targetHeight;
+                }
+            }
+            Image img1 = image1.getImage().getScaledInstance(w,h,Image.SCALE_SMOOTH);
+            image1 = new ImageIcon(img1);
+        } while (w != targetWidth || h != targetHeight);
+
         workerLabel.setIcon(image1);
         this.idWorker=idWorker;
         workerLabel.setVisible(true);
     }
 
     public void removeWorker(){      //da vedere e sistemare insieme
+        workerLabel.setVisible(false);
+        this.idWorker=-1;
         this.remove(workerLabel);
     }
 
@@ -84,15 +102,19 @@ public class TilePanel extends JPanel {
                     this.setBackground(new Color(0,47,167));
                     break;
             }
-            this.remove(levelLabel);
+            levelLabel.setText("");
             if(level!=4) {
-                levelLabel = new JLabel(Integer.toString(level));
-                this.add(BorderLayout.NORTH, levelLabel);
+                levelLabel.setText(Integer.toString(level));
+                //this.add(BorderLayout.NORTH, levelLabel);
             }
         }
     }
 
     public boolean getDome() {
         return dome;
+    }
+
+    public int getLevel() {
+        return this.level;
     }
 }
