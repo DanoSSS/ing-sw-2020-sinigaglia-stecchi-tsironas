@@ -32,6 +32,7 @@ public class TilePanel extends JPanel {
 
     public void addWorker(int idWorker) throws IOException {   //da vedere e sistemare insieme
         workerLabel= new JLabel();
+        this.idWorker=idWorker;
         workerLabel.setSize(this.getSize());
         this.add(BorderLayout.SOUTH,workerLabel);
         ImageIcon image1=null;
@@ -44,8 +45,7 @@ public class TilePanel extends JPanel {
         else if(idWorker==4 || idWorker==5){
             image1 = new ImageIcon(getClass().getResource("/wkblue.png"));
         }
-
-
+        //set imageLabel with worker
         int w = image1.getIconWidth();
         int h = image1.getIconHeight();
         int targetWidth = workerLabel.getWidth();
@@ -67,8 +67,7 @@ public class TilePanel extends JPanel {
             image1 = new ImageIcon(img1);
         } while (w != targetWidth || h != targetHeight);
 
-        workerLabel.setIcon(image1);
-        this.idWorker=idWorker;
+        workerLabel.setIcon(image1); //end set imageLabel
         workerLabel.setVisible(true);
     }
 
