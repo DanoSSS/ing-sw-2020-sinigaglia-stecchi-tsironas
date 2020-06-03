@@ -1,65 +1,84 @@
 package it.polimi.ingsw.client.GUI;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
 public class StartingFrame extends JFrame {
-        private boolean startBool = false;
         private SantoriniMainFrame santoriniMainFrame;
-        private ImageIcon gameImage;
-        private JPanel glass;
 
         public StartingFrame(SantoriniMainFrame santoriniMainFrame) throws IOException {
                 this.santoriniMainFrame = santoriniMainFrame;
-                URL image = StartingFrame.class.getResource("/santorini.png");
-                System.out.println(image);
-                //JPanel InitPanel = new JPanel();
-
-                gameImage = new ImageIcon(image);
+                JPanel InitPanel = new JPanel();
                 JLabel ImageLabel = new JLabel();
-                Image image1 = gameImage.getImage().getScaledInstance(485, 485,  java.awt.Image.SCALE_SMOOTH);
-                gameImage = new ImageIcon(image1);
-                ImageLabel.setIcon(gameImage);
+                ImageLabel.setSize(new Dimension(500,490));
+                JButton StartGame = new JButton("Start game");
+                ImageIcon SantoriniImage = new ImageIcon(getClass().getResource("/santorini.png"));
 
-                ImageLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-                glass = (JPanel) getGlassPane();
-                JButton glassButton = new JButton("Start");
-                glassButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent actionEvent) {
-                        glass.setVisible(false);
-                        setVisible(false);
-                        santoriniMainFrame.showBoard();
-                        santoriniMainFrame.setVisible(true);
-                        startBool = true;
-                        dispose();
+                int w = SantoriniImage.getIconWidth();
+                int h = SantoriniImage.getIconHeight();
+                int targetWidth = ImageLabel.getWidth();
+                int targetHeight = ImageLabel.getHeight();
+                do {
+                if (w > targetWidth) {
+                    w =w-60;
+                    if (w < targetWidth) {
+                        w = targetWidth;
                     }
-                });
-                glass.setLayout(new GridBagLayout());
-                glass.add(glassButton);
+                }
+                if (h > targetHeight) {
+                    h =h-60;
+                    if (h < targetHeight) {
+                        h = targetHeight;
+                    }
+                }
+                Image img = SantoriniImage.getImage().getScaledInstance(w,h,Image.SCALE_SMOOTH);
+                SantoriniImage = new ImageIcon(img);
+            } while (w != targetWidth || h != targetHeight);
+                ImageLabel.setIcon(SantoriniImage);
 
-                setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                getContentPane().add(ImageLabel);
+                InitPanel.addMouseListener(new MouseListener() {
+                        @Override
+                        public void mouseClicked(MouseEvent mouseEvent) {
+                                StartingFrame startingFrame = returnFrame();
+                                startingFrame.dispose();
+                                santoriniMainFrame.setVisible(true);
+                        }
+
+                        @Override
+                        public void mousePressed(MouseEvent mouseEvent) {
+
+                        }
+
+                        @Override
+                        public void mouseReleased(MouseEvent mouseEvent) {
+
+                        }
+
+                        @Override
+                        public void mouseEntered(MouseEvent mouseEvent) {
+
+                        }
+
+                        @Override
+                        public void mouseExited(MouseEvent mouseEvent) {
+
+                        }
+                });
+                InitPanel.add(ImageLabel);
+                this.getContentPane().add(InitPanel);
+
+                this.pack();
+                this.setLocationRelativeTo(null);
+                this.setMinimumSize(new Dimension(390,380));
+                this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                this.setVisible(true);
 
         }
 
-        /*public StartingFrame returnFrame (){
+        public StartingFrame returnFrame (){
                 return this;
-        }*/
-    public void showFirstFrame(){
-        setPreferredSize(new Dimension(gameImage.getIconWidth(),gameImage.getIconHeight()));
-        pack();
-        setVisible(true);
-        glass.setVisible(true);
-    }
-        public boolean isStartBool() {
-                return startBool;
         }
 
 }

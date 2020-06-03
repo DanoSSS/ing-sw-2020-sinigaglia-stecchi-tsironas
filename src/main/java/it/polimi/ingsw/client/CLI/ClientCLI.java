@@ -49,7 +49,7 @@ public class ClientCLI {
             @Override
             public void run() {
                 try {
-                    int loseRound=5;
+                    int loseRound=-1;
                     while (isActive()) {
                         ReturnMessage inputObject = (ReturnMessage) socketIn.readObject();
                         Action a = inputObject.getAction();
@@ -61,27 +61,34 @@ public class ClientCLI {
                             case SELECT_ACTIVE_WORKER:
                             case NUMBER_OF_PLAYERS:
                             case WRONG_GODS:
-                            case CHOOSE_GOD:
                             case NICKNAME_ALREADY_USED:
                             case SELECT_GODS_CHALLENGER:
+                            case SET_WORKER_POSITION:
+                            case ERROR_SET_WORKER_POSITION:
                                 setClientAction(a);
                                 System.out.println(inputObject.getSentence());
+                                break;
+                            case CHOOSE_GOD:
+                                setClientAction(a);
+                                int j=inputObject.getNPlayer();
+                                if(j==3){
+                                    System.out.println("select your god between: " +inputObject.getGod1()+ "\t" +inputObject.getGod2()+ "\t" +inputObject.getGod3());
+                                }else{
+                                    System.out.println("select your god between: " +inputObject.getGod1()+ "\t" +inputObject.getGod2());
+                                }
                                 break;
                             case WORKER_SET:
                                 clientController = inputObject.getClientController().clone();
                                 board = clientController.getBoard();
+                                for (int i = 0; i < inputObject.getNicknames().length; i++) {
+                                    System.out.println(inputObject.getNicknames()[i]); //get the String[] with the output
+                                }
                                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
-                                    for (int i = 0; i < inputObject.getNicknames().length; i++) {
-                                        System.out.println(inputObject.getNicknames()[i]); //get the String[] with the output
-                                    }
                                     setClientAction(Action.SELECT_ACTIVE_WORKER);
                                     print(board);
                                     System.out.println("it's your turn!\nselect active worker:");
                                 }
-                                else if(clientController.getIdPlayer() != loseRound){
-                                    for (int i = 0; i < inputObject.getNicknames().length; i++) {
-                                        System.out.println(inputObject.getNicknames()[i]); //get the String[] with the output
-                                    }
+                                else if(clientController.getIdPlayer() != clientController.getCurrentRoundIdPlayer()){
                                     setClientAction(Action.NOT_YOUR_TURN);
                                     print(board);
                                     System.out.println("wait your turn");
@@ -390,7 +397,8 @@ public class ClientCLI {
                             case CHOOSE_GOD:
                             case NICKNAME_ALREADY_USED:
                             case SELECT_GODS_CHALLENGER:
-
+                            case SET_WORKER_POSITION:
+                            case ERROR_SET_WORKER_POSITION:
                                 socketOut.writeObject(new Message(getClientAction().getValue(),inputObject));
                                 break;
                             case SELECT_ACTIVE_WORKER:

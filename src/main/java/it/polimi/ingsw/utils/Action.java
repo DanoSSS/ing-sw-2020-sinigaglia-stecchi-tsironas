@@ -26,7 +26,9 @@ package it.polimi.ingsw.utils;
     NUMBER_OF_PLAYERS(21),
     SELECT_GODS_CHALLENGER(22),
     WRONG_GODS(23),
-    CHOOSE_GOD(24);
+    CHOOSE_GOD(24),
+    SET_WORKER_POSITION(25),
+    ERROR_SET_WORKER_POSITION(26);
 
     private int value;
 

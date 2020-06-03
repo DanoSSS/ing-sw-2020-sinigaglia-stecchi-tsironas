@@ -14,7 +14,7 @@ public class ClientController implements Serializable {
     private int currentRoundIdPlayer;
     private Action turnInfo;
     private CellMessage[][] board;
-    //private final ViewClient view;
+    private Integer [] idWorkers;
 
     public void start() {
         board = new CellMessage[10][5];
@@ -84,6 +84,19 @@ public class ClientController implements Serializable {
 
     public ClientController(String nickname, int idPlayer, int NPlayers, Integer[] idPlayers, String[] nicknames,int currentPlayer) {
         this.idPlayer = idPlayer;
+        idWorkers = new Integer[2];
+        if(idPlayer==1){
+            idWorkers[0]= 0;
+            idWorkers[1]= 1;
+        }
+        else if(idPlayer==2){
+            idWorkers[0]= 2;
+            idWorkers[1]= 3;
+        }
+        else if(idPlayer==3){
+            idWorkers[0]= 4;
+            idWorkers[1]= 5;
+        }
         this.nickname = nickname;
         this.NPlayers = NPlayers;
         this.idPlayers = idPlayers.clone();
@@ -145,4 +158,27 @@ public class ClientController implements Serializable {
         return new ClientController(nickname,idPlayer,NPlayers,idPlayers,otherNickname,currentRoundIdPlayer,turnInfo,board);
     }
 
+    public boolean checkIdWorker(int idWorker){
+        if(idPlayer==1){
+            if(idWorker==0 || idWorker==1)
+                return true;
+        }
+        else if(idPlayer==2){
+            if(idWorker==2 || idWorker==3)
+                return true;
+        }
+        else if(idPlayer==3){
+            if(idWorker==4 || idWorker==5)
+                return true;
+        }
+        return false;
+    }
+
+    public boolean checkPresenceWorker(int idWorker) {
+        if (idWorker>0){
+            return false;
+        } else{
+            return true;
+        }
+    }
 }
