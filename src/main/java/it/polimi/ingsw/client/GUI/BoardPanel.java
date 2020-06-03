@@ -21,6 +21,7 @@ public class BoardPanel extends JPanel {
     protected final int nRow;
     protected final int nColumn;
     private ClientGUI clientGUI;
+    private int activeWorker=-1;
 
     public BoardPanel(int nRow,int nColumn,ClientGUI clientGUI) {
         super(new GridLayout(nRow,nColumn));
@@ -87,6 +88,7 @@ public class BoardPanel extends JPanel {
                     clientGUI.getSantoriniMainFrame().getLog().append( "\n----\nThis is not your worker!\nPick yours!");
                 }else {
                     clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), tile[x][y].getIdWorker()));
+                    activeWorker=tile[x][y].getIdWorker();
                 }
                 break;
             case NOT_YOUR_TURN:
@@ -95,8 +97,14 @@ public class BoardPanel extends JPanel {
             case SELECT_COORDINATE_MOVE:
             case MOVE_AND_COORDINATE_BUILD:
                 Coordinates newC = new Coordinates(x,y);
+                int idWorkerInXY = tile[x][y].getIdWorker();
                         //for normal build NO! you cannot create levels on opposite workers
-                            clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(),newC));
+                if(!(idWorkerInXY == activeWorker)){
+                    clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(),newC));
+                }else{
+                    clientGUI.getSantoriniMainFrame().getLog().append( "\n----\nError:\nChoose a tile different from!\nwhere you are!");
+
+                }
                          //TODO: capire come gestire gli errori dopo aver implementato tuti i diversi round ed eliminare questa parte sopra (4 righe circa)
                         break;
         }
@@ -121,7 +129,9 @@ public class BoardPanel extends JPanel {
         for(int i=0;i<nRow;i++) {
             for (int j = 0; j < nColumn; j++) {
                 tile[i][j].setBorder(BorderFactory.createLineBorder(Color.black, 3));
-                if(!tile[i][j].getDome()){
+                if(tile[i][j].getDome()){
+                    tile[i][j].setEnabled(false);
+                }else{
                     tile[i][j].setEnabled(true);
                 }
             }

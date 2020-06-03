@@ -223,6 +223,7 @@ public class ClientGUI  {
                     setClientAction(Action.NOT_YOUR_TURN);
                     santoriniMainFrame.getLog().append("Wait your turn!");
                 }
+                santoriniMainFrame.repaint();
                 break;
             case SELECT_COORDINATE_MOVE:
                 clientController.setCurrentRoundIdPlayer(message.getnCurrentPlayer());
