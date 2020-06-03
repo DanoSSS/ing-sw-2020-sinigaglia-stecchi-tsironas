@@ -76,7 +76,6 @@ public class BoardPanel extends JPanel {
 
     public void removeWorker(int x, int y) {    //da vedere e sistemare insieme
         tile[x][y].removeWorker();
-        clientGUI.getSantoriniMainFrame().repaint();
     }
 
 
@@ -123,15 +122,25 @@ public class BoardPanel extends JPanel {
                 for (Coordinates c : possibleTile) {
                     if (newC.equals(c)) {
                         flag = true;
-                        break;
+                        clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), newC));
                     }
                 }
-                if (flag) {
-                    clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), newC));
-                } else {
+                if(!flag){
                     clientGUI.getSantoriniMainFrame().getLog().append("\n----\nError:\nYou cannot move there!\nChoose another tile");
                 }
                 //TODO: capire come gestire gli errori dopo aver implementato tuti i diversi round ed eliminare questa parte sopra (4 righe circa)
+                break;
+            case ARTEMIS_FIRST_MOVE:
+                newC = new Coordinates(x, y);
+                for (Coordinates c : possibleTile) {
+                    if (newC.equals(c)) {
+                        flag = true;
+                        clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), x+","+y));
+                    }
+                }
+                if(!flag){
+                    clientGUI.getSantoriniMainFrame().getLog().append("\n----\nError:\nYou cannot move there!\nChoose another tile");
+                }
                 break;
         }
     }

@@ -84,6 +84,8 @@ public class ReturnMessage implements Serializable {
         this.clientController = null;
     }
 
+
+
     //case WORKERSET
     public ReturnMessage (int nAction, String[] workersSettingInBoard, ClientController clientController,Map<Worker, Coordinates> workerPosition){
         this.clientController=clientController;

@@ -241,7 +241,9 @@ public class ClientGUI  {
             case MOVE_AND_COORDINATE_BUILD:
                 santoriniMainFrame.getBoardPanel().setDefaultBorder();
                 id = message.getCurrentActiveWorker();
-                santoriniMainFrame.getBoardPanel().removeWorker(message.getCoordinate().getX(),message.getCoordinate().getY());
+                if(message.getOppWorker()!=null) {
+                    santoriniMainFrame.getBoardPanel().removeWorker(message.getCoordinate().getX(), message.getCoordinate().getY());
+                }
                 santoriniMainFrame.getBoardPanel().drawWorker(message.getCoordinate().getX(),message.getCoordinate().getY(),id);
                 santoriniMainFrame.getBoardPanel().removeWorker(message.getCoordinateOld().getX(), message.getCoordinateOld().getY());
                 santoriniMainFrame.getBoardPanel().repaint();
@@ -272,6 +274,49 @@ public class ClientGUI  {
                     santoriniMainFrame.getLog().append("\nWait your turn");
                 }
                 break;
+            case ARTEMIS_FIRST_MOVE:
+                santoriniMainFrame.getBoardPanel().setDefaultBorder();
+                id = message.getCurrentActiveWorker();
+                santoriniMainFrame.getBoardPanel().drawWorker(message.getCoordinate().getX(),message.getCoordinate().getY(),id);
+                santoriniMainFrame.getBoardPanel().removeWorker(message.getCoordinateOld().getX(), message.getCoordinateOld().getY());
+                santoriniMainFrame.getBoardPanel().repaint();
+                if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
+                    setClientAction(Action.ARTEMIS_FIRST_MOVE);
+                    Object[] possibleChoice = {"YES", "NO"};
+                    Object answer = JOptionPane.showInputDialog(null,
+                            "Do you want activate your god's power", "ARTEMIS POWER",
+                            JOptionPane.INFORMATION_MESSAGE, null,
+                            possibleChoice, possibleChoice[0]);
+                    if (answer == "YES") {
+                        santoriniMainFrame.getBoardPanel().drawPossibleBorder(message.getCurrentPossibleMoves());
+                    } else if (answer == "NO") {
+                        asyncWriteToSocket(new Message(getClientAction().getValue(), "NO"));
+                    }
+                }
+                break;
+            case ARTEMIS_SECOND_MOVE:
+                boolean bool=false;
+                santoriniMainFrame.getBoardPanel().setDefaultBorder();
+                id = message.getCurrentActiveWorker();
+                if(message.getCoordinate()!=null){
+                    santoriniMainFrame.getBoardPanel().drawWorker(message.getCoordinate().getX(),message.getCoordinate().getY(),id);
+                    santoriniMainFrame.getBoardPanel().removeWorker(message.getCoordinateOld().getX(), message.getCoordinateOld().getY());
+                    santoriniMainFrame.getBoardPanel().repaint();
+                    bool=true;
+                }
+                if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()){
+                    setClientAction(Action.MOVE_AND_COORDINATE_BUILD);
+                    santoriniMainFrame.getLog().append("\nSelect coordinate to build");
+                    santoriniMainFrame.getBoardPanel().drawPossibleBorder(message.getCurrentPossibleMoves());
+                }
+                else if(clientController.getIdPlayer() != loseRound){
+                    int n = clientController.getCurrentRoundIdPlayer();
+                    if (!bool) {
+                        santoriniMainFrame.getLog().append("player"+n+" do not use his power");
+                    }
+                }
+                break;
+
         }
     }
 

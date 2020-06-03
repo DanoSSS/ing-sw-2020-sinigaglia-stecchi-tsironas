@@ -33,7 +33,7 @@ public class TilePanel extends JPanel {
     public void addWorker(int idWorker) throws IOException {   //da vedere e sistemare insieme
         workerLabel= new JLabel();
         this.idWorker=idWorker;
-        workerLabel.setSize(this.getSize());
+        workerLabel.setSize(new Dimension(this.getSize().height-40,this.getSize().width-40));
         this.add(BorderLayout.SOUTH,workerLabel);
         ImageIcon image1=null;
         if(idWorker==1 || idWorker==0) {
