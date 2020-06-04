@@ -30,6 +30,7 @@ public class ClientGUI  {
     private StartingFrame startingFrame;
     private ObjectOutputStream socketOut;
     int np=0;
+    private int choosePrometheus;
 
     public StartingFrame getStartingFrame() {
         return startingFrame;
@@ -316,8 +317,102 @@ public class ClientGUI  {
                     }
                 }
                 break;
+            case BUILD_ATLAS:
+            case BUILD_EPHAESTUS:
+                santoriniMainFrame.getBoardPanel().setDefaultBorder();
+                id = message.getCurrentActiveWorker();
+                santoriniMainFrame.getBoardPanel().drawWorker(message.getCoordinate().getX(),message.getCoordinate().getY(),id);
+                santoriniMainFrame.getBoardPanel().removeWorker(message.getCoordinateOld().getX(), message.getCoordinateOld().getY());
+                santoriniMainFrame.getBoardPanel().repaint();
+                if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
+                    santoriniMainFrame.getBoardPanel().drawPossibleBorder(message.getCurrentPossibleMoves());
+                    setClientAction(a);
+                }
+                break;
+            case END_TURN:
+                if(clientController.getIdPlayer()==message.getnCurrentPlayer()){
+                    setClientAction(Action.NOT_YOUR_TURN);
+                    santoriniMainFrame.getLog().append("wait your turn");
+                }
+                else if(clientController.getIdPlayer()==message.getNextNPlayer() && clientController.getIdPlayer() != loseRound){
+                    setClientAction(Action.SELECT_ACTIVE_WORKER);
+                    santoriniMainFrame.getLog().append("it's your turn!\nselect active worker:");
+                }
+                else if(clientController.getIdPlayer() != loseRound){
+                    setClientAction(Action.NOT_YOUR_TURN);
+                    santoriniMainFrame.getLog().append("wait your turn");
+                }
+                break;
+            case FIRST_BUILD_DEMETER:
+                santoriniMainFrame.getBoardPanel().setDefaultBorder();
+                santoriniMainFrame.getBoardPanel().drawLevel(message.getCoordinate().getX(),message.getCoordinate().getY(),message.getLevel(),message.getDome());
+                if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
+                    setClientAction(a);
+                    Object[] options = {"YES",
+                            "NO"};
+                    int i = JOptionPane.showOptionDialog(santoriniMainFrame,
+                            "Do you want build a second time",
+                            "DEMETER POWER",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,     //do not use a custom Icon
+                            options,  //the titles of buttons
+                            options[0]); //default button title
+                    if(i==0){
+                        santoriniMainFrame.getBoardPanel().drawPossibleBorder(message.getCurrentPossibleMoves());
+                    }
+                    if(i==1){
+                        asyncWriteToSocket(new Message(getClientAction().getValue(), "NO"));
+                    }
+                }
+                break;
+            case PROMETHEUS_CHOOSE:
+                clientController.setCurrentRoundIdPlayer(message.getnCurrentPlayer());
+                id = message.getCurrentActiveWorker();
+                if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
+                    setClientAction(a);
+                    Object[] options = {"MOVE",
+                            "BUILD"};
+                    int i = JOptionPane.showOptionDialog(santoriniMainFrame,
+                            "Do you want move or build",
+                            "EPHAESTUS POWER",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,     //do not use a custom Icon
+                            options,  //the titles of buttons
+                            options[0]); //default button title
+                    if(i==0) {
+                        ArrayList<Coordinates> possibleMovesPrometheus = message.getCurrentPossibleMoves();
+                        santoriniMainFrame.getBoardPanel().drawPossibleBorder(possibleMovesPrometheus);
+                        choosePrometheus=0;
+                    }
+                    if(i==1) {
+                        ArrayList<Coordinates> possibleBuildsPrometheus = message.getCurrentPossibleC2();
+                        santoriniMainFrame.getBoardPanel().drawPossibleBorder(possibleBuildsPrometheus);
+                        choosePrometheus=1;
+                    }
+                }else if(clientController.getIdPlayer() != loseRound) {
+                    int n = clientController.getCurrentRoundIdPlayer();
+                    santoriniMainFrame.getLog().append("\nplayer" +n+ "select worker" +id);
+                }
+                break;
+            case FIRST_BUILD_PROMETHEUS:
+                santoriniMainFrame.getBoardPanel().setDefaultBorder();
+                santoriniMainFrame.getBoardPanel().drawLevel(message.getCoordinate().getX(),message.getCoordinate().getY(),message.getLevel(),message.getDome());
+                if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
+                    setClientAction(Action.SELECT_COORDINATE_MOVE);
+                    santoriniMainFrame.getLog().append("Select coordinate to move");
+                    ArrayList<Coordinates> possibleMoves = message.getCurrentPossibleMoves();
+                    santoriniMainFrame.getBoardPanel().drawPossibleBorder(possibleMoves);
+                }
+                break;
+
 
         }
+    }
+
+    public int getChoosePrometheus(){
+        return choosePrometheus;
     }
 
     public ClientController getClientController() {

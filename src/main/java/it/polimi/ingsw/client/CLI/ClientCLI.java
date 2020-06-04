@@ -303,7 +303,8 @@ public class ClientCLI {
                                     setClientAction(a);
                                     ArrayList<Coordinates> possibleMoves = inputObject.getCurrentPossibleMoves();
                                     ArrayList<Coordinates> possibleBuilds = inputObject.getCurrentPossibleC2();
-                                    print();                                    System.out.println("your active worker is " + id + "\nIf you want activate your power and build before move write BUILD and select coordinate among the following: ");
+                                    print();
+                                    System.out.println("your active worker is " + id + "\nIf you want activate your power and build before move write BUILD and select coordinate among the following: ");
                                     for (Coordinates c : possibleBuilds) {
                                         System.out.println(c.getX() + "," + c.getY());
                                     }
@@ -324,7 +325,8 @@ public class ClientCLI {
                                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()){
                                     setClientAction(Action.SELECT_COORDINATE_MOVE);
                                     ArrayList<Coordinates> possibleMoves = inputObject.getCurrentPossibleMoves();
-                                    print();                                    System.out.println("your worker"+id+"build in "+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+" level:"+inputObject.getLevel()+" dome:"+inputObject.getDome());
+                                    print();
+                                    System.out.println("your worker"+id+"build in "+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+" level:"+inputObject.getLevel()+" dome:"+inputObject.getDome());
                                     System.out.println("select coordinate to move among the following:");
                                     for (Coordinates c : possibleMoves) {
                                         System.out.println(c.getX() + "," + c.getY());

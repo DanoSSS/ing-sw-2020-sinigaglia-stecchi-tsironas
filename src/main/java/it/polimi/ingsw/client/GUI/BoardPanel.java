@@ -131,6 +131,7 @@ public class BoardPanel extends JPanel {
                 //TODO: capire come gestire gli errori dopo aver implementato tuti i diversi round ed eliminare questa parte sopra (4 righe circa)
                 break;
             case ARTEMIS_FIRST_MOVE:
+            case FIRST_BUILD_DEMETER:
                 newC = new Coordinates(x, y);
                 for (Coordinates c : possibleTile) {
                     if (newC.equals(c)) {
@@ -142,6 +143,80 @@ public class BoardPanel extends JPanel {
                     clientGUI.getSantoriniMainFrame().getLog().append("\n----\nError:\nYou cannot move there!\nChoose another tile");
                 }
                 break;
+            case BUILD_ATLAS:
+                newC = new Coordinates(x, y);
+                for (Coordinates c : possibleTile) {
+                    if (newC.equals(c)) {
+                        flag = true;
+                        Object[] options = {"DOME",
+                                "STD LV"};
+                        int i = JOptionPane.showOptionDialog(clientGUI.getSantoriniMainFrame(),
+                                "Which element do you want to build?",
+                                "ATLAS POWER",
+                                JOptionPane.YES_NO_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,     //do not use a custom Icon
+                                options,  //the titles of buttons
+                                options[0]); //default button title
+                        if(i==0){
+                            clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), "dome "+x+ "," +y));
+                        }
+                        if(i==1){
+                            clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), "std "+x+ "," +y));
+                        }
+                    }
+                }
+                if(!flag){
+                    clientGUI.getSantoriniMainFrame().getLog().append("\n----\nError:\nYou cannot move there!\nChoose another tile");
+                }
+                break;
+            case BUILD_EPHAESTUS:
+                newC = new Coordinates(x, y);
+                for (Coordinates c : possibleTile) {
+                    if (newC.equals(c)) {
+                        flag = true;
+                        Object[] options = {"YES",
+                                "NO"};
+                        int i = JOptionPane.showOptionDialog(clientGUI.getSantoriniMainFrame(),
+                                "Do you want Build a second time in the same space",
+                                "EPHAESTUS POWER",
+                                JOptionPane.YES_NO_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,     //do not use a custom Icon
+                                options,  //the titles of buttons
+                                options[0]); //default button title
+                        if(i==0){
+                            clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), "yes "+x+ "," +y));
+                        }
+                        if(i==1){
+                            clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), "no "+x+ "," +y));
+                        }
+                    }
+                }
+                if(!flag){
+                    clientGUI.getSantoriniMainFrame().getLog().append("\n----\nError:\nYou cannot move there!\nChoose another tile");
+                }
+                break;
+            case PROMETHEUS_CHOOSE:
+                newC = new Coordinates(x, y);
+                for (Coordinates c : possibleTile) {
+                    if (newC.equals(c)) {
+                        flag = true;
+                        int choose = clientGUI.getChoosePrometheus();
+                        if(choose==0) {
+                            clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), "MOVE "+x + "," + y));
+                        }
+                        if(choose==1){
+                            clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), "BUILD "+x + "," + y));
+                        }
+                    }
+                }
+                if(!flag){
+                    clientGUI.getSantoriniMainFrame().getLog().append("\n----\nError:\nYou cannot move there!\nChoose another tile");
+                }
+
+
+
         }
     }
 

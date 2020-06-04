@@ -33,7 +33,7 @@ public class RoundAtlas extends Round {
         if(inputAnswer[0].equals("dome")){
             domePower = true;
             doBuild(coordinates,domePower);
-        }else if(inputAnswer[1].equals("std")){
+        }else if(inputAnswer[0].equals("std")){
             domePower = false;
             doBuild(coordinates,domePower);
         }
