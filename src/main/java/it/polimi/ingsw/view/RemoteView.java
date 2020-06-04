@@ -99,12 +99,10 @@ public class RemoteView extends View{
                 int idPlayer= idPlayers[numberRW-1];
                 int NPlayer = workers.size()/2;
                 ClientController clientController= new ClientController(nickname,idPlayer,NPlayer,idPlayers,players,currentPlayer);
-                clientController.start();
                 for(int i=0;i<workers.size();i++) {
                     messageSettingWorkersPositions[i]= workers.get(i).getIdWorker() + " set in cell " + m.get(workers.get(i)).getX() + "," + m.get(workers.get(i)).getY();
                     int x=(m.get(workers.get(i)).getX()*2)+1;
                     int y=m.get(workers.get(i)).getY();
-                    clientController.setWorkerCellMessage(workers.get(i).getIdWorker(),x,y);
                 }
                 clientConnection.asyncSend(new ReturnMessage(3,messageSettingWorkersPositions,clientController,m));
                 break;
