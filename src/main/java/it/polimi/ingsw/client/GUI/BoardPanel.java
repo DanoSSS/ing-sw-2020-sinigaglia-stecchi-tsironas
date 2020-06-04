@@ -175,21 +175,26 @@ public class BoardPanel extends JPanel {
                 for (Coordinates c : possibleTile) {
                     if (newC.equals(c)) {
                         flag = true;
-                        Object[] options = {"YES",
-                                "NO"};
-                        int i = JOptionPane.showOptionDialog(clientGUI.getSantoriniMainFrame(),
-                                "Do you want Build a second time in the same space",
-                                "EPHAESTUS POWER",
-                                JOptionPane.YES_NO_OPTION,
-                                JOptionPane.QUESTION_MESSAGE,
-                                null,     //do not use a custom Icon
-                                options,  //the titles of buttons
-                                options[0]); //default button title
-                        if(i==0){
-                            clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), "yes "+x+ "," +y));
-                        }
-                        if(i==1){
+                        if(tile[x][y].getLevel()>=2){
                             clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), "no "+x+ "," +y));
+                        }
+                        else {
+                            Object[] options = {"YES",
+                                    "NO"};
+                            int i = JOptionPane.showOptionDialog(clientGUI.getSantoriniMainFrame(),
+                                    "Do you want Build a second time in the same space",
+                                    "EPHAESTUS POWER",
+                                    JOptionPane.YES_NO_OPTION,
+                                    JOptionPane.QUESTION_MESSAGE,
+                                    null,     //do not use a custom Icon
+                                    options,  //the titles of buttons
+                                    options[0]); //default button title
+                            if (i == 0) {
+                                clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), "yes " + x + "," + y));
+                            }
+                            if (i == 1) {
+                                clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), "no " + x + "," + y));
+                            }
                         }
                     }
                 }

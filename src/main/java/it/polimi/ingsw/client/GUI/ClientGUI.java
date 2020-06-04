@@ -375,7 +375,7 @@ public class ClientGUI  {
                             "BUILD"};
                     int i = JOptionPane.showOptionDialog(santoriniMainFrame,
                             "Do you want move or build",
-                            "EPHAESTUS POWER",
+                            "PROMETHEUS POWER",
                             JOptionPane.YES_NO_OPTION,
                             JOptionPane.QUESTION_MESSAGE,
                             null,     //do not use a custom Icon
@@ -406,8 +406,6 @@ public class ClientGUI  {
                     santoriniMainFrame.getBoardPanel().drawPossibleBorder(possibleMoves);
                 }
                 break;
-
-
         }
     }
 
