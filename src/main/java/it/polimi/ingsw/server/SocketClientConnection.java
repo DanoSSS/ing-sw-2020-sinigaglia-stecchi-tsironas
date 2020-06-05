@@ -3,13 +3,11 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.model.God;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
+import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.Message;
 import it.polimi.ingsw.utils.ReturnMessage;
 
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -21,6 +19,8 @@ public class SocketClientConnection extends Observable<Object> implements Client
     private ObjectInputStream in;
     private boolean active = true;
     private int playerNumber;
+    private  int winner=-1;
+    private boolean endGame=false;
 
     public SocketClientConnection(Socket socket, Server server, int playerNumber) throws IOException {
         this.socket = socket;
@@ -64,6 +64,24 @@ public class SocketClientConnection extends Observable<Object> implements Client
 
     @Override
     public void asyncSend(Object message) {
+        ReturnMessage mesg=(ReturnMessage)message;
+        if(mesg.getAction()==Action.WIN ){
+            winner=1;
+            active=false;
+            return;
+        }
+        if(mesg.getAction()==Action.LOSE){
+            winner=0;
+            active=false;
+            return;
+        }
+        if(mesg.getAction()==Action.END_GAME){
+            winner=mesg.getnCurrentPlayer();
+            active=false;
+            endGame=true;
+            send(new ReturnMessage(28,winner));
+            return;
+        }
         new Thread(new Runnable() {
             @Override
             public void run() { send(message); }
@@ -73,7 +91,7 @@ public class SocketClientConnection extends Observable<Object> implements Client
     private void close() {
         closeConnection();
         System.out.println("Deregistering client...");
-        server.deregisterConnection(this);
+    //    server.deregisterConnection(this);
         System.out.println("Done!");
     }
 
@@ -173,8 +191,19 @@ public class SocketClientConnection extends Observable<Object> implements Client
             }
             while (isActive()) {
                 Message recv = (Message)in.readObject();
+
                 notify(recv);
             }
+
+            if(!endGame) {
+                send(new ReturnMessage(27,winner));
+                Message recv = (Message) in.readObject();
+                notify(new Message(28, recv.getIdWorker()));
+            }
+            else if(endGame){
+                send(new ReturnMessage(28,winner));
+            }
+
         } catch (IOException | NoSuchElementException | InterruptedException | ClassNotFoundException e) {
             System.err.println("Error!" + e.getMessage());
             e.printStackTrace();

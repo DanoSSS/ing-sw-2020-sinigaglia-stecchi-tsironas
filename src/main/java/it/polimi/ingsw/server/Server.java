@@ -62,8 +62,6 @@ public class Server {
             playingConnection.put(waitingConnection.get(keys.get(1)), waitingConnection.get(keys.get(0)));  //(c2,c1)
             System.out.println("fine if 2");
         }
-
-
         else if (waitingConnection.size() == 3 && nPlayers == 3) {               //3 players
             System.out.println("entrato in lobby nel ramo nplayer == 3");
             List<String> keys = new ArrayList<>(waitingConnection.keySet());

@@ -116,7 +116,11 @@ public class Game extends Observable<Object> implements Observer<Object> {
             //String nicknameP1=players[messageFromPlayerNumber];
             board.getObservableModel().notify(new ReturnMessage(3, workerPosition, players, idPlayers, NumberOfPlayers, firstToStartID));
         }
+        else if (a == Action.END_GAME){
+            int win =((Message) message).getIdWorker();
+            board.getObservableModel().notify(new ReturnMessage(28,win));
 
+        }
     }
 
 

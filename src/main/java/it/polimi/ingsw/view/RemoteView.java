@@ -38,6 +38,7 @@ public class RemoteView extends View{
                 case BUILD_EPHAESTUS:
                 case FIRST_BUILD_DEMETER:
                 case PROMETHEUS_CHOOSE:
+                case END_GAME:
                     handleMessage(m, player.getIdPlayer());  //CREARE getId() in Player, inizializzare questo valore id dei players
                     break;
                 case NOT_YOUR_TURN:
@@ -45,11 +46,10 @@ public class RemoteView extends View{
                     break;
                 case WIN:
                 case LOSE:
-                case STRING:
                     if(((Message) m).getSentence().equals("q")){
                         clientConnection.closeConnection();
                     }else{
-                        clientConnection.asyncSend(new ReturnMessage(4,"press Q to exit"));
+                        clientConnection.asyncSend(new ReturnMessage(4,"press q to exit"));
                     }
             }
         }
@@ -120,6 +120,7 @@ public class RemoteView extends View{
             case LOSE:
             case LOSE3P:
             case WIN:
+            case END_GAME:
                 clientConnection.asyncSend((ReturnMessage)message);
                 break;
 

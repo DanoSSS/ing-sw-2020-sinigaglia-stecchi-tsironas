@@ -180,6 +180,8 @@ public class ReturnMessage implements Serializable {
         this.clientController = null;
     }
 
+
+
     public Map<Worker, Coordinates> getWorkerPosition() {
         return workerPosition;
     }

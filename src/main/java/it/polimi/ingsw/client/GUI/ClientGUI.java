@@ -446,6 +446,28 @@ public class ClientGUI  {
                     santoriniMainFrame.getLog().append("\nplayer"+message.getnCurrentPlayer()+" lose");
                 }
                 break;
+            case GAME_OVER:
+                setClientAction(a);
+                santoriniMainFrame.dispose();
+                if(message.getnCurrentPlayer()==1) {
+                    JOptionPane.showMessageDialog(null, "you won", "WINNER!", JOptionPane.ERROR_MESSAGE);
+                    asyncWriteToSocket(new Message(4,0));
+                }
+                else if(message.getnCurrentPlayer()==0){
+                    JOptionPane.showMessageDialog(null, "you lost", "LOOSER!", JOptionPane.ERROR_MESSAGE);
+                    asyncWriteToSocket(new Message(4,1));
+                }
+                System.exit(-1);
+                break;
+            case END_GAME:
+                setClientAction(a);
+                santoriniMainFrame.dispose();
+                if(message.getnCurrentPlayer()==1) {
+                    JOptionPane.showMessageDialog(null, "you won", "WINNER!", JOptionPane.ERROR_MESSAGE);
+                }
+                else if(message.getnCurrentPlayer()==0){
+                    JOptionPane.showMessageDialog(null, "you lost", "LOOSER!", JOptionPane.ERROR_MESSAGE);
+                }
         }
     }
 
