@@ -17,6 +17,7 @@ public class Board{
     private ArrayList<Coordinates> currentPossibleMoves, currentPossibleBuilds;
     private int currentRound=2;
     private int loseRound;
+    private boolean flag=false;
 
 
     public Board(Player[] players, Worker worker1, Worker worker2, Worker worker3, Worker worker4, int NPlayer) {
@@ -233,7 +234,6 @@ public class Board{
     }
 
     public void loseGame(){
-        boolean flag=false;
         if(getNumberOfPlayers()==3 &&!flag){
             setLoseRound(currentRound);
             flag=true;

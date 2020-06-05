@@ -406,6 +406,46 @@ public class ClientGUI  {
                     santoriniMainFrame.getBoardPanel().drawPossibleBorder(possibleMoves);
                 }
                 break;
+            case WIN:
+                if(clientController.getIdPlayer()==message.getnCurrentPlayer()) {
+                    setClientAction(a);
+                    JOptionPane.showInternalMessageDialog(santoriniMainFrame, "CONGRATULATIONS, YOU WIN!!!",
+                            "WIN", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else{
+                    setClientAction(Action.LOSE);
+                    JOptionPane.showInternalMessageDialog(santoriniMainFrame, "player " +message.getnCurrentPlayer()+ " win.\nYou lose.",
+                            "LOSE", JOptionPane.INFORMATION_MESSAGE);
+                }
+                break;
+            case LOSE:
+                if(clientController.getIdPlayer()==message.getnCurrentPlayer()){
+                    setClientAction(a);
+                    JOptionPane.showInternalMessageDialog(santoriniMainFrame,"you lose", "LOSE", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else{
+                    setClientAction(Action.WIN);
+                    JOptionPane.showInternalMessageDialog(santoriniMainFrame,"player "+message.getnCurrentPlayer()+" lose.\nCONGRATULATIONS, YOU WIN!!!","WIN", JOptionPane.INFORMATION_MESSAGE);
+                }
+                break;
+            case LOSE3P:
+                Worker wk1=message.getOppWorker();
+                santoriniMainFrame.getBoardPanel().removeWorker(wk1.getCoordinates().getX(),wk1.getCoordinates().getY());
+                Worker wk2=message.getOtherWorker();
+                santoriniMainFrame.getBoardPanel().removeWorker(wk2.getCoordinates().getX(),wk2.getCoordinates().getY());
+                loseRound=message.getnCurrentPlayer();
+                if(clientController.getIdPlayer()==message.getnCurrentPlayer()){
+                    setClientAction(Action.LOSE);
+                    santoriniMainFrame.getLog().append("\nyou lose, wait other player finish the game");
+                }
+                else if(clientController.getIdPlayer()==message.getNextNPlayer()){
+                    setClientAction(Action.SELECT_ACTIVE_WORKER);
+                    santoriniMainFrame.getLog().append("\nplayer"+message.getnCurrentPlayer()+" lose\nit's your turn!\nselect active worker:");
+                }
+                else{
+                    santoriniMainFrame.getLog().append("\nplayer"+message.getnCurrentPlayer()+" lose");
+                }
+                break;
         }
     }
 

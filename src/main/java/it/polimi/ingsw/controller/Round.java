@@ -122,10 +122,12 @@ public abstract class Round implements Observer<Object>{
         if(win){
             board.winGame();
         }
-        possibleBuilds=canBuild(board.getCurrentActiveWorker());
-        if (possibleBuilds.size() == 0) {
-            board.loseGame();
-        }else board.moveWorkerAndPossibleBuilds(oldC,newC,possibleBuilds,oppositeWorker);
+        else {
+            possibleBuilds = canBuild(board.getCurrentActiveWorker());
+            if (possibleBuilds.size() == 0) {
+                board.loseGame();
+            } else board.moveWorkerAndPossibleBuilds(oldC, newC, possibleBuilds, oppositeWorker);
+        }
     }
 
     public void buildInCoordinate(Coordinates c){

@@ -374,6 +374,7 @@ public class ClientCLI {
                                     setClientAction(Action.LOSE);
                                     System.out.println("player"+inputObject.getnCurrentPlayer()+"win.\nyou lose.\nPress Q to exit");
                                 }
+                                break;
                         }
                     }
                 } catch (Exception e){
