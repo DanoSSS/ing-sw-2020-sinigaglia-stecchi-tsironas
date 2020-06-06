@@ -31,6 +31,8 @@ public class ClientGUI  {
     private ObjectOutputStream socketOut;
     int np=0;
     private int choosePrometheus;
+    private int loseRound=-1;
+
 
     public StartingFrame getStartingFrame() {
         return startingFrame;
@@ -104,7 +106,6 @@ public class ClientGUI  {
 
     public void messageHandler (ReturnMessage message) throws InterruptedException, IOException {
         Action a = message.getAction();
-        int loseRound=-1;
         switch (a){
             case FIRST_MESSAGE:
                 Thread.sleep(3000);
@@ -450,12 +451,12 @@ public class ClientGUI  {
                 setClientAction(a);
                 santoriniMainFrame.dispose();
                 if(message.getnCurrentPlayer()==1) {
-                    JOptionPane.showMessageDialog(null, "you won", "WINNER!", JOptionPane.ERROR_MESSAGE);
                     asyncWriteToSocket(new Message(4,0));
+                    JOptionPane.showMessageDialog(null, "you won", "WINNER!", JOptionPane.ERROR_MESSAGE);
                 }
                 else if(message.getnCurrentPlayer()==0){
-                    JOptionPane.showMessageDialog(null, "you lost", "LOOSER!", JOptionPane.ERROR_MESSAGE);
                     asyncWriteToSocket(new Message(4,1));
+                    JOptionPane.showMessageDialog(null, "you loose", "LOOSER!", JOptionPane.ERROR_MESSAGE);
                 }
                 System.exit(-1);
                 break;
@@ -463,10 +464,10 @@ public class ClientGUI  {
                 setClientAction(a);
                 santoriniMainFrame.dispose();
                 if(message.getnCurrentPlayer()==1) {
-                    JOptionPane.showMessageDialog(null, "you won", "WINNER!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "you win", "WINNER!", JOptionPane.ERROR_MESSAGE);
                 }
                 else if(message.getnCurrentPlayer()==0){
-                    JOptionPane.showMessageDialog(null, "you lost", "LOOSER!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "you lose", "LOOSER!", JOptionPane.ERROR_MESSAGE);
                 }
         }
     }

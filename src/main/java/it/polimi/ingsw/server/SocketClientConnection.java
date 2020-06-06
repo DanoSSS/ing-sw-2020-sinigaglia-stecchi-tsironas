@@ -191,7 +191,6 @@ public class SocketClientConnection extends Observable<Object> implements Client
             }
             while (isActive()) {
                 Message recv = (Message)in.readObject();
-
                 notify(recv);
             }
 
