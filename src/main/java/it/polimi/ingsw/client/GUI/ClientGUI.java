@@ -407,28 +407,6 @@ public class ClientGUI  {
                     santoriniMainFrame.getBoardPanel().drawPossibleBorder(possibleMoves);
                 }
                 break;
-            case WIN:
-                if(clientController.getIdPlayer()==message.getnCurrentPlayer()) {
-                    setClientAction(a);
-                    JOptionPane.showInternalMessageDialog(santoriniMainFrame, "CONGRATULATIONS, YOU WIN!!!",
-                            "WIN", JOptionPane.INFORMATION_MESSAGE);
-                }
-                else{
-                    setClientAction(Action.LOSE);
-                    JOptionPane.showInternalMessageDialog(santoriniMainFrame, "player " +message.getnCurrentPlayer()+ " win.\nYou lose.",
-                            "LOSE", JOptionPane.INFORMATION_MESSAGE);
-                }
-                break;
-            case LOSE:
-                if(clientController.getIdPlayer()==message.getnCurrentPlayer()){
-                    setClientAction(a);
-                    JOptionPane.showInternalMessageDialog(santoriniMainFrame,"you lose", "LOSE", JOptionPane.INFORMATION_MESSAGE);
-                }
-                else{
-                    setClientAction(Action.WIN);
-                    JOptionPane.showInternalMessageDialog(santoriniMainFrame,"player "+message.getnCurrentPlayer()+" lose.\nCONGRATULATIONS, YOU WIN!!!","WIN", JOptionPane.INFORMATION_MESSAGE);
-                }
-                break;
             case LOSE3P:
                 Worker wk1=message.getOppWorker();
                 santoriniMainFrame.getBoardPanel().removeWorker(wk1.getCoordinates().getX(),wk1.getCoordinates().getY());
@@ -452,11 +430,11 @@ public class ClientGUI  {
                 santoriniMainFrame.dispose();
                 if(message.getnCurrentPlayer()==1) {
                     asyncWriteToSocket(new Message(4,0));
-                    JOptionPane.showMessageDialog(null, "you won", "WINNER!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "you won "+ clientController.getIdPlayer(), "WINNER!", JOptionPane.ERROR_MESSAGE);
                 }
                 else if(message.getnCurrentPlayer()==0){
                     asyncWriteToSocket(new Message(4,1));
-                    JOptionPane.showMessageDialog(null, "you loose", "LOOSER!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "you loose "+ clientController.getIdPlayer(), "LOOSER!", JOptionPane.ERROR_MESSAGE);
                 }
                 System.exit(-1);
                 break;
@@ -464,10 +442,10 @@ public class ClientGUI  {
                 setClientAction(a);
                 santoriniMainFrame.dispose();
                 if(message.getnCurrentPlayer()==1) {
-                    JOptionPane.showMessageDialog(null, "you win", "WINNER!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "you win "+ clientController.getIdPlayer(), "WINNER!", JOptionPane.ERROR_MESSAGE);
                 }
                 else if(message.getnCurrentPlayer()==0){
-                    JOptionPane.showMessageDialog(null, "you lose", "LOOSER!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "you lose "+ clientController.getIdPlayer(), "LOOSER!", JOptionPane.ERROR_MESSAGE);
                 }
         }
     }

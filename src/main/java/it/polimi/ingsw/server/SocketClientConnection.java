@@ -190,8 +190,8 @@ public class SocketClientConnection extends Observable<Object> implements Client
                 server.removeFromWaitP1();
             }
             while (isActive()) {
-                Message recv = (Message)in.readObject();
-                notify(recv);
+                    Message recv = (Message) in.readObject();
+                    notify(recv);
             }
 
             if(!endGame) {

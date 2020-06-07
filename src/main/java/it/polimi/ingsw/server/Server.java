@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -353,8 +354,9 @@ public class Server {
                 nPlayersConnected++;
                 SocketClientConnection socketConnection = new SocketClientConnection(newSocket, this, nPlayersConnected);
                 executor.submit(socketConnection);
-            } catch (IOException e) {
+            } catch (IOException  e) {
                 System.out.println("Connection Error!");
+
             }
         }
     }

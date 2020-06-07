@@ -29,6 +29,7 @@ public class Game extends Observable<Object> implements Observer<Object> {
         this.players.add(p3);
     }
 
+
     public void RoundCreation(Player player,Round r) {
         if (player.getGod()== God.APOLLO) {
             r = new RoundApollo(board,player);

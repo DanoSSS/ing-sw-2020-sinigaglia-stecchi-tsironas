@@ -219,9 +219,6 @@ public class BoardPanel extends JPanel {
                 if(!flag){
                     clientGUI.getSantoriniMainFrame().getLog().append("\n----\nError:\nYou cannot move there!\nChoose another tile");
                 }
-
-
-
         }
     }
 

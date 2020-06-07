@@ -355,24 +355,13 @@ public class ClientCLI {
                                     System.out.println("player"+inputObject.getnCurrentPlayer()+" lose");
                                 }
                                 break;
-                            case LOSE:
-                                if(clientController.getIdPlayer()==inputObject.getnCurrentPlayer()){
-                                    setClientAction(a);
-                                    System.out.println("you lose.\nPress Q to exit");
+                            case GAME_OVER:
+                                setClientAction(a);
+                                if(inputObject.getnCurrentPlayer()==1){
+
                                 }
-                                else{
-                                    setClientAction(Action.WIN);
-                                    System.out.println("player"+inputObject.getnCurrentPlayer()+" lose.\nCONGRATULATIONS, YOU WIN!!!\nPress Q to exit");
-                                }
-                                break;
-                            case WIN:
-                                if(clientController.getIdPlayer()==inputObject.getnCurrentPlayer()){
-                                    setClientAction(a);
-                                    System.out.println("CONGRATULATIONS, YOU WIN!!!\nPress Q to exit");
-                                }
-                                else{
-                                    setClientAction(Action.LOSE);
-                                    System.out.println("player"+inputObject.getnCurrentPlayer()+"win.\nyou lose.\nPress Q to exit");
+                                else if(inputObject.getnCurrentPlayer()==0){
+
                                 }
                                 break;
                         }
@@ -402,8 +391,6 @@ public class ClientCLI {
                             case BUILD_EPHAESTUS:
                             case FIRST_BUILD_DEMETER:
                             case PROMETHEUS_CHOOSE:
-                            case LOSE:
-                            case WIN:
                             case NUMBER_OF_PLAYERS:
                             case WRONG_GODS:
                             case CHOOSE_GOD:
@@ -423,7 +410,7 @@ public class ClientCLI {
                                 Coordinates coordinates = new Coordinates(Integer.parseInt(input[0]),Integer.parseInt(input[1]));
                                 socketOut.writeObject(new Message(getClientAction().getValue(),coordinates));
                                 break;
-
+                            
 
 
 
