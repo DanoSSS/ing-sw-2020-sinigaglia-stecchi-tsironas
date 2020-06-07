@@ -23,6 +23,7 @@ public class ClientCLI {
     private ClientController clientController;
     private boolean active = true;
     private CellMessage[][] board;
+    private int loseRound=-1;
 
     public void setClientAction(Action a) {
         this.clientAction = a;
@@ -50,7 +51,6 @@ public class ClientCLI {
             @Override
             public void run() {
                 try {
-                    int loseRound=-1;
                     while (isActive()) {
                         ReturnMessage inputObject = (ReturnMessage) socketIn.readObject();
                         Action a = inputObject.getAction();
@@ -357,11 +357,19 @@ public class ClientCLI {
                                 break;
                             case GAME_OVER:
                                 setClientAction(a);
-                                if(inputObject.getnCurrentPlayer()==1){
-
+                                if(clientController.getIdPlayer()==inputObject.getnCurrentPlayer()) {
+                                    if (inputObject.getLevel() == 1) {
+                                        System.out.println("YOU WIN!!\nwrite something to continue");
+                                    } else if (inputObject.getLevel() == 0) {
+                                        System.out.println("YOU LOSE!!\nwrite something to continue");
+                                    }
                                 }
-                                else if(inputObject.getnCurrentPlayer()==0){
-
+                                else if (clientController.getIdPlayer()!=loseRound){
+                                    if (inputObject.getLevel() == 0) {
+                                        System.out.println("YOU WIN!!\nwrite something to continue");
+                                    } else if (inputObject.getLevel() == 1) {
+                                        System.out.println("YOU LOSE!!\nwrite something to continue");
+                                    }
                                 }
                                 break;
                         }
@@ -382,7 +390,7 @@ public class ClientCLI {
                 try {
                     while (isActive()) {
                         String inputObject = stdin.nextLine();
-                        switch (getClientAction()){
+                        switch (getClientAction()) {
                             case STRING:
                             case FIRST_MESSAGE:
                             case NOT_YOUR_TURN:
@@ -398,22 +406,22 @@ public class ClientCLI {
                             case SELECT_GODS_CHALLENGER:
                             case SET_WORKER_POSITION:
                             case ERROR_SET_WORKER_POSITION:
-                                socketOut.writeObject(new Message(getClientAction().getValue(),inputObject));
+                                socketOut.writeObject(new Message(getClientAction().getValue(), inputObject));
                                 break;
                             case SELECT_ACTIVE_WORKER:
-                                int i=Integer.parseInt(inputObject);
-                                socketOut.writeObject(new Message(getClientAction().getValue(),i));
+                                int i = Integer.parseInt(inputObject);
+                                socketOut.writeObject(new Message(getClientAction().getValue(), i));
                                 break;
                             case SELECT_COORDINATE_MOVE:
                             case MOVE_AND_COORDINATE_BUILD:
                                 String[] input = inputObject.split(",");
-                                Coordinates coordinates = new Coordinates(Integer.parseInt(input[0]),Integer.parseInt(input[1]));
-                                socketOut.writeObject(new Message(getClientAction().getValue(),coordinates));
+                                Coordinates coordinates = new Coordinates(Integer.parseInt(input[0]), Integer.parseInt(input[1]));
+                                socketOut.writeObject(new Message(getClientAction().getValue(), coordinates));
                                 break;
-                            
-
-
-
+                            case GAME_OVER:
+                                socketOut.writeObject(new Message(4,inputObject));
+                                System.exit(-1);
+                                break;
                         }
 
                         socketOut.flush();

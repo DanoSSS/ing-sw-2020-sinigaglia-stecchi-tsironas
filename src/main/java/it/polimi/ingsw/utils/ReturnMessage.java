@@ -180,6 +180,12 @@ public class ReturnMessage implements Serializable {
         this.clientController = null;
     }
 
+    public ReturnMessage(int nAction, int winner, int nCurrentPlayer) {
+        this.action = Action.values()[nAction];
+        this.level=winner;
+        this.nCurrentPlayer=nCurrentPlayer;
+        this.clientController=null;
+    }
 
 
     public Map<Worker, Coordinates> getWorkerPosition() {

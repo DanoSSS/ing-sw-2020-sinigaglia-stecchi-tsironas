@@ -428,25 +428,26 @@ public class ClientGUI  {
             case GAME_OVER:
                 setClientAction(a);
                 santoriniMainFrame.dispose();
-                if(message.getnCurrentPlayer()==1) {
-                    asyncWriteToSocket(new Message(4,0));
-                    JOptionPane.showMessageDialog(null, "you won "+ clientController.getIdPlayer(), "WINNER!", JOptionPane.ERROR_MESSAGE);
+                if(clientController.getIdPlayer()==message.getnCurrentPlayer()) {
+                    if (message.getnCurrentPlayer() == 1) {
+              //          asyncWriteToSocket(new Message(4, 0));
+                        JOptionPane.showMessageDialog(null, "you win " + clientController.getIdPlayer(), "WINNER!", JOptionPane.ERROR_MESSAGE);
+                    } else if (message.getnCurrentPlayer() == 0) {
+              //          asyncWriteToSocket(new Message(4, 1));
+                        JOptionPane.showMessageDialog(null, "you lose " + clientController.getIdPlayer(), "LOOSER!", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
-                else if(message.getnCurrentPlayer()==0){
-                    asyncWriteToSocket(new Message(4,1));
-                    JOptionPane.showMessageDialog(null, "you loose "+ clientController.getIdPlayer(), "LOOSER!", JOptionPane.ERROR_MESSAGE);
+                else if(clientController.getIdPlayer() != loseRound){
+                    if (message.getnCurrentPlayer() == 0) {
+               //         asyncWriteToSocket(new Message(4, 0));
+                        JOptionPane.showMessageDialog(null, "you win " + clientController.getIdPlayer(), "WINNER!", JOptionPane.ERROR_MESSAGE);
+                    } else if (message.getnCurrentPlayer() == 1) {
+               //         asyncWriteToSocket(new Message(4, 1));
+                        JOptionPane.showMessageDialog(null, "you lose " + clientController.getIdPlayer(), "LOOSER!", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
                 System.exit(-1);
                 break;
-            case END_GAME:
-                setClientAction(a);
-                santoriniMainFrame.dispose();
-                if(message.getnCurrentPlayer()==1) {
-                    JOptionPane.showMessageDialog(null, "you win "+ clientController.getIdPlayer(), "WINNER!", JOptionPane.ERROR_MESSAGE);
-                }
-                else if(message.getnCurrentPlayer()==0){
-                    JOptionPane.showMessageDialog(null, "you lose "+ clientController.getIdPlayer(), "LOOSER!", JOptionPane.ERROR_MESSAGE);
-                }
         }
     }
 

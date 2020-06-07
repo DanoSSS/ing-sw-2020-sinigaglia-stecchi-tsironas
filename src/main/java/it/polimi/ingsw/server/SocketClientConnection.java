@@ -20,7 +20,6 @@ public class SocketClientConnection extends Observable<Object> implements Client
     private boolean active = true;
     private int playerNumber;
     private  int winner=-1;
-    private boolean endGame=false;
 
     public SocketClientConnection(Socket socket, Server server, int playerNumber) throws IOException {
         this.socket = socket;
@@ -68,20 +67,16 @@ public class SocketClientConnection extends Observable<Object> implements Client
         if(mesg.getAction()==Action.WIN ){
             winner=1;
             active=false;
+            send(new ReturnMessage(27,winner,mesg.getnCurrentPlayer()));
             return;
         }
         if(mesg.getAction()==Action.LOSE){
             winner=0;
             active=false;
+            send(new ReturnMessage(27,winner,mesg.getnCurrentPlayer()));
             return;
         }
-        if(mesg.getAction()==Action.END_GAME){
-            winner=mesg.getnCurrentPlayer();
-            active=false;
-            endGame=true;
-            send(new ReturnMessage(28,winner));
-            return;
-        }
+
         new Thread(new Runnable() {
             @Override
             public void run() { send(message); }
@@ -193,16 +188,6 @@ public class SocketClientConnection extends Observable<Object> implements Client
                     Message recv = (Message) in.readObject();
                     notify(recv);
             }
-
-            if(!endGame) {
-                send(new ReturnMessage(27,winner));
-                Message recv = (Message) in.readObject();
-                notify(new Message(28, recv.getIdWorker()));
-            }
-            else if(endGame){
-                send(new ReturnMessage(28,winner));
-            }
-
         } catch (IOException | NoSuchElementException | InterruptedException | ClassNotFoundException e) {
             System.err.println("Error!" + e.getMessage());
             e.printStackTrace();
