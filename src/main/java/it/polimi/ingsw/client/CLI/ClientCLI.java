@@ -24,6 +24,15 @@ public class ClientCLI {
     private boolean active = true;
     private CellMessage[][] board;
     private int loseRound=-1;
+    private ArrayList<Coordinates> possibleMoves = null;
+    private ArrayList<Coordinates> possibleBuilds = null;
+
+
+    public ClientCLI(String ip, int port){
+        this.ip = ip;
+        this.port = port;
+    }
+
 
     public void setClientAction(Action a) {
         this.clientAction = a;
@@ -33,10 +42,22 @@ public class ClientCLI {
         return clientAction;
     }
 
-    public ClientCLI(String ip, int port){
-        this.ip = ip;
-        this.port = port;
+    public ArrayList<Coordinates> getPossibleMoves() {
+        return possibleMoves;
     }
+
+    public void setPossibleMoves(ArrayList<Coordinates> possibleMoves) {
+        this.possibleMoves = possibleMoves;
+    }
+
+    public ArrayList<Coordinates> getPossibleBuilds() {
+        return possibleBuilds;
+    }
+
+    public void setPossibleBuilds(ArrayList<Coordinates> possibleBuilds) {
+        this.possibleBuilds = possibleBuilds;
+    }
+
 
     public synchronized boolean isActive(){
         return active;
@@ -116,6 +137,7 @@ public class ClientCLI {
                                 if (clientController.getIdPlayer() == clientController.getCurrentRoundIdPlayer()) {
                                     setClientAction(a);
                                     ArrayList<Coordinates> possibleMoves = inputObject.getCurrentPossibleMoves();
+                                    setPossibleMoves(possibleMoves);
                                     System.out.println("your active worker is " + id + " select coordinate to move among the following:");
                                     for (Coordinates c : possibleMoves) {
                                         System.out.println(c.getX() + "," + c.getY());
@@ -139,6 +161,7 @@ public class ClientCLI {
                                 if (clientController.getIdPlayer() == clientController.getCurrentRoundIdPlayer()) {
                                     setClientAction(a);
                                     ArrayList<Coordinates> possibleBuilds = inputObject.getCurrentPossibleMoves();
+                                    setPossibleMoves(possibleBuilds);
                                     print();
                                     System.out.println("your worker" + id + " is now in coordinate " + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY() + "\nSelect coordinate to build among the following:");
                                     for (Coordinates c : possibleBuilds) {
@@ -179,9 +202,11 @@ public class ClientCLI {
                                     setClientAction(a);
                                     print();
                                     System.out.println("your worker" + id + " is now in cell " + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY());
-                                    if (inputObject.getCurrentPossibleMoves().size() != 0) {
+                                    ArrayList<Coordinates> possibleMoves = inputObject.getCurrentPossibleMoves();
+                                    setPossibleMoves(possibleMoves);
+                                    if (possibleMoves.size() != 0) {
                                         System.out.println("If you want activate power and move second select coordinate among the following otherwise write NO");
-                                        for (Coordinates c : inputObject.getCurrentPossibleMoves()) {
+                                        for (Coordinates c : possibleMoves) {
                                             System.out.println(c.getX() + "," + c.getY());
                                         }
                                     } else System.out.println("you cannot activate Artemis power and move second");
@@ -203,14 +228,17 @@ public class ClientCLI {
                                 }
                                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()){
                                     setClientAction(Action.MOVE_AND_COORDINATE_BUILD);
+                                    ArrayList<Coordinates> possibleMoves = inputObject.getCurrentPossibleMoves();
+                                    setPossibleMoves(possibleMoves);
+
                                     if(inputObject.getCoordinate()==null){
                                         System.out.println("Select coordinate to build among the following:");
-                                        for(Coordinates c: inputObject.getCurrentPossibleMoves()){
+                                        for(Coordinates c: possibleMoves){
                                             System.out.println(c.getX()+","+c.getY());
                                         }
                                     }else{
                                         System.out.println("your worker"+id+" is now in coordinate "+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+"\nSelect coordinate to build among the following:");
-                                        for(Coordinates c: inputObject.getCurrentPossibleMoves()){
+                                        for(Coordinates c: possibleMoves){
                                             System.out.println(c.getX()+","+c.getY());
                                         }
                                     }
@@ -231,6 +259,7 @@ public class ClientCLI {
                                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
                                     setClientAction(a);
                                     ArrayList<Coordinates> possibleBuilds = inputObject.getCurrentPossibleMoves();
+                                    setPossibleMoves(possibleBuilds);
                                     print();
                                     System.out.println("your worker"+id+" is now in coordinate "+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+"\nSelect coordinate to build among the following.\n(If you want activate power and build a dome write dome follow by coordinate otherwise write std follow by coordinate)");
                                     for(Coordinates c: possibleBuilds){
@@ -263,13 +292,13 @@ public class ClientCLI {
                                 }
                                 break;
                             case END_TURN:
-                                id = inputObject.getCurrentActiveWorker();
+                                id = inputObject.getNextNPlayer();
                                 n =inputObject.getnCurrentPlayer();
-                                if(clientController.getIdPlayer()==inputObject.getnCurrentPlayer()){
+                                if(clientController.getIdPlayer() == n){
                                     setClientAction(Action.NOT_YOUR_TURN);
                                     System.out.println("wait your turn");
                                 }
-                                else if(clientController.getIdPlayer()==inputObject.getNextNPlayer() && clientController.getIdPlayer() != loseRound){
+                                else if(clientController.getIdPlayer() == id && clientController.getIdPlayer() != loseRound){
                                     setClientAction(Action.SELECT_ACTIVE_WORKER);
                                     System.out.println("it's your turn!\nselect active worker:");
                                 }
@@ -285,6 +314,7 @@ public class ClientCLI {
                                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
                                     setClientAction(a);
                                     ArrayList<Coordinates> possibleBuilds = inputObject.getCurrentPossibleMoves();
+                                    setPossibleMoves(possibleBuilds);
                                     print();
                                     System.out.println("your worker"+id+" is now in coordinate "+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+"\nSelect coordinate to build among the following.\n(If you want activate power and build a second time write coordinate otherwise write NO)");
                                     for(Coordinates c: possibleBuilds){
@@ -303,12 +333,14 @@ public class ClientCLI {
                                     setClientAction(a);
                                     ArrayList<Coordinates> possibleMoves = inputObject.getCurrentPossibleMoves();
                                     ArrayList<Coordinates> possibleBuilds = inputObject.getCurrentPossibleC2();
+                                    setPossibleMoves(possibleMoves);
+                                    setPossibleBuilds(possibleBuilds);
                                     print();
-                                    System.out.println("your active worker is " + id + "\nIf you want activate your power and build before move write BUILD and select coordinate among the following: ");
+                                    System.out.println("(BUILD \"x,y\") your active worker is " + id + "\nIf you want activate your power and build before move write BUILD and select coordinate among the following: ");
                                     for (Coordinates c : possibleBuilds) {
                                         System.out.println(c.getX() + "," + c.getY());
                                     }
-                                    System.out.println("otherwise write MOVE and select coordinate among the following: ");
+                                    System.out.println("(MOVE \"x,y\") otherwise write MOVE and select coordinate among the following: ");
                                     for (Coordinates c : possibleMoves) {
                                         System.out.println(c.getX() + "," + c.getY());
                                     }
@@ -325,6 +357,7 @@ public class ClientCLI {
                                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()){
                                     setClientAction(Action.SELECT_COORDINATE_MOVE);
                                     ArrayList<Coordinates> possibleMoves = inputObject.getCurrentPossibleMoves();
+                                    setPossibleMoves(possibleMoves);
                                     print();
                                     System.out.println("your worker"+id+"build in "+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+" level:"+inputObject.getLevel()+" dome:"+inputObject.getDome());
                                     System.out.println("select coordinate to move among the following:");
@@ -372,6 +405,11 @@ public class ClientCLI {
                                     }
                                 }
                                 break;
+                            case PLAYER_DISCONNECTED:
+                                setClientAction(a);
+                                int playerDisconnected = inputObject.getnCurrentPlayer();
+                                System.out.println("player n°" + playerDisconnected + " disconnected from the server.\ngame over.\nRestart the server if you want to play again!");
+                                System.exit(-1);
                         }
                     }
                 } catch (Exception e){
@@ -389,34 +427,80 @@ public class ClientCLI {
             public void run() {
                 try {
                     while (isActive()) {
+                        boolean correctInput =false;
                         String inputObject = stdin.nextLine();
                         switch (getClientAction()) {
                             case STRING:
                             case FIRST_MESSAGE:
                             case NOT_YOUR_TURN:
                             case ARTEMIS_FIRST_MOVE:
-                            case BUILD_ATLAS:
                             case BUILD_EPHAESTUS:
                             case FIRST_BUILD_DEMETER:
-                            case PROMETHEUS_CHOOSE:
+                            case BUILD_ATLAS:
                             case NUMBER_OF_PLAYERS:
                             case WRONG_GODS:
                             case CHOOSE_GOD:
                             case NICKNAME_ALREADY_USED:
                             case SELECT_GODS_CHALLENGER:
-                            case SET_WORKER_POSITION:
                             case ERROR_SET_WORKER_POSITION:
                                 socketOut.writeObject(new Message(getClientAction().getValue(), inputObject));
                                 break;
+                            case SET_WORKER_POSITION:
+                                    String[] testInput = inputObject.split(","); //test if correct the input (es: '1,1' and not '1m1')
+                                    if(testInput.length==2) {
+                                        socketOut.writeObject(new Message(getClientAction().getValue(), inputObject));
+                                    } else {
+                                        System.out.println("ERROR: format -> x,y");
+                                    }
+                                break;
                             case SELECT_ACTIVE_WORKER:
-                                int i = Integer.parseInt(inputObject);
-                                socketOut.writeObject(new Message(getClientAction().getValue(), i));
+                                try {
+                                    int i = Integer.parseInt(inputObject);
+                                    if(clientController.checkIdWorker(i)) {
+                                        socketOut.writeObject(new Message(getClientAction().getValue(),i));
+                                    }else{
+                                        int[] idWorkers = clientController.getIdWorkers();
+                                        System.out.println("choose one of yours:\t" + idWorkers[0] + " or " + idWorkers[1]);
+                                    }
+
+                                }catch (NumberFormatException e){
+                                    System.out.println("ERROR:\nYou must choose an ID representing one of your worker");
+                                }
                                 break;
                             case SELECT_COORDINATE_MOVE:
                             case MOVE_AND_COORDINATE_BUILD:
                                 String[] input = inputObject.split(",");
-                                Coordinates coordinates = new Coordinates(Integer.parseInt(input[0]), Integer.parseInt(input[1]));
-                                socketOut.writeObject(new Message(getClientAction().getValue(), coordinates));
+                                try {
+                                    int x =Integer.parseInt(input[0]);
+                                    int y = Integer.parseInt(input[1]);
+                                    Coordinates coordinates = new Coordinates(x,y);
+                                    if (coordinates==null){throw new NumberFormatException();} //if the creation of coordinate stopped anomaly, throw exception
+                                    for (Coordinates c : possibleMoves) {
+                                        if (c.equals(coordinates) && !correctInput) {
+                                            correctInput = true;
+                                        }
+                                    }
+                                    if (correctInput) {
+                                        socketOut.writeObject(new Message(getClientAction().getValue(), coordinates));
+                                    } else if (!correctInput) {
+                                        System.out.println("ERROR: write one of the previous coordinate");
+                                    }
+                                }catch (NumberFormatException e){
+                                    System.out.println("ERROR: Write one of the previous coordinate in the same format: \"x,y\"");
+                                }
+                                break;
+                            case PROMETHEUS_CHOOSE:
+                                String[] choose = inputObject.split(" ");
+                                if(choose[0].toUpperCase() == "BUILD"){
+                                    correctInput = isCorrectInput(choose, possibleBuilds);
+                                } else if (choose[0].toUpperCase() =="MOVE"){
+                                    correctInput = isCorrectInput(choose, possibleMoves);
+                                }
+                                if(!correctInput){
+                                        System.out.println("ERROR: write MOVE \"x,y\" or \"BUILD x,y\".\nx,y must be correct.");
+                                    }else if(correctInput) {
+                                    socketOut.writeObject(new Message(getClientAction().getValue(), inputObject));
+                                }
                                 break;
                             case GAME_OVER:
                                 socketOut.writeObject(new Message(4,inputObject));
@@ -433,6 +517,19 @@ public class ClientCLI {
         });
         t.start();
         return t;
+    }
+
+    private boolean isCorrectInput(String[] choose, ArrayList<Coordinates> possibleMoves) {
+        String[] coordinate = choose[1].split(",");
+        int x = Integer.parseInt(coordinate[0]);
+        int y = Integer.parseInt(coordinate[1]);
+        Coordinates coordinate1= new Coordinates(x,y);
+        for(Coordinates c : possibleMoves){
+            if(coordinate1.equals(c)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void startCLIBoard() {

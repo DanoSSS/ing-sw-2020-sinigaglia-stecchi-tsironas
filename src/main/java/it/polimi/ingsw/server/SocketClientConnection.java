@@ -9,6 +9,7 @@ import it.polimi.ingsw.utils.ReturnMessage;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -18,6 +19,7 @@ public class SocketClientConnection extends Observable<Object> implements Client
     private ObjectOutputStream out;
     private ObjectInputStream in;
     private boolean active = true;
+    private boolean boolPlayerDisconnected=false;
     private int playerNumber;
     private  int winner=-1;
 
@@ -35,7 +37,7 @@ public class SocketClientConnection extends Observable<Object> implements Client
 
     private synchronized String read() throws IOException, ClassNotFoundException {
         String s = null;
-        Message recv = (Message)in.readObject();
+        Message recv = (Message) in.readObject();
         s = recv.getSentence();
         return s;
     }
@@ -50,9 +52,25 @@ public class SocketClientConnection extends Observable<Object> implements Client
         }
     }
 
+    private void close() {
+        if(boolPlayerDisconnected==true) {   //se players si disconnette
+            if (server.getNPlayers() == 2) {
+                System.out.println("Deregistering client...");
+                server.deregisterConnection2(this, playerNumber);
+                System.out.println("Done!");
+            } else if (server.getNPlayers() == 3) {
+                System.out.println("Deregistering client...");
+                server.deregisterConnection3(this, playerNumber);
+                System.out.println("Done!");
+            }
+        }
+        //altrimenti se la partita finisce per altri problemi o se finisce la partita
+        closeConnection();
+    }
+
     @Override
     public synchronized void closeConnection() {
-        send(new ReturnMessage(4,"Connection closed!"));
+        //send(new ReturnMessage(4,"Connection closed!"));
         try {
             socket.close();
         } catch (IOException e) {
@@ -83,12 +101,6 @@ public class SocketClientConnection extends Observable<Object> implements Client
         }).start();
     }
 
-    private void close() {
-        closeConnection();
-        System.out.println("Deregistering client...");
-    //    server.deregisterConnection(this);
-        System.out.println("Done!");
-    }
 
     @Override
     public void run() {
@@ -189,15 +201,16 @@ public class SocketClientConnection extends Observable<Object> implements Client
                     notify(recv);
             }
         } catch (IOException | NoSuchElementException | InterruptedException | ClassNotFoundException e) {
-            System.err.println("Error!" + e.getMessage());
-            e.printStackTrace();
+            //System.err.println("Error!" + e.getMessage());
+            //e.printStackTrace();
+            boolPlayerDisconnected=true;
         } finally {
             close();
         }
     }
 
     private String godSelection(int n) throws IOException, ClassNotFoundException {
-        String read = read();
+        String read = read().toUpperCase();
         while (server.removeGods1(read)) {
             if (n==3) {
                 send(new ReturnMessage(4, "you have entered a god card that doesn't exist, select your god between: " + server.getGods(0) + "\t" + server.getGods(1) + "\t" + server.getGods(2)));

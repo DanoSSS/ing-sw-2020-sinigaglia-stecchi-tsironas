@@ -1,8 +1,10 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.controller.Game;
 import it.polimi.ingsw.controller.Round;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.utils.ReturnMessage;
 import it.polimi.ingsw.view.RemoteView;
 import it.polimi.ingsw.view.View;
 
@@ -17,37 +19,77 @@ import java.util.concurrent.Executors;
 
 public class Server {
     private static final int PORT=12345;
-    private static final int startPlayer = 2;
     private ServerSocket serverSocket;
     private ExecutorService executor = Executors.newFixedThreadPool(128);
     private Map<String, ClientConnection> waitingConnection = new HashMap<>();
     private Map<ClientConnection, ClientConnection> playingConnection = new HashMap<>();
+    private Map<ClientConnection, ClientConnection> playingConnection1 = new HashMap<>();
     private Map<String, God> playerGodAssociation = new HashMap<>();
     private Map<String, Integer>playerIdAssociation = new HashMap<>();
-    private int idGenerate=0;
     int nPlayers=0;
     private int nPlayersConnected = 0;
-    private ArrayList<String> nicknames = new ArrayList<String>();
-    private ArrayList<God> gods = new ArrayList<God>();
-    private ArrayList<Coordinates> workerPositions = new ArrayList<Coordinates>();
+    private ArrayList<String> nicknames = new ArrayList<>();
+    private ArrayList<God> gods = new ArrayList<>();
+    private ArrayList<Coordinates> workerPositions = new ArrayList<>();
     boolean boolP1 = false, boolP2 = false, boolP3 = false, bool = false;
-
 
 
     public Server() throws IOException {
         this.serverSocket = new ServerSocket(PORT);
     }
 
-
-    public synchronized void deregisterConnection(ClientConnection c) {
+    public synchronized void deregisterConnection2(ClientConnection c,int playerNumber) {
         ClientConnection opponent = playingConnection.get(c);
-        if(opponent != null) {
+  /*      if(opponent != null) {
             opponent.closeConnection();
-        }
+        }*/
+        opponent.asyncSend(new ReturnMessage(29,playerNumber));
         playingConnection.remove(c);
         playingConnection.remove(opponent);
         waitingConnection.keySet().removeIf(s -> waitingConnection.get(s) == c);
+        if(playingConnection.size()==0){
+            restartForNewGame();
+        }
     }
+
+    public synchronized void deregisterConnection3(ClientConnection c, int playerNumber){
+        ClientConnection opponent1 = playingConnection.get(c);
+        ClientConnection opponent2 = playingConnection1.get(c);
+        /*if(opponent1 != null && opponent2!=null) {
+            opponent1.closeConnection();
+            opponent2.closeConnection();
+        }*/
+        if(opponent1!=null && opponent2!=null) {
+            opponent1.asyncSend(new ReturnMessage(29, playerNumber));
+            opponent2.asyncSend(new ReturnMessage(29, playerNumber));
+        }
+        playingConnection.remove(c);
+        playingConnection.remove(opponent1);
+        playingConnection1.remove(c);
+        playingConnection1.remove(opponent2);
+        waitingConnection.keySet().removeIf(s -> waitingConnection.get(s) == c);
+        if(playingConnection1.size()==0 && playingConnection.size()==0){
+            restartForNewGame();
+        }
+    }
+
+    private void restartForNewGame() {
+        this.nPlayers=0;
+        this.nPlayersConnected=0;
+        this.playingConnection = new HashMap<>();
+        this.playingConnection1 = new HashMap<>();
+        this.nicknames = new ArrayList<>();
+        this.gods = new ArrayList<>();
+        this.playerGodAssociation = new HashMap<>();
+        this.workerPositions = new ArrayList<>();
+        this.playerIdAssociation = new HashMap<>();
+        this.waitingConnection = new HashMap();
+        this.boolP1=false;
+        this.bool=false;
+        this.boolP3=false;
+        this.boolP2=false;
+    }
+
 
     public synchronized void lobby(ClientConnection c, String name, God god,int idplayer) {
         waitingConnection.put(name, c);
@@ -61,6 +103,7 @@ public class Server {
 
             playingConnection.put(waitingConnection.get(keys.get(0)), waitingConnection.get(keys.get(1)));  //(c1,c2)
             playingConnection.put(waitingConnection.get(keys.get(1)), waitingConnection.get(keys.get(0)));  //(c2,c1)
+            waitingConnection.clear();
             System.out.println("fine if 2");
         }
         else if (waitingConnection.size() == 3 && nPlayers == 3) {               //3 players
@@ -72,9 +115,10 @@ public class Server {
             playingConnection.put(waitingConnection.get(keys.get(0)), waitingConnection.get(keys.get(1)));  //(c1,c2)
             playingConnection.put(waitingConnection.get(keys.get(1)), waitingConnection.get(keys.get(0)));  //(c2,c1)
             playingConnection.put(waitingConnection.get(keys.get(2)), waitingConnection.get(keys.get(0)));  //(c3,c1)
-            playingConnection.put(waitingConnection.get(keys.get(0)), waitingConnection.get(keys.get(2)));  //(c1,c3)
-            playingConnection.put(waitingConnection.get(keys.get(2)), waitingConnection.get(keys.get(1)));  //(c3,c2)
-            playingConnection.put(waitingConnection.get(keys.get(1)), waitingConnection.get(keys.get(2)));  //(c2,c3)
+            playingConnection1.put(waitingConnection.get(keys.get(0)), waitingConnection.get(keys.get(2)));  //(c1,c3)
+            playingConnection1.put(waitingConnection.get(keys.get(2)), waitingConnection.get(keys.get(1)));  //(c3,c2)
+            playingConnection1.put(waitingConnection.get(keys.get(1)), waitingConnection.get(keys.get(2)));  //(c2,c3)
+            waitingConnection.clear();
             System.out.println("fine if 3");
         }
 
@@ -356,7 +400,6 @@ public class Server {
                 executor.submit(socketConnection);
             } catch (IOException  e) {
                 System.out.println("Connection Error!");
-
             }
         }
     }

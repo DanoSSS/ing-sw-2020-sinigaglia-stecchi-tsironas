@@ -10,6 +10,9 @@ import it.polimi.ingsw.utils.ReturnMessage;
 
 import javax.print.attribute.standard.NumberUp;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -28,11 +31,17 @@ public class ClientGUI  {
     private boolean active = true;
     private SantoriniMainFrame santoriniMainFrame;
     private StartingFrame startingFrame;
+    private Socket socket;
     private ObjectOutputStream socketOut;
     int np=0;
     private int choosePrometheus;
     private int loseRound=-1;
 
+
+
+    public Socket getSocket() {
+        return socket;
+    }
 
     public StartingFrame getStartingFrame() {
         return startingFrame;
@@ -450,6 +459,32 @@ public class ClientGUI  {
                 }
                 System.exit(-1);
                 break;
+            case PLAYER_DISCONNECTED:
+                setClientAction(a);
+                int playerDisconnected = message.getnCurrentPlayer();
+                System.out.println("Message: closing Santorini...");
+                /* add a window listener
+                JDialog jdialog = new JDialog((Dialog) null, "ERROR: Player n°" + playerDisconnected + "has lost the connection with the server" , true);
+                jdialog.addWindowListener(new WindowAdapter()
+                {
+                    public void windowClosing(WindowEvent e)
+                    {
+                        System.out.println("Dialog: closing Santorini...");
+                        santoriniMainFrame.dispatchEvent(new WindowEvent(santoriniMainFrame, WindowEvent.WINDOW_CLOSING));
+                        startingFrame.dispatchEvent(new WindowEvent(startingFrame, WindowEvent.WINDOW_CLOSING)); //simulate the closing frame event
+                        try {
+                            throw new InterruptedException();
+                        } catch (InterruptedException interruptedException) {
+                            interruptedException.printStackTrace();
+                        }
+                    }
+                });
+                santoriniMainFrame.add(jdialog);
+                santoriniMainFrame.pack();*/
+                santoriniMainFrame.dispatchEvent(new WindowEvent(santoriniMainFrame, WindowEvent.WINDOW_CLOSING));
+                startingFrame.dispatchEvent(new WindowEvent(startingFrame, WindowEvent.WINDOW_CLOSING)); //simulate the closing frame event
+                System.out.println("Player n°" + playerDisconnected  +" disconnected from the server.\ngameover\nRestart the server to play again!");
+                break;
         }
     }
 
@@ -462,15 +497,14 @@ public class ClientGUI  {
     }
 
     public void run() throws IOException {
-        Socket socket = new Socket(ip, port);
+        this.socket = new Socket(ip, port);
         System.out.println("Connection established");
         ObjectInputStream SocketIn = new ObjectInputStream(socket.getInputStream());
         socketOut = new ObjectOutputStream(socket.getOutputStream());
 
-
         try{
             SantoriniMainFrame santoriniMainFrame = new SantoriniMainFrame(this);
-            StartingFrame startingFrame = new StartingFrame(santoriniMainFrame);
+            StartingFrame startingFrame = new StartingFrame(santoriniMainFrame,this);
             this.setSantoriniMainFrame(santoriniMainFrame);
             this.setStartingFrame(startingFrame);
             Thread t0 = asyncReadFromSocket(SocketIn);
@@ -481,6 +515,7 @@ public class ClientGUI  {
             SocketIn.close();
             socket.close();
         }
+        System.exit(0);
     }
 
 

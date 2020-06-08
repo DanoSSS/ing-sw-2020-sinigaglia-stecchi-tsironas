@@ -13,20 +13,19 @@ public class ClientController implements Serializable {
     private String[] otherNickname;
     private int currentRoundIdPlayer;
     private Action turnInfo;
-    private Integer [] idWorkers;
+    private int[] idWorkers= new int[2];
 
     public ClientController(String nickname, int idPlayer, int NPlayers, Integer[] idPlayers, String[] nicknames,int currentPlayer) {
         this.idPlayer = idPlayer;
-        idWorkers = new Integer[2];
         if(idPlayer==1){
-            idWorkers[0]= 0;
             idWorkers[1]= 1;
+            idWorkers[0]= 0;
         }
         else if(idPlayer==2){
             idWorkers[0]= 2;
             idWorkers[1]= 3;
         }
-        else if(idPlayer==3){
+        else if(idPlayer==3 && NPlayers==3){
             idWorkers[0]= 4;
             idWorkers[1]= 5;
         }
@@ -37,19 +36,17 @@ public class ClientController implements Serializable {
         this.currentRoundIdPlayer=currentPlayer;
         }
 
-    public ClientController(String nickname, int idPlayer, int nPlayers, Integer[] idPlayers, String[] otherNickname, int currentRoundIdPlayer, Action turnInfo) {
+    public ClientController(String nickname, int idPlayer, int nPlayers, Integer[] idPlayers, String[] otherNickname, int currentRoundIdPlayer,int[] idWorkers, Action turnInfo) {
         this.idPlayer = idPlayer;  //constructor for clone
         this.nickname = nickname;
         this.NPlayers = nPlayers;
         this.idPlayers = idPlayers;
         this.otherNickname=otherNickname;
         this.currentRoundIdPlayer=currentRoundIdPlayer;
+        this.idWorkers=idWorkers;
         this.turnInfo=turnInfo;
     }
 
-    public int getIdPlayer(int i) {
-        return idPlayers[i];
-    }
     public int getNPlayers() {
         return NPlayers;
     }
@@ -71,9 +68,7 @@ public class ClientController implements Serializable {
     public Action getTurnInfo() {
         return turnInfo;
     }
-    public void setTurnInfo(Action turnInfo) {
-        this.turnInfo = turnInfo;  //to do
-    }
+
     public int getIdPlayer(){
         return idPlayer;
     }
@@ -86,30 +81,29 @@ public class ClientController implements Serializable {
             String[] otherNickname = getOtherNickname();
             int currentRoundIdPlayer=getCurrentRoundIdPlayer();
             Action turnInfo=getTurnInfo();
-        return new ClientController(nickname,idPlayer,NPlayers,idPlayers,otherNickname,currentRoundIdPlayer,turnInfo/*,board*/);
+        return new ClientController(nickname,idPlayer,NPlayers,idPlayers,otherNickname,currentRoundIdPlayer,getIdWorkers(),turnInfo/*,board*/);
     }
 
     public boolean checkIdWorker(int idWorker){
-        if(idPlayer==1){
-            if(idWorker==0 || idWorker==1)
-                return true;
-        }
-        else if(idPlayer==2){
-            if(idWorker==2 || idWorker==3)
-                return true;
-        }
-        else if(idPlayer==3){
-            if(idWorker==4 || idWorker==5)
-                return true;
+        if(idWorker<=5) {
+            if (idPlayer == 1) {
+                if (idWorker == 0 || idWorker == 1)
+                    return true;
+            } else if (idPlayer == 2) {
+                if (idWorker == 2 || idWorker == 3)
+                    return true;
+            } else if (NPlayers == 3 && idPlayer == 3) {
+                if (idWorker == 4 || idWorker == 5)
+                    return true;
+            }
         }
         return false;
     }
 
-    public boolean checkPresenceWorker(int idWorker) {
-        if (idWorker>0){
-            return false;
-        } else{
-            return true;
-        }
+    public int[] getIdWorkers() {
+        return idWorkers;
     }
+
+
+
 }

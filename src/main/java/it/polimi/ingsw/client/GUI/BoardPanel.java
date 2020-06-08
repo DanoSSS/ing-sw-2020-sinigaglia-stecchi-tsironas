@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.Message;
+import it.polimi.ingsw.utils.ReturnMessage;
 
 import java.util.Map;
 
@@ -78,17 +79,6 @@ public class BoardPanel extends JPanel {
         tile[x][y].removeWorker();
     }
 
-
-    public void swapWorkers(int idWorker, int occupiedByIdWorker, int x, int y) throws IOException {
-        Coordinates oldC = locateIdWorker(idWorker);
-        if (oldC != null) {
-            removeWorker(x,y);
-            tile[x][y].addWorker(idWorker);
-            removeWorker(oldC.getX(),oldC.getY());
-            tile[oldC.getX()][oldC.getY()].addWorker(occupiedByIdWorker);
-        }
-    }
-
     public Coordinates locateIdWorker(int idWorker) {
         Coordinates tileOccupiedByWorker = null;
         for (Coordinates c : possibleTile) {
@@ -100,57 +90,58 @@ public class BoardPanel extends JPanel {
     }
 
 
-    public void handleClick(int x, int y) {
+    public void handleClick(int x, int y) throws IOException, InterruptedException {
         Action a = clientGUI.getClientAction();
         boolean flag = false; //clientGUI.getClientController().checkPresenceWorker(tile[x][y].getIdWorker()); // for normal BUILD & MOVE
-        switch (a) {
-            case SELECT_ACTIVE_WORKER:
-                if (!clientGUI.getClientController().checkIdWorker(tile[x][y].getIdWorker())) { //return true if there is a worker; false if empty
-                    clientGUI.getSantoriniMainFrame().getLog().append("\n----\nThis is not your worker!\nPick yours!");
-                } else {
-                    clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), tile[x][y].getIdWorker()));
-                }
-                this.activeWorker=tile[x][y].getIdWorker();
-                break;
-            case NOT_YOUR_TURN:
-                clientGUI.getSantoriniMainFrame().getLog().append("\n----\nWAIT! It's not your turn!");
-                break;
-            case SELECT_COORDINATE_MOVE:
-            case MOVE_AND_COORDINATE_BUILD:
-                Coordinates newC = new Coordinates(x, y);
-                //for normal build NO! you cannot create levels on opposite workers
-                for (Coordinates c : possibleTile) {
-                    if (newC.equals(c)) {
-                        flag = true;
-                        clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), newC));
+        try {
+            switch (a) {
+                case SELECT_ACTIVE_WORKER:
+                    if (!clientGUI.getClientController().checkIdWorker(tile[x][y].getIdWorker())) { //return true if there is a worker; false if empty
+                        clientGUI.getSantoriniMainFrame().getLog().append("\n----\nThis is not your worker!\nPick yours!");
+                    } else {
+                        clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), tile[x][y].getIdWorker()));
                     }
-                }
-                if(!flag){
-                    clientGUI.getSantoriniMainFrame().getLog().append("\n----\nError:\nYou cannot move there!\nChoose another tile");
-                }
-                //TODO: capire come gestire gli errori dopo aver implementato tuti i diversi round ed eliminare questa parte sopra (4 righe circa)
-                break;
-            case ARTEMIS_FIRST_MOVE:
-            case FIRST_BUILD_DEMETER:
-                newC = new Coordinates(x, y);
-                for (Coordinates c : possibleTile) {
-                    if (newC.equals(c)) {
-                        flag = true;
-                        clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), x+","+y));
+                    this.activeWorker = tile[x][y].getIdWorker();
+                    break;
+                case NOT_YOUR_TURN:
+                    clientGUI.getSantoriniMainFrame().getLog().append("\n----\nWAIT! It's not your turn!");
+                    break;
+                case SELECT_COORDINATE_MOVE:
+                case MOVE_AND_COORDINATE_BUILD:
+                    Coordinates newC = new Coordinates(x, y);
+                    //for normal build NO! you cannot create levels on opposite workers
+                    for (Coordinates c : possibleTile) {
+                        if (newC.equals(c)) {
+                            flag = true;
+                            clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), newC));
+                        }
                     }
-                }
-                if(!flag){
-                    clientGUI.getSantoriniMainFrame().getLog().append("\n----\nError:\nYou cannot move there!\nChoose another tile");
-                }
-                break;
-            case BUILD_ATLAS:
-                newC = new Coordinates(x, y);
-                for (Coordinates c : possibleTile) {
-                    if (newC.equals(c)) {
-                        flag = true;
-                        Object[] options = {"DOME",
+                    if (!flag) {
+                        clientGUI.getSantoriniMainFrame().getLog().append("\n----\nError:\nYou cannot move there!\nChoose another tile");
+                    }
+                    //TODO: capire come gestire gli errori dopo aver implementato tuti i diversi round ed eliminare questa parte sopra (4 righe circa)
+                    break;
+                case ARTEMIS_FIRST_MOVE:
+                case FIRST_BUILD_DEMETER:
+                    newC = new Coordinates(x, y);
+                    for (Coordinates c : possibleTile) {
+                        if (newC.equals(c)) {
+                            flag = true;
+                            clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), x + "," + y));
+                        }
+                    }
+                    if (!flag) {
+                        clientGUI.getSantoriniMainFrame().getLog().append("\n----\nError:\nYou cannot move there!\nChoose another tile");
+                    }
+                    break;
+                case BUILD_ATLAS:
+                    newC = new Coordinates(x, y);
+                    for (Coordinates c : possibleTile) {
+                        if (newC.equals(c)) {
+                            flag = true;
+                            Object[] options = {"DOME",
                                 "STD LV"};
-                        int i = JOptionPane.showOptionDialog(clientGUI.getSantoriniMainFrame(),
+                            int i = JOptionPane.showOptionDialog(clientGUI.getSantoriniMainFrame(),
                                 "Which element do you want to build?",
                                 "ATLAS POWER",
                                 JOptionPane.YES_NO_OPTION,
@@ -158,30 +149,29 @@ public class BoardPanel extends JPanel {
                                 null,     //do not use a custom Icon
                                 options,  //the titles of buttons
                                 options[0]); //default button title
-                        if(i==0){
-                            clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), "dome "+x+ "," +y));
-                        }
-                        if(i==1){
-                            clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), "std "+x+ "," +y));
+                            if (i == 0) {
+                                clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), "dome " + x + "," + y));
+                            }
+                            if (i == 1) {
+                                clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), "std " + x + "," + y));
+                            }
                         }
                     }
-                }
-                if(!flag){
-                    clientGUI.getSantoriniMainFrame().getLog().append("\n----\nError:\nYou cannot move there!\nChoose another tile");
-                }
-                break;
-            case BUILD_EPHAESTUS:
-                newC = new Coordinates(x, y);
-                for (Coordinates c : possibleTile) {
-                    if (newC.equals(c)) {
-                        flag = true;
-                        if(tile[x][y].getLevel()>=2){
-                            clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), "no "+x+ "," +y));
-                        }
-                        else {
-                            Object[] options = {"YES",
+                    if (!flag) {
+                        clientGUI.getSantoriniMainFrame().getLog().append("\n----\nError:\nYou cannot move there!\nChoose another tile");
+                    }
+                    break;
+                case BUILD_EPHAESTUS:
+                    newC = new Coordinates(x, y);
+                    for (Coordinates c : possibleTile) {
+                        if (newC.equals(c)) {
+                            flag = true;
+                            if (tile[x][y].getLevel() >= 2) {
+                                clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), "no " + x + "," + y));
+                            } else {
+                                Object[] options = {"YES",
                                     "NO"};
-                            int i = JOptionPane.showOptionDialog(clientGUI.getSantoriniMainFrame(),
+                                int i = JOptionPane.showOptionDialog(clientGUI.getSantoriniMainFrame(),
                                     "Do you want Build a second time in the same space",
                                     "EPHAESTUS POWER",
                                     JOptionPane.YES_NO_OPTION,
@@ -189,36 +179,39 @@ public class BoardPanel extends JPanel {
                                     null,     //do not use a custom Icon
                                     options,  //the titles of buttons
                                     options[0]); //default button title
-                            if (i == 0) {
-                                clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), "yes " + x + "," + y));
-                            }
-                            if (i == 1) {
-                                clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), "no " + x + "," + y));
+                                if (i == 0) {
+                                    clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), "yes " + x + "," + y));
+                                }
+                                if (i == 1) {
+                                    clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), "no " + x + "," + y));
+                                }
                             }
                         }
                     }
-                }
-                if(!flag){
-                    clientGUI.getSantoriniMainFrame().getLog().append("\n----\nError:\nYou cannot move there!\nChoose another tile");
-                }
-                break;
-            case PROMETHEUS_CHOOSE:
-                newC = new Coordinates(x, y);
-                for (Coordinates c : possibleTile) {
-                    if (newC.equals(c)) {
-                        flag = true;
-                        int choose = clientGUI.getChoosePrometheus();
-                        if(choose==0) {
-                            clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), "MOVE "+x + "," + y));
-                        }
-                        if(choose==1){
-                            clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), "BUILD "+x + "," + y));
+                    if (!flag) {
+                        clientGUI.getSantoriniMainFrame().getLog().append("\n----\nError:\nYou cannot move there!\nChoose another tile");
+                    }
+                    break;
+                case PROMETHEUS_CHOOSE:
+                    newC = new Coordinates(x, y);
+                    for (Coordinates c : possibleTile) {
+                        if (newC.equals(c)) {
+                            flag = true;
+                            int choose = clientGUI.getChoosePrometheus();
+                            if (choose == 0) {
+                                clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), "MOVE " + x + "," + y));
+                            }
+                            if (choose == 1) {
+                                clientGUI.asyncWriteToSocket(new Message(clientGUI.getClientAction().getValue(), "BUILD " + x + "," + y));
+                            }
                         }
                     }
-                }
-                if(!flag){
-                    clientGUI.getSantoriniMainFrame().getLog().append("\n----\nError:\nYou cannot move there!\nChoose another tile");
-                }
+                    if (!flag) {
+                        clientGUI.getSantoriniMainFrame().getLog().append("\n----\nError:\nYou cannot move there!\nChoose another tile");
+                    }
+            }
+        }catch (NullPointerException e){
+            clientGUI.messageHandler(new ReturnMessage(29,clientGUI.getClientController().getIdPlayer()));
         }
     }
 
@@ -247,10 +240,7 @@ public class BoardPanel extends JPanel {
         }
     }
 
-
     public void drawLevel(int x, int y, int level, boolean dome) {
         tile[x][y].build(level, dome);
     }
-
-
 }

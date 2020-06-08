@@ -30,7 +30,8 @@ package it.polimi.ingsw.utils;
     SET_WORKER_POSITION(25),
     ERROR_SET_WORKER_POSITION(26),
     GAME_OVER(27),
-    END_GAME(28);
+    END_GAME(28),
+    PLAYER_DISCONNECTED(29);
 
     private int value;
 

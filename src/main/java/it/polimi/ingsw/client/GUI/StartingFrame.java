@@ -8,8 +8,10 @@ import java.io.IOException;
 public class StartingFrame extends JFrame {
         private SantoriniMainFrame santoriniMainFrame;
 
-        public StartingFrame(SantoriniMainFrame santoriniMainFrame) throws IOException {
+
+        public StartingFrame(SantoriniMainFrame santoriniMainFrame, ClientGUI clientGUI) throws IOException {
                 this.santoriniMainFrame = santoriniMainFrame;
+
                 JPanel InitPanel = new JPanel();
                 JLabel ImageLabel = new JLabel();
                 ImageLabel.setSize(new Dimension(500,490));
@@ -45,25 +47,20 @@ public class StartingFrame extends JFrame {
                                 startingFrame.dispose();
                                 santoriniMainFrame.setVisible(true);
                         }
-
                         @Override
                         public void mousePressed(MouseEvent mouseEvent) {
 
                         }
-
                         @Override
                         public void mouseReleased(MouseEvent mouseEvent) {
 
                         }
-
                         @Override
                         public void mouseEntered(MouseEvent mouseEvent) {
 
                         }
-
                         @Override
                         public void mouseExited(MouseEvent mouseEvent) {
-
                         }
                 });
                 InitPanel.add(ImageLabel);
@@ -72,7 +69,21 @@ public class StartingFrame extends JFrame {
                 this.pack();
                 this.setLocationRelativeTo(null);
                 this.setMinimumSize(new Dimension(390,380));
-                this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                //this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+            this.addWindowListener(new WindowAdapter()
+            {
+                public void windowClosing(WindowEvent e)
+                {
+                    System.out.println("closing SetupSantorini...");
+                    try {
+                        clientGUI.getSocket().close();
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                    dispose();
+                    System.out.println("closed");
+                }
+            });
                 this.setVisible(true);
 
         }
