@@ -128,9 +128,9 @@ public class ClientGUI  {
                 Object selectedValue=null;
                 while(selectedValue==null) {
                     selectedValue = JOptionPane.showInputDialog(null,
-                            "how many players?", "game setup",
-                            JOptionPane.INFORMATION_MESSAGE, playerImage,
-                            possibleValues, possibleValues[0]);
+                        "how many players?", "game setup",
+                        JOptionPane.INFORMATION_MESSAGE, playerImage,
+                        possibleValues, possibleValues[0]);
                 }
                 asyncWriteToSocket(new Message(a.getValue(), (String)selectedValue));
                 np = Integer.parseInt((String)selectedValue);
