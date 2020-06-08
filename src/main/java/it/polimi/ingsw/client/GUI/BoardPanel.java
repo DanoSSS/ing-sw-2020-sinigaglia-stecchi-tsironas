@@ -123,6 +123,7 @@ public class BoardPanel extends JPanel {
                     break;
                 case ARTEMIS_FIRST_MOVE:
                 case FIRST_BUILD_DEMETER:
+                case ARES_POWER:
                     newC = new Coordinates(x, y);
                     for (Coordinates c : possibleTile) {
                         if (newC.equals(c)) {

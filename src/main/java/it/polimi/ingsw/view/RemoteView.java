@@ -39,6 +39,7 @@ public class RemoteView extends View{
                 case FIRST_BUILD_DEMETER:
                 case PROMETHEUS_CHOOSE:
                 case END_GAME:
+                case ARES_POWER:
                     handleMessage(m, player.getIdPlayer());  //CREARE getId() in Player, inizializzare questo valore id dei players
                     break;
                 case NOT_YOUR_TURN:
@@ -121,6 +122,8 @@ public class RemoteView extends View{
             case LOSE3P:
             case WIN:
             case END_GAME:
+            case ARES_POWER:
+            case ARES_END_TURN:
                 clientConnection.asyncSend((ReturnMessage)message);
                 break;
 

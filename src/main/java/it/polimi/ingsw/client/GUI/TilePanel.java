@@ -88,6 +88,9 @@ public class TilePanel extends JPanel {
             this.setBackground(new Color(0,47,167));
         } else {
             switch (level) {
+                case 0:
+                    this.setBackground(new Color(3,192,60));
+                    break;
                 case 1:
                     this.setBackground(new Color(239,239,239));
                     break;

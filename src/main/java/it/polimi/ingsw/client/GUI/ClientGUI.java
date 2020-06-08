@@ -151,7 +151,10 @@ public class ClientGUI  {
                 gods.add("PROMETHEUS");
                 gods.add("CHRONUS");
                 gods.add("HERA");
-                GodSelectionFrame gsf = new GodSelectionFrame(11,"SELECT "+np+" GODS BETWEEN:",gods,np,this);
+                gods.add("ZEUS");
+                gods.add("HESTIA");
+                gods.add("ARES");
+                GodSelectionFrame gsf = new GodSelectionFrame(14,"SELECT "+np+" GODS BETWEEN:",gods,np,this);
                 break;
             case CHOOSE_GOD:
                 gods = new ArrayList<>();
@@ -281,6 +284,7 @@ public class ClientGUI  {
                 }
                 break;
             case BUILD_END_TURN:
+            case ARES_END_TURN:
                 santoriniMainFrame.getBoardPanel().setDefaultBorder();
                 santoriniMainFrame.getBoardPanel().drawLevel(message.getCoordinate().getX(),message.getCoordinate().getY(),message.getLevel(),message.getDome());
                 if(clientController.getIdPlayer()==message.getnCurrentPlayer()){
@@ -431,6 +435,29 @@ public class ClientGUI  {
                     santoriniMainFrame.getBoardPanel().drawPossibleBorder(possibleMoves);
                 }
                 break;
+            case ARES_POWER:
+                santoriniMainFrame.getBoardPanel().setDefaultBorder();
+                santoriniMainFrame.getBoardPanel().drawLevel(message.getCoordinate().getX(),message.getCoordinate().getY(),message.getLevel(),message.getDome());
+                if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
+                    setClientAction(a);
+                    Object[] options = {"YES",
+                            "NO"};
+                    int i = JOptionPane.showOptionDialog(santoriniMainFrame,
+                            "Do you want activate your power",
+                            "ARES POWER",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,     //do not use a custom Icon
+                            options,  //the titles of buttons
+                            options[0]); //default button title
+                    if(i==0){
+                        santoriniMainFrame.getBoardPanel().drawPossibleBorder(message.getCurrentPossibleMoves());
+                    }
+                    if(i==1){
+                        asyncWriteToSocket(new Message(getClientAction().getValue(), "NO"));
+                    }
+                }
+                break;
             case LOSE3P:
                 Worker wk1=message.getOppWorker();
                 santoriniMainFrame.getBoardPanel().removeWorker(wk1.getCoordinates().getX(),wk1.getCoordinates().getY());
@@ -498,6 +525,8 @@ public class ClientGUI  {
                 startingFrame.dispatchEvent(new WindowEvent(startingFrame, WindowEvent.WINDOW_CLOSING)); //simulate the closing frame event
                 System.out.println("Player n°" + playerDisconnected  +" disconnected from the server.\ngameover");
                 break;
+
+
         }
     }
 

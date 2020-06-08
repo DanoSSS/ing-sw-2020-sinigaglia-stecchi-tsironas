@@ -9,14 +9,12 @@ import it.polimi.ingsw.utils.Message;
 
 import java.util.ArrayList;
 
-public class RoundDemeter extends Round {
-    ArrayList<Coordinates> possibleBuilds;
-
-    public RoundDemeter(Board board, Player player) {
+public class RoundHestia extends Round {
+    public RoundHestia(Board board, Player player) {
         super(board, player);
     }
 
-    public ArrayList<Coordinates> canBuildSecond(Worker worker,Coordinates previousCoordinate) {
+    public ArrayList<Coordinates> canBuildSecond(Worker worker, Coordinates previousCoordinate) {
         Coordinates coordinates, newCoordinates;
         int x, y;
         ArrayList<Coordinates> possiblesBuildsCoordinates = new ArrayList<>();
@@ -25,7 +23,7 @@ public class RoundDemeter extends Round {
         y = coordinates.getY();
         for (int i = x - 1; i <= x + 1; i++) {
             for (int j = y - 1; j <= y + 1; j++) {
-                if (i >= 0 && i <= 4 && j >= 0 && j <= 4) {
+                if (i > 0 && i < 4 && j > 0 && j < 4) {
                     newCoordinates = new Coordinates(i, j);
                     if (!board.isOccupied(newCoordinates) && !board.isDome(newCoordinates) && (newCoordinates.getX()!=previousCoordinate.getX() || newCoordinates.getY()!=previousCoordinate.getY())) {
                         possiblesBuildsCoordinates.add(newCoordinates);
@@ -45,7 +43,6 @@ public class RoundDemeter extends Round {
             board.firstBuildDemeter(coordinates, possibleBuilds);
         }
     }
-
 
     @Override
     public void update(Object message) {

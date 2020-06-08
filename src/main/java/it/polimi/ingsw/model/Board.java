@@ -111,6 +111,10 @@ public class Board{
         return board[coordinates.getX()][coordinates.getY()].getLevel();
     }
 
+    public void reduceLevel(Coordinates coordinates){
+        board[coordinates.getX()][coordinates.getY()].reduceLevel();
+    }
+
     //method to build in the cell x,y
     public void setLevel(Coordinates coordinates) {
         board[coordinates.getX()][coordinates.getY()].setLevel();
@@ -260,6 +264,41 @@ public class Board{
         } else {
             observableModel.notify(new ReturnMessage(13, currentActiveWorker.getIdWorker(), oldRound, newRound));
         }
+    }
+
+    public void aresEndTurn(Coordinates c){
+        int oldRound = currentRound;
+        int newRound = UpdateRound();
+        if (c != null) {
+            int level = getLevel(c);
+            boolean dome = isDome(c);
+            observableModel.notify(new ReturnMessage(31, currentActiveWorker.getIdWorker(), c, level, oldRound, newRound, dome));
+        } else {
+            observableModel.notify(new ReturnMessage(13, currentActiveWorker.getIdWorker(), oldRound, newRound));
+        }
+    }
+
+    public void buildAres(Coordinates c){
+        Worker otherWorker;
+        ArrayList<Coordinates> possiblesAresPowerCoordinates = new ArrayList<Coordinates>();
+        if(currentActiveWorker.getPlayer().getWorker1().getIdWorker()==currentActiveWorker.getIdWorker()){
+            otherWorker = currentActiveWorker.getPlayer().getWorker2();
+        }else {
+            otherWorker=currentActiveWorker.getPlayer().getWorker1();
+        }
+        for (int i = otherWorker.getCoordinates().getX() - 1; i <= otherWorker.getCoordinates().getX() + 1; i++) {
+            for (int j = otherWorker.getCoordinates().getY() - 1; j <= otherWorker.getCoordinates().getY() + 1; j++) {
+                if (i >= 0 && i <= 4 && j >= 0 && j <= 4) {
+                    Coordinates newCoordinates = new Coordinates(i, j);
+                    if (!isOccupied(newCoordinates) && !isDome(newCoordinates) && getLevel(newCoordinates) > 0) {
+                        possiblesAresPowerCoordinates.add(newCoordinates);
+                    }
+                }
+            }
+        }
+        int level= getLevel(c);
+        boolean dome= isDome(c);
+        observableModel.notify(new ReturnMessage(30,currentActiveWorker.getIdWorker(), c, level, dome, possiblesAresPowerCoordinates));
     }
 
     public void loseGame(){

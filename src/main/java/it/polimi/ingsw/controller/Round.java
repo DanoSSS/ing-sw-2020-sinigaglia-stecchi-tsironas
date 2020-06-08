@@ -1,9 +1,6 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.model.Board;
-import it.polimi.ingsw.model.Coordinates;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.Message;
@@ -109,6 +106,9 @@ public abstract class Round implements Observer<Object>{
                 }
             }
         }
+        if(worker.getPlayer().getGod()== God.ZEUS && board.getLevel(worker.getCoordinates())<3){
+            possiblesBuildsCoordinates.add(worker.getCoordinates());
+        }
         return possiblesBuildsCoordinates;
     }
 
@@ -162,6 +162,22 @@ public abstract class Round implements Observer<Object>{
             board.setNround(i);
         }
         board.buildEndTurn(c);
+    }
+
+    public void  secondBuildEndTurn(String input){
+        int i;
+        Coordinates coordinates=null;
+        if (!input.equals("NO")) {
+            String[] c = input.split(",");
+            coordinates = new Coordinates(Integer.parseInt(c[0]), Integer.parseInt(c[1]));
+            doBuild(coordinates);
+        }
+        if(board.getNround()!=0) {
+            i = board.getNround();
+            i--;
+            board.setNround(i);
+        }
+        board.buildEndTurn(coordinates);
     }
 
     @Override

@@ -29,6 +29,10 @@ public class Cell {
 
     public void setLevel() { this.level ++; }
 
+    public void reduceLevel() {
+        this.level--;
+    }
+
     public Worker getWorker() {
         return worker;
     }
