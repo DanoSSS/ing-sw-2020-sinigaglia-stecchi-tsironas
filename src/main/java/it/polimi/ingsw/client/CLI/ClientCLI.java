@@ -408,7 +408,7 @@ public class ClientCLI {
                             case PLAYER_DISCONNECTED:
                                 setClientAction(a);
                                 int playerDisconnected = inputObject.getnCurrentPlayer();
-                                System.out.println("player n°" + playerDisconnected + " disconnected from the server.\ngame over.\nRestart the server if you want to play again!");
+                                System.out.println("player n°" + playerDisconnected + " disconnected from the server.\ngame over.");
                                 System.exit(-1);
                         }
                     }

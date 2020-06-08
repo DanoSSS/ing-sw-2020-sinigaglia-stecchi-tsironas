@@ -119,7 +119,10 @@ public class ClientGUI  {
             case FIRST_MESSAGE:
                 Thread.sleep(3000);
             case NICKNAME_ALREADY_USED:
-                String inputValue = JOptionPane.showInputDialog(message.getSentence());
+                String inputValue=null;
+                while(inputValue==null) {
+                    inputValue = JOptionPane.showInputDialog(message.getSentence());
+                }
                 asyncWriteToSocket(new Message(a.getValue(), inputValue));
                 break;
             case NUMBER_OF_PLAYERS:
@@ -205,10 +208,13 @@ public class ClientGUI  {
                         m = "error:this coordinate is not available,select again coordinate for your second worker";
                     }
                 }
-                Object selectedValue1 = JOptionPane.showInputDialog(null,
-                        m, "worker coordinates",
-                        JOptionPane.INFORMATION_MESSAGE, null,
-                        possibleValues1, possibleValues1[0]);
+                Object selectedValue1=null;
+                while(selectedValue1==null) {
+                    selectedValue1 = JOptionPane.showInputDialog(null,
+                            m, "worker coordinates",
+                            JOptionPane.INFORMATION_MESSAGE, null,
+                            possibleValues1, possibleValues1[0]);
+                }
                 asyncWriteToSocket(new Message(a.getValue(), (String)selectedValue1));
                 break;
             case WORKER_SET:
@@ -490,7 +496,7 @@ public class ClientGUI  {
                 santoriniMainFrame.pack();*/
                 santoriniMainFrame.dispatchEvent(new WindowEvent(santoriniMainFrame, WindowEvent.WINDOW_CLOSING));
                 startingFrame.dispatchEvent(new WindowEvent(startingFrame, WindowEvent.WINDOW_CLOSING)); //simulate the closing frame event
-                System.out.println("Player n°" + playerDisconnected  +" disconnected from the server.\ngameover\nRestart the server to play again!");
+                System.out.println("Player n°" + playerDisconnected  +" disconnected from the server.\ngameover");
                 break;
         }
     }
