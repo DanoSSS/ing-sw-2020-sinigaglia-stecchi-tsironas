@@ -299,13 +299,17 @@ public class ClientGUI  {
                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
                     setClientAction(Action.ARTEMIS_FIRST_MOVE);
                     Object[] possibleChoice = {"YES", "NO"};
-                    Object answer = JOptionPane.showInputDialog(null,
-                            "Do you want activate your god's power", "ARTEMIS POWER",
-                            JOptionPane.INFORMATION_MESSAGE, null,
-                            possibleChoice, possibleChoice[0]);
-                    if (answer == "YES") {
+                    int c = JOptionPane.showOptionDialog(santoriniMainFrame,
+                            "Do you want activate your power and move second",
+                            "ARTEMIS POWER",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,     //do not use a custom Icon
+                            possibleChoice,  //the titles of buttons
+                            possibleChoice[0]); //default button title
+                    if (c == 0) {
                         santoriniMainFrame.getBoardPanel().drawPossibleBorder(message.getCurrentPossibleMoves());
-                    } else if (answer == "NO") {
+                    } else if (c == 1) {
                         asyncWriteToSocket(new Message(getClientAction().getValue(), "NO"));
                     }
                 }
