@@ -52,6 +52,7 @@ public class GodSelectionFrame extends JFrame {
         this.validate();
         this.pack();
         this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         this.setVisible(true);
     }
 

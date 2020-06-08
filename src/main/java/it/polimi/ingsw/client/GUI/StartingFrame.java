@@ -72,7 +72,7 @@ public class StartingFrame extends JFrame {
                 this.pack();
                 this.setLocationRelativeTo(null);
                 this.setMinimumSize(new Dimension(390,380));
-                this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
                 this.setVisible(true);
 
         }
