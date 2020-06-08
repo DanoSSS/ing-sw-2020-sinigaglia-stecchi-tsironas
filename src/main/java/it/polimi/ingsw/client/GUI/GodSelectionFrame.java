@@ -31,11 +31,11 @@ public class GodSelectionFrame extends JFrame {
                         selectedGods.add(gods.get(j));
                         jButton.setBackground(Color.GREEN);
                         count++;
-                        if(count==2 && nButtons==9 && np==2){
+                        if(count==2 && nButtons==11 && np==2){
                             client.asyncWriteToSocket(new Message(22,getSelectedGods().get(0)+","+getSelectedGods().get(1)));
                             closeFrame();
                         }
-                        if(count==3 && nButtons==9 && np==3){
+                        if(count==3 && nButtons==11 && np==3){
                             client.asyncWriteToSocket(new Message(22,getSelectedGods().get(0)+","+getSelectedGods().get(1)+","+getSelectedGods().get(2)));
                             closeFrame();
                         }

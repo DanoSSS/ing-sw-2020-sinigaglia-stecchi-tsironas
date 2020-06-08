@@ -18,6 +18,10 @@ public class Board{
     private int currentRound=2;
     private int loseRound;
     private boolean flag=false;
+    private int chronusPlayer=-1;
+    private int heraPlayer=-1;
+    private int numberOfDome=0;
+
 
 
     public Board(Player[] players, Worker worker1, Worker worker2, Worker worker3, Worker worker4, int NPlayer) {
@@ -163,6 +167,31 @@ public class Board{
         return idPlayers;
     }
 
+
+    public int getNumberOfDome() {
+        return numberOfDome;
+    }
+
+    public void setNumberOfDome(int numberOfDome) {
+        this.numberOfDome = numberOfDome;
+    }
+
+    public int getChronusPlayer() {
+        return chronusPlayer;
+    }
+
+    public void setChronusPlayer(int chronusPlayer) {
+        this.chronusPlayer = chronusPlayer;
+    }
+
+    public int getHeraPlayer() {
+        return heraPlayer;
+    }
+
+    public void setHeraPlayer(int heraPlayer) {
+        this.heraPlayer = heraPlayer;
+    }
+
     public int UpdateRound(){
         currentRound++;
         if(currentRound==loseRound){
@@ -238,6 +267,8 @@ public class Board{
             setLoseRound(currentRound);
             flag=true;
             int newRound=UpdateRound();
+            freeCellFromWorker(players[loseRound-1].getWorker1().getCoordinates());
+            freeCellFromWorker(players[loseRound-1].getWorker2().getCoordinates());
             observableModel.notify(new ReturnMessage(17,loseRound,newRound,players[loseRound-1].getWorker1(),players[loseRound-1].getWorker2()));
         }else if(getNumberOfPlayers()==3 && flag){
             observableModel.notify(new ReturnMessage(5,currentRound));

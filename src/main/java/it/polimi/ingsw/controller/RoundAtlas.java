@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.Message;
+import it.polimi.ingsw.utils.ReturnMessage;
 
 
 public class RoundAtlas extends Round {
@@ -15,11 +16,18 @@ public class RoundAtlas extends Round {
 
     public void doBuild(Coordinates buildCoordinate,boolean domePower) {
         if (domePower) {
-            board.setDome(buildCoordinate);                               //serve anche settare il livelloa 4 o basta così??
+            board.setDome(buildCoordinate);
+            if(board.getChronusPlayer()>0) {
+                chronusWin();
+            }
         } else {
             board.setLevel(buildCoordinate);
             if (board.getLevel(buildCoordinate) == 4) {
                 board.setDome(buildCoordinate);
+                if(board.getChronusPlayer()>0) {
+                    chronusWin();
+
+                }
             }
         }
     }

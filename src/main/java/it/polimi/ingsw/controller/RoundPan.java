@@ -17,7 +17,13 @@ public class RoundPan extends Round {
         board.freeCellFromWorker(oldCoordinates);
         board.moveWorker(moveCoordinates,activeWorker);
         if ((board.getLevel(moveCoordinates) == 3 && board.getLevel(oldCoordinates) == 2) || (board.getLevel(moveCoordinates) == 0 && board.getLevel(oldCoordinates) == 2) || (board.getLevel(moveCoordinates) == 1 && board.getLevel(oldCoordinates) == 3) || (board.getLevel(moveCoordinates) == 0 && board.getLevel(oldCoordinates) == 3)) {
-            GameOver = true;
+            if(board.getHeraPlayer()>0){
+                if(!heraPower(moveCoordinates)){
+                    GameOver = true;
+                }
+            }else {
+                GameOver = true;
+            }
         }
         return GameOver;
     }

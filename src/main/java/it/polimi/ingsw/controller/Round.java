@@ -27,7 +27,24 @@ public abstract class Round implements Observer<Object>{
         board.setLevel(buildCoordinate);
         if(board.getLevel(buildCoordinate)==4) {
             board.setDome(buildCoordinate);
+            if(board.getChronusPlayer()>0){
+                chronusWin();
+            }
         }
+    }
+
+    public void chronusWin(){
+        int d=board.getNumberOfDome()+1;
+        board.setNumberOfDome(d);
+        if(d==5){
+            board.getObservableModel().notify(new ReturnMessage(18,board.getChronusPlayer()));
+        }
+    }
+
+    public boolean heraPower(Coordinates c){
+        if((c.getX()==0 || c.getX()==4 || c.getY()==0 || c.getY()==4)&&board.getCurrentRound()!=board.getHeraPlayer()){
+            return true;
+        }else return false;
     }
 
     public boolean doMove(Coordinates moveCoordinates,boolean GameOver,Worker activeWorker){
@@ -38,7 +55,13 @@ public abstract class Round implements Observer<Object>{
         board.freeCellFromWorker(oldCoordinates);
         board.moveWorker(moveCoordinates,activeWorker);
         if (board.getLevel(moveCoordinates) == 3 && board.getLevel(oldCoordinates) == 2) {
-            GameOver = true;
+            if(board.getHeraPlayer()>0){
+                if(!heraPower(moveCoordinates)){
+                    GameOver = true;
+                }
+            }else {
+                GameOver = true;
+            }
         }
         return GameOver;
     }

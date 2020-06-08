@@ -75,6 +75,16 @@ public class Game extends Observable<Object> implements Observer<Object> {
             round.put(player,r);
 
         }
+        if(player.getGod()== God.CHRONUS){
+            r = new RoundChronus(board,player);
+            round.put(player,r);
+
+        }
+        if(player.getGod()== God.HERA){
+            r = new RoundHera(board,player);
+            round.put(player,r);
+
+        }
     }
 
     public Round getRound(Player player){

@@ -58,10 +58,17 @@ public class RoundMinotaur extends Round {
         board.freeCellFromWorker(oldCoordinates);
         board.moveWorker(moveCoordinates, activeWorker);
         if (board.getLevel(moveCoordinates) == 3 && board.getLevel(oldCoordinates) == 2) {
-            GameOver = true;
+            if(board.getHeraPlayer()>0){
+                if(!heraPower(moveCoordinates)){
+                    GameOver = true;
+                }
+            }else {
+                GameOver = true;
+            }
         }
 
         return GameOver;
+
     }
 
     public boolean minotaurForcing (Coordinates workerCoordinates, Coordinates opponentCoordinates){

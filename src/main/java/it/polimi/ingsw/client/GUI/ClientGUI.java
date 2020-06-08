@@ -134,7 +134,9 @@ public class ClientGUI  {
                 gods.add("MINOTAUR");
                 gods.add("PAN");
                 gods.add("PROMETHEUS");
-                GodSelectionFrame gsf = new GodSelectionFrame(9,"SELECT "+np+" GODS BETWEEN:",gods,np,this);
+                gods.add("CHRONUS");
+                gods.add("HERA");
+                GodSelectionFrame gsf = new GodSelectionFrame(11,"SELECT "+np+" GODS BETWEEN:",gods,np,this);
                 break;
             case CHOOSE_GOD:
                 gods = new ArrayList<>();
@@ -429,19 +431,19 @@ public class ClientGUI  {
                 setClientAction(a);
                 santoriniMainFrame.dispose();
                 if(clientController.getIdPlayer()==message.getnCurrentPlayer()) {
-                    if (message.getnCurrentPlayer() == 1) {
+                    if (message.getLevel() == 1) {
               //          asyncWriteToSocket(new Message(4, 0));
                         JOptionPane.showMessageDialog(null, "you win " + clientController.getIdPlayer(), "WINNER!", JOptionPane.ERROR_MESSAGE);
-                    } else if (message.getnCurrentPlayer() == 0) {
+                    } else if (message.getLevel() == 0) {
               //          asyncWriteToSocket(new Message(4, 1));
                         JOptionPane.showMessageDialog(null, "you lose " + clientController.getIdPlayer(), "LOOSER!", JOptionPane.ERROR_MESSAGE);
                     }
                 }
                 else if(clientController.getIdPlayer() != loseRound){
-                    if (message.getnCurrentPlayer() == 0) {
+                    if (message.getLevel() == 0) {
                //         asyncWriteToSocket(new Message(4, 0));
                         JOptionPane.showMessageDialog(null, "you win " + clientController.getIdPlayer(), "WINNER!", JOptionPane.ERROR_MESSAGE);
-                    } else if (message.getnCurrentPlayer() == 1) {
+                    } else if (message.getLevel() == 1) {
                //         asyncWriteToSocket(new Message(4, 1));
                         JOptionPane.showMessageDialog(null, "you lose " + clientController.getIdPlayer(), "LOOSER!", JOptionPane.ERROR_MESSAGE);
                     }

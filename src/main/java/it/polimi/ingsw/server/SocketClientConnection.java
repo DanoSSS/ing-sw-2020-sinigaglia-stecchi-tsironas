@@ -109,11 +109,11 @@ public class SocketClientConnection extends Observable<Object> implements Client
                 NPlayers = Integer.parseInt(read);
                 server.setNPlayers(NPlayers);
 
-                send(new ReturnMessage(22,"select " + server.getNPlayers() + " gods between:\nAPOLLO, ARTEMIS, ATHENA, ATLAS, DEMETER, EPHAESTUS, MINOTAUR, PAN, PROMETHEUS"));   //Setting god cards
+                send(new ReturnMessage(22,"select " + server.getNPlayers() + " gods between:\nAPOLLO, ARTEMIS, ATHENA, ATLAS, DEMETER, EPHAESTUS, MINOTAUR, PAN, PROMETHEUS, CHRONUS, HERA"));   //Setting god cards
                 read = read();
                 while (!server.setGods1(read)) {
                     server.clearGods();
-                    send(new ReturnMessage(23,"gods Cards doesn't exist or they has been misspelled:\nselect " + server.getNPlayers() + " gods between:\nAPOLLO, ARTEMIS, ATHENA, ATLAS, DEMETER, EPHAESTUS, MINOTAUR, PAN, PROMETHEUS"));
+                    send(new ReturnMessage(23,"gods Cards doesn't exist or they has been misspelled:\nselect " + server.getNPlayers() + " gods between:\nAPOLLO, ARTEMIS, ATHENA, ATLAS, DEMETER, EPHAESTUS, MINOTAUR, PAN, PROMETHEUS, CHRONUS, HERA"));
                     read = read();
                 }
 
