@@ -174,6 +174,7 @@ public class ClientCLI {
                                 }
                                 break;
                             case BUILD_END_TURN:
+                            case ARES_END_TURN:
                                 id = inputObject.getCurrentActiveWorker();
                                 buildCellMessage(inputObject.getCoordinate().getX() * 2, inputObject.getCoordinate().getY(), inputObject.getLevel(), inputObject.getDome());
                                 int n = inputObject.getnCurrentPlayer();
@@ -410,6 +411,30 @@ public class ClientCLI {
                                 int playerDisconnected = inputObject.getnCurrentPlayer();
                                 System.out.println("player n°" + playerDisconnected + " disconnected from the server.\ngame over.");
                                 System.exit(-1);
+                                break;
+                            case ARES_POWER:
+                                id = inputObject.getCurrentActiveWorker();
+                                buildCellMessage(inputObject.getCoordinate().getX()*2,inputObject.getCoordinate().getY(),inputObject.getLevel(),inputObject.getDome());
+                                n =inputObject.getnCurrentPlayer();
+                                if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
+                                    setClientAction(a);
+                                    print();
+                                    System.out.println("your worker" + id + "build in " + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY() + " level:" + inputObject.getLevel() + " dome:" + inputObject.getDome());
+                                    ArrayList<Coordinates> possibleMoves = inputObject.getCurrentPossibleMoves();
+                                    setPossibleMoves(possibleMoves);
+                                    if (possibleMoves.size() != 0) {
+                                        System.out.println("If you want activate power and remove a block neighboring your unmoved Worker select coordinate among the following otherwise write NO");
+                                        for (Coordinates c : possibleMoves) {
+                                            System.out.println(c.getX() + "," + c.getY());
+                                        }
+                                    } else System.out.println("you cannot activate Ares power");
+                                } else if (clientController.getIdPlayer() != loseRound) {
+                                    n = clientController.getCurrentRoundIdPlayer();
+                                    print();
+                                    System.out.println("player" + n + " build with his worker" + id + " in cell:" + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY() + " level:" + inputObject.getLevel() + " dome:" + inputObject.getDome());
+                                }
+                                break;
+
                         }
                     }
                 } catch (Exception e){
@@ -443,6 +468,7 @@ public class ClientCLI {
                             case NICKNAME_ALREADY_USED:
                             case SELECT_GODS_CHALLENGER:
                             case ERROR_SET_WORKER_POSITION:
+                            case ARES_POWER:
                                 socketOut.writeObject(new Message(getClientAction().getValue(), inputObject));
                                 break;
                             case SET_WORKER_POSITION:
@@ -578,6 +604,8 @@ public class ClientCLI {
             board[x][y] = CellMessage.DOME;
         } else {
             switch (level) {
+                case 0:
+                    board[x][y] = CellMessage.LV0;
                 case 1:
                     board[x][y] = CellMessage.LV1;
                     break;
