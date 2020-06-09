@@ -453,7 +453,7 @@ public class ClientGUI  {
                     if(i==0){
                         santoriniMainFrame.getBoardPanel().drawPossibleBorder(message.getCurrentPossibleMoves());
                     }
-                    if(i==1){
+                    if(i==1 || message.getCurrentPossibleMoves().size()==0){
                         asyncWriteToSocket(new Message(getClientAction().getValue(), "NO"));
                     }
                 }
@@ -497,7 +497,6 @@ public class ClientGUI  {
                         JOptionPane.showMessageDialog(null, "you lose " + clientController.getIdPlayer(), "LOOSER!", JOptionPane.ERROR_MESSAGE);
                     }
                 }
-                System.exit(-1);
                 break;
             case PLAYER_DISCONNECTED:
                 setClientAction(a);
