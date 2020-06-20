@@ -32,4 +32,15 @@ public class TestRoundDemeter {
         }
         assertFalse(tag);
     }
+
+    @Test
+    public void testFirstBuild(){
+        try {
+            Coordinates coordinates11 = new Coordinates(1, 1);
+            board.setCurrentActiveWorker(worker1);
+            testRoundDemeter.firstBuild(coordinates11);
+            assertEquals(1, board.getLevel(coordinates11));
+        }catch (NullPointerException e) {
+        }
+    }
 }

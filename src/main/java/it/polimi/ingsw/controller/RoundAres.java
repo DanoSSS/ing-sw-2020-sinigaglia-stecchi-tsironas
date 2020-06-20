@@ -30,8 +30,7 @@ public class RoundAres extends Round {
             i--;
             board.setNround(i);
         }
-        board.aresEndTurn(coordinates);
-    }
+        board.aresEndTurn(coordinates); }
 
 
     @Override

@@ -38,4 +38,18 @@ public class TestRoundPan {
         gameover = TestRoundPan.doMove(coordinates00,gameover,worker1);
         assertTrue(gameover);        //test classical win move from level 2 to level 3
     }
+
+    @Test
+    public void TestWinPanWithHera(){
+        Coordinates coordinates00 = new Coordinates(0,0);
+        Coordinates coordinates11 = new Coordinates(1,1);
+        Coordinates coordinates10 = new Coordinates(1,0);
+        boolean gameover = false;
+        board.setHeraPlayer(2);
+        TestRoundPan.doBuild(coordinates00);
+        TestRoundPan.doBuild(coordinates00);
+        board.moveWorker(coordinates00,worker1);
+        gameover = TestRoundPan.doMove(coordinates11,gameover,worker1);
+        assertTrue(gameover);
+    }
 }

@@ -65,6 +65,21 @@ public class TestRoundApollo {
     }
 
     @Test
+    public void TestDoMoveWithHeraPower(){
+        Coordinates coordinates21 = new Coordinates(2,1);
+        Coordinates coordinates31 = new Coordinates(3,1);
+        board.setHeraPlayer(2);
+        TestRoundApollo.doBuild(coordinates21);
+        TestRoundApollo.doBuild(coordinates21);
+        TestRoundApollo.doBuild(coordinates31);
+        TestRoundApollo.doBuild(coordinates31);
+        TestRoundApollo.doBuild(coordinates31);
+        TestRoundApollo.doMove(coordinates21,false,worker1);
+        boolean gameover = TestRoundApollo.doMove(coordinates31,false,worker1);
+        assertTrue(gameover);
+    }
+
+    @Test
     public void TestChangeWorker(){
         Coordinates coordinates11 = new Coordinates(1,1);
         Coordinates coordinates21 = new Coordinates(2,1);

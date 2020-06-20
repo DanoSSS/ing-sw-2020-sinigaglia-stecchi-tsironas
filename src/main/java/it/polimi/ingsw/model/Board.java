@@ -319,5 +319,9 @@ public class Board{
     public void winGame(){
         observableModel.notify(new ReturnMessage(18,currentRound));
     }
+
+    public void setCurrentActiveWorker(Worker currentActiveWorker) {
+        this.currentActiveWorker = currentActiveWorker;
+    }
 }
 
