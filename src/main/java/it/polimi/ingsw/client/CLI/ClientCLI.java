@@ -75,7 +75,9 @@ public class ClientCLI {
                     while (isActive()) {
                         ReturnMessage inputObject = (ReturnMessage) socketIn.readObject();
                         Action a = inputObject.getAction();
-                        System.out.println("received" + a.toString());
+                        String[] playerNames = null;
+                        int[] idWorkers=null;
+                        //System.out.println("received" + a.toString());
                         switch (a) {
                             case STRING:
                             case FIRST_MESSAGE:
@@ -102,6 +104,7 @@ public class ClientCLI {
                             case WORKER_SET:
                                 clientController = inputObject.getClientController().clone();
                                 List<Worker> keys= new ArrayList<Worker>(inputObject.getWorkerPosition().keySet());
+                                idWorkers = clientController.getIdWorkers();
                                 if(keys.size()==4){
                                     for(int i=0;i<4;i++){
                                         int x=inputObject.getWorkerPosition().get(keys.get(i)).getX();
@@ -124,7 +127,7 @@ public class ClientCLI {
                                 if (clientController.getIdPlayer() == clientController.getCurrentRoundIdPlayer()) {
                                     setClientAction(Action.SELECT_ACTIVE_WORKER);
                                     print();
-                                    System.out.println("it's your turn!\nselect active worker:");
+                                    System.out.println("it's your turn!\nselect active worker: " + idWorkers[0] + " or " + idWorkers[1]);
                                 } else if (clientController.getIdPlayer() != clientController.getCurrentRoundIdPlayer()) {
                                     setClientAction(Action.NOT_YOUR_TURN);
                                     print();
@@ -134,6 +137,7 @@ public class ClientCLI {
                             case SELECT_COORDINATE_MOVE:
                                 clientController.setCurrentRoundIdPlayer(inputObject.getnCurrentPlayer());
                                 int id = inputObject.getCurrentActiveWorker();
+                                playerNames = clientController.getOtherNickname();
                                 if (clientController.getIdPlayer() == clientController.getCurrentRoundIdPlayer()) {
                                     setClientAction(a);
                                     ArrayList<Coordinates> possibleMoves = inputObject.getCurrentPossibleMoves();
@@ -144,11 +148,12 @@ public class ClientCLI {
                                     }
                                 } else if (clientController.getIdPlayer() != loseRound) {
                                     int n = clientController.getCurrentRoundIdPlayer();
-                                    System.out.println("player" + n + " select worker" + id);
+                                    System.out.println("player " + playerNames[n-1] + " select worker " + id);
                                 }
                                 break;
                             case MOVE_AND_COORDINATE_BUILD:
                                 id = inputObject.getCurrentActiveWorker();
+                                playerNames = clientController.getOtherNickname();
                                 setWorkerCellMessage(id, inputObject.getCoordinate().getX() * 2 + 1, inputObject.getCoordinate().getY());
                                 if (inputObject.getOppWorker() != null) {
                                     setWorkerCellMessage(inputObject.getOppWorker().getIdWorker(), inputObject.getOppWorker().getCoordinates().getX() * 2 + 1, inputObject.getOppWorker().getCoordinates().getY());
@@ -163,46 +168,48 @@ public class ClientCLI {
                                     ArrayList<Coordinates> possibleBuilds = inputObject.getCurrentPossibleMoves();
                                     setPossibleMoves(possibleBuilds);
                                     print();
-                                    System.out.println("your worker" + id + " is now in coordinate " + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY() + "\nSelect coordinate to build among the following:");
+                                    System.out.println("your worker " + id + " is now in coordinate " + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY() + "\nSelect coordinate to build among the following:");
                                     for (Coordinates c : possibleBuilds) {
                                         System.out.println(c.getX() + "," + c.getY());
                                     }
                                 } else if (clientController.getIdPlayer() != loseRound) {
                                     int n = clientController.getCurrentRoundIdPlayer();
                                     print();
-                                    System.out.println("player" + n + " moves his worker" + id + " in cell:" + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY());
+                                    System.out.println("player " + playerNames[n-1] + " moves his worker " + id + " in cell:\t" + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY());
                                 }
                                 break;
                             case BUILD_END_TURN:
                             case ARES_END_TURN:
                                 id = inputObject.getCurrentActiveWorker();
                                 buildCellMessage(inputObject.getCoordinate().getX() * 2, inputObject.getCoordinate().getY(), inputObject.getLevel(), inputObject.getDome());
+                                playerNames= clientController.getOtherNickname();
                                 int n = inputObject.getnCurrentPlayer();
                                 if (clientController.getIdPlayer() == inputObject.getnCurrentPlayer()) {
                                     print();
-                                    System.out.println("your worker" + id + "build in " + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY() + " level:" + inputObject.getLevel() + " dome:" + inputObject.getDome());
+                                    System.out.println("your worker " + id + "build in\t" + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY() + " level:" + inputObject.getLevel() + " dome:" + inputObject.getDome());
                                     setClientAction(Action.NOT_YOUR_TURN);
                                     System.out.println("wait your turn");
                                 } else if (clientController.getIdPlayer() == inputObject.getNextNPlayer() && clientController.getIdPlayer() != loseRound) {
                                     print();
-                                    System.out.println("player" + n + " build with his worker" + id + " in cell:" + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY() + " level:" + inputObject.getLevel() + " dome:" + inputObject.getDome());
+                                    System.out.println("player " + playerNames[n-1] + " build with his worker " + id + " in cell:\t" + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY() + " level:" + inputObject.getLevel() + " dome:" + inputObject.getDome());
                                     setClientAction(Action.SELECT_ACTIVE_WORKER);
                                     System.out.println("it's your turn!\nselect active worker:");
                                 } else if (clientController.getIdPlayer() != loseRound) {
                                     print();
-                                    System.out.println("player" + n + " build with his worker" + id + " in cell:" + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY() + " level:" + inputObject.getLevel() + " dome:" + inputObject.getDome());
+                                    System.out.println("player " + playerNames[n-1] + " build with his worker " + id + " in cell:\t" + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY() + " level:" + inputObject.getLevel() + " dome:" + inputObject.getDome());
                                     setClientAction(Action.NOT_YOUR_TURN);
                                     System.out.println("wait your turn");
                                 }
                                 break;
                             case ARTEMIS_FIRST_MOVE:
                                 id = inputObject.getCurrentActiveWorker();
+                                playerNames=clientController.getOtherNickname();
                                 setWorkerCellMessage(id, inputObject.getCoordinate().getX() * 2 + 1, inputObject.getCoordinate().getY());
                                 freeWorkerCellMessage(inputObject.getCoordinateOld().getX() * 2 + 1, inputObject.getCoordinateOld().getY());
                                 if (clientController.getIdPlayer() == clientController.getCurrentRoundIdPlayer()) {
                                     setClientAction(a);
                                     print();
-                                    System.out.println("your worker" + id + " is now in cell " + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY());
+                                    System.out.println("your worker " + id + " is now in cell\t" + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY());
                                     ArrayList<Coordinates> possibleMoves = inputObject.getCurrentPossibleMoves();
                                     setPossibleMoves(possibleMoves);
                                     if (possibleMoves.size() != 0) {
@@ -214,13 +221,13 @@ public class ClientCLI {
                                 } else if (clientController.getIdPlayer() != loseRound) {
                                     n = clientController.getCurrentRoundIdPlayer();
                                     print();
-                                    System.out.println("player" + n + " moves his worker in cell" + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY());
-
+                                    System.out.println("player " + playerNames[n-1] + " moves his worker in cell\t" + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY());
                                 }
                                 break;
                             case ARTEMIS_SECOND_MOVE:
                                 boolean bool=false;
                                 id = inputObject.getCurrentActiveWorker();
+                                playerNames=clientController.getOtherNickname();
                                 if(inputObject.getCoordinate()!=null){
                                     setWorkerCellMessage(id,inputObject.getCoordinate().getX()*2+1,inputObject.getCoordinate().getY());
                                     freeWorkerCellMessage(inputObject.getCoordinateOld().getX()*2+1,inputObject.getCoordinateOld().getY());
@@ -238,7 +245,7 @@ public class ClientCLI {
                                             System.out.println(c.getX()+","+c.getY());
                                         }
                                     }else{
-                                        System.out.println("your worker"+id+" is now in coordinate "+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+"\nSelect coordinate to build among the following:");
+                                        System.out.println("your worker "+ id +" is now in coordinate\t"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+"\nSelect coordinate to build among the following:");
                                         for(Coordinates c: possibleMoves){
                                             System.out.println(c.getX()+","+c.getY());
                                         }
@@ -247,14 +254,15 @@ public class ClientCLI {
                                 else if(clientController.getIdPlayer() != loseRound){
                                     n = clientController.getCurrentRoundIdPlayer();
                                     if (bool) {
-                                        System.out.println("player"+n+" moves his worker in cell" + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY());
+                                        System.out.println("player "+playerNames[n-1]+" moves his worker in cell " + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY());
                                     } else {
-                                        System.out.println("player"+n+" do not use his power");
+                                        System.out.println("player "+playerNames[n-1]+" do not use his power");
                                     }
                                 }
                                 break;
                             case BUILD_ATLAS:
                                 id = inputObject.getCurrentActiveWorker();
+                                playerNames=clientController.getOtherNickname();
                                 setWorkerCellMessage(id,inputObject.getCoordinate().getX()*2+1,inputObject.getCoordinate().getY());
                                 freeWorkerCellMessage(inputObject.getCoordinateOld().getX()*2+1,inputObject.getCoordinateOld().getY());
                                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
@@ -262,7 +270,7 @@ public class ClientCLI {
                                     ArrayList<Coordinates> possibleBuilds = inputObject.getCurrentPossibleMoves();
                                     setPossibleMoves(possibleBuilds);
                                     print();
-                                    System.out.println("your worker"+id+" is now in coordinate "+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+"\nSelect coordinate to build among the following.\n(If you want activate power and build a dome write dome follow by coordinate otherwise write std follow by coordinate)");
+                                    System.out.println("your worker "+id+" is now in coordinate\t"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+"\nSelect coordinate to build among the following.\n(If you want activate power and build a dome write dome follow by coordinate otherwise write std follow by coordinate)");
                                     for(Coordinates c: possibleBuilds){
                                         System.out.println(c.getX()+","+c.getY());
                                     }
@@ -270,18 +278,19 @@ public class ClientCLI {
                                 else if(clientController.getIdPlayer() != loseRound){
                                     n=clientController.getCurrentRoundIdPlayer();
                                     print();
-                                    System.out.println("player"+n+" moves his worker"+id+" in cell:"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY());
+                                    System.out.println("player "+playerNames[n-1]+" moves his worker "+id+" in cell:\t"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY());
                                 }
                                 break;
                             case BUILD_EPHAESTUS:
                                 id = inputObject.getCurrentActiveWorker();
+                                playerNames=clientController.getOtherNickname();
                                 setWorkerCellMessage(id,inputObject.getCoordinate().getX()*2+1,inputObject.getCoordinate().getY());
                                 freeWorkerCellMessage(inputObject.getCoordinateOld().getX()*2+1,inputObject.getCoordinateOld().getY());
                                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
                                     setClientAction(a);
                                     ArrayList<Coordinates> possibleBuilds = inputObject.getCurrentPossibleMoves();
                                     print();
-                                    System.out.println("your worker"+id+" is now in coordinate "+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+"\nSelect coordinate to build among the following.\n(If you want activate power and build a second time in the same space write yes follow by coordinate otherwise write no follow by coordinate)");
+                                    System.out.println("your worker "+id+" is now in coordinate\t"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+"\nSelect coordinate to build among the following.\n(If you want activate power and build a second time in the same space write yes follow by coordinate otherwise write no follow by coordinate)");
                                     for(Coordinates c: possibleBuilds){
                                         System.out.println(c.getX()+","+c.getY());
                                     }
@@ -289,7 +298,7 @@ public class ClientCLI {
                                 else if(clientController.getIdPlayer() != loseRound){
                                     n=clientController.getCurrentRoundIdPlayer();
                                     print();
-                                    System.out.println("player"+n+" moves his worker"+id+" in cell:"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY());
+                                    System.out.println("player "+playerNames[n-1]+" moves his worker "+ id + " in cell:\t"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY());
                                 }
                                 break;
                             case END_TURN:
@@ -301,7 +310,7 @@ public class ClientCLI {
                                 }
                                 else if(clientController.getIdPlayer() == id && clientController.getIdPlayer() != loseRound){
                                     setClientAction(Action.SELECT_ACTIVE_WORKER);
-                                    System.out.println("it's your turn!\nselect active worker:");
+                                    System.out.println("it's your turn!\nselect active worker: " + idWorkers[0] + " or " + idWorkers[1]);
                                 }
                                 else if(clientController.getIdPlayer() != loseRound){
                                     setClientAction(Action.NOT_YOUR_TURN);
@@ -312,24 +321,26 @@ public class ClientCLI {
                                 id = inputObject.getCurrentActiveWorker();
                                 buildCellMessage(inputObject.getCoordinate().getX()*2,inputObject.getCoordinate().getY(),inputObject.getLevel(),inputObject.getDome());
                                 n =inputObject.getnCurrentPlayer();
+                                playerNames=clientController.getOtherNickname();
                                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
                                     setClientAction(a);
                                     ArrayList<Coordinates> possibleBuilds = inputObject.getCurrentPossibleMoves();
                                     setPossibleMoves(possibleBuilds);
                                     print();
-                                    System.out.println("your worker"+id+" is now in coordinate "+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+"\nSelect coordinate to build among the following.\n(If you want activate power and build a second time write coordinate otherwise write NO)");
+                                    System.out.println("your worker "+id+" is now in coordinate\t"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+"\nSelect coordinate to build among the following.\n(If you want activate power and build a second time write coordinate otherwise write NO)");
                                     for(Coordinates c: possibleBuilds){
                                         System.out.println(c.getX()+","+c.getY());
                                     }
                                 }
                                 else if(clientController.getIdPlayer() != loseRound){
                                     print();
-                                    System.out.println("player"+n+" moves his worker"+id+" in cell:"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY());
+                                    System.out.println("player "+playerNames[n-1]+" moves his worker "+ id + " in cell:\t"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY());
                                 }
                                 break;
                             case PROMETHEUS_CHOOSE:
                                 clientController.setCurrentRoundIdPlayer(inputObject.getnCurrentPlayer());
                                 id = inputObject.getCurrentActiveWorker();
+                                playerNames=clientController.getOtherNickname();
                                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
                                     setClientAction(a);
                                     ArrayList<Coordinates> possibleMoves = inputObject.getCurrentPossibleMoves();
@@ -348,36 +359,38 @@ public class ClientCLI {
                                 }
                                 else if(clientController.getIdPlayer() != loseRound){
                                     n=clientController.getCurrentRoundIdPlayer();
-                                    System.out.println("player"+n+" select worker"+id);
+                                    System.out.println("player " + playerNames[n-1] + " select worker "+id);
                                 }
                                 break;
                             case FIRST_BUILD_PROMETHEUS:
                                 id = inputObject.getCurrentActiveWorker();
                                 buildCellMessage(inputObject.getCoordinate().getX()*2,inputObject.getCoordinate().getY(),inputObject.getLevel(),inputObject.getDome());
                                 n =inputObject.getnCurrentPlayer();
+                                playerNames=clientController.getOtherNickname();
                                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()){
                                     setClientAction(Action.SELECT_COORDINATE_MOVE);
                                     ArrayList<Coordinates> possibleMoves = inputObject.getCurrentPossibleMoves();
                                     setPossibleMoves(possibleMoves);
                                     print();
-                                    System.out.println("your worker"+id+"build in "+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+" level:"+inputObject.getLevel()+" dome:"+inputObject.getDome());
+                                    System.out.println("your worker "+ id + " build in\t"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+" level:"+inputObject.getLevel()+" dome:"+inputObject.getDome());
                                     System.out.println("select coordinate to move among the following:");
                                     for (Coordinates c : possibleMoves) {
                                         System.out.println(c.getX() + "," + c.getY());
                                     }
                                 }
                                 else if(clientController.getIdPlayer() != loseRound){
-                                    System.out.println("player"+n+" build with his power with his worker"+id+" in cell:"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+" level:"+inputObject.getLevel()+" dome:"+inputObject.getDome());
+                                    System.out.println("player " + playerNames[n-1] + " build with his power with his worker " + id + " in cell:\t"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+" level:"+inputObject.getLevel()+" dome:"+inputObject.getDome());
                                 }
                                 break;
                             case ARES_POWER:
                                 id = inputObject.getCurrentActiveWorker();
                                 buildCellMessage(inputObject.getCoordinate().getX()*2,inputObject.getCoordinate().getY(),inputObject.getLevel(),inputObject.getDome());
                                 n =inputObject.getnCurrentPlayer();
+                                playerNames=clientController.getOtherNickname();
                                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
                                     setClientAction(a);
                                     print();
-                                    System.out.println("your worker" + id + "build in " + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY() + " level:" + inputObject.getLevel() + " dome:" + inputObject.getDome());
+                                    System.out.println("your worker " + id + " build in\t" + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY() + " level:" + inputObject.getLevel() + " dome:" + inputObject.getDome());
                                     ArrayList<Coordinates> possibleMoves = inputObject.getCurrentPossibleMoves();
                                     setPossibleMoves(possibleMoves);
                                     if (possibleMoves.size() != 0) {
@@ -389,7 +402,7 @@ public class ClientCLI {
                                 } else if (clientController.getIdPlayer() != loseRound) {
                                     n = clientController.getCurrentRoundIdPlayer();
                                     print();
-                                    System.out.println("player" + n + " build with his worker" + id + " in cell:" + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY() + " level:" + inputObject.getLevel() + " dome:" + inputObject.getDome());
+                                    System.out.println("player " + playerNames[n-1] + " build with his worker " + id + " in cell:\t" + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY() + " level:" + inputObject.getLevel() + " dome:" + inputObject.getDome());
                                 }
                                 break;
                             case LOSE3P:
@@ -397,6 +410,8 @@ public class ClientCLI {
                                 freeWorkerCellMessage(wk1.getCoordinates().getX(),wk1.getCoordinates().getY());
                                 Worker wk2=inputObject.getOtherWorker();
                                 freeWorkerCellMessage(wk2.getCoordinates().getX(),wk2.getCoordinates().getY());
+                                playerNames=clientController.getOtherNickname();
+                                idWorkers=clientController.getIdWorkers();
                                 loseRound=inputObject.getnCurrentPlayer();
                                 print();
                                 if(clientController.getIdPlayer()==inputObject.getnCurrentPlayer()){
@@ -405,10 +420,10 @@ public class ClientCLI {
                                 }
                                 else if(clientController.getIdPlayer()==inputObject.getNextNPlayer()){
                                     setClientAction(Action.SELECT_ACTIVE_WORKER);
-                                    System.out.println("player"+inputObject.getnCurrentPlayer()+" lose\nit's your turn!\nselect active worker:");
+                                    System.out.println("player " + playerNames[inputObject.getnCurrentPlayer()-1] + " lose\nit's your turn!\nselect active worker: " + idWorkers[0] + " or " + idWorkers[1]);
                                 }
                                 else{
-                                    System.out.println("player"+inputObject.getnCurrentPlayer()+" lose");
+                                    System.out.println("player "+ playerNames[inputObject.getnCurrentPlayer()-1] +" lose");
                                 }
                                 break;
                             case GAME_OVER:
@@ -430,8 +445,9 @@ public class ClientCLI {
                                 break;
                             case PLAYER_DISCONNECTED:
                                 setClientAction(a);
+                                playerNames=clientController.getOtherNickname();
                                 int playerDisconnected = inputObject.getnCurrentPlayer();
-                                System.out.println("player n°" + playerDisconnected + " disconnected from the server.\ngame over.");
+                                System.out.println("player " + playerNames[playerDisconnected-1] + " disconnected from the server.\ngame over.");
                                 System.exit(-1);
                                 break;
                         }
@@ -457,7 +473,6 @@ public class ClientCLI {
                             case STRING:
                             case FIRST_MESSAGE:
                             case NOT_YOUR_TURN:
-                            case ARTEMIS_FIRST_MOVE:
                             case BUILD_EPHAESTUS:
                             case FIRST_BUILD_DEMETER:
                             case BUILD_ATLAS:
@@ -507,19 +522,32 @@ public class ClientCLI {
                                     }
                                     if (correctInput) {
                                         socketOut.writeObject(new Message(getClientAction().getValue(), coordinates));
-                                    } else if (!correctInput) {
+                                    } else {
                                         System.out.println("ERROR: write one of the previous coordinate");
                                     }
-                                }catch (NumberFormatException e){
+                                }catch (NumberFormatException|ArrayIndexOutOfBoundsException e){
                                     System.out.println("ERROR: Write one of the previous coordinate in the same format: \"x,y\"");
                                 }
                                 break;
-                            case PROMETHEUS_CHOOSE:
+                            case ARTEMIS_FIRST_MOVE:
+                                try {
+                                    if (!inputObject.isEmpty() && (inputObject.toUpperCase() == "NO" || isCorrectInput(inputObject, possibleMoves))) {
+                                        socketOut.writeObject(new Message(getClientAction().getValue(), inputObject));
+                                    } else {
+                                        System.out.println("ERROR: Write NO or write one of the previous coordinate in the same format: \"x,y\"");
+                                    }
+                                }catch (NumberFormatException e) {
+                                    System.out.println("ERROR: Write NO or write one of the previous coordinate in the same format: \"x,y\"");
+                                }
+                                break;
+
+
+                            case PROMETHEUS_CHOOSE:  // BUILD 2,3  -> {BUILD} {2,3}  -> {2} {3}
                                 String[] choose = inputObject.split(" ");
                                 if(choose[0].toUpperCase() == "BUILD"){
-                                    correctInput = isCorrectInput(choose, possibleBuilds);
+                                    correctInput = isCorrectInput(choose[1], possibleBuilds);
                                 } else if (choose[0].toUpperCase() =="MOVE"){
-                                    correctInput = isCorrectInput(choose, possibleMoves);
+                                    correctInput = isCorrectInput(choose[1], possibleMoves);
                                 }
                                 if(!correctInput){
                                         System.out.println("ERROR: write MOVE \"x,y\" or \"BUILD x,y\".\nx,y must be correct.");
@@ -537,6 +565,7 @@ public class ClientCLI {
                     }
                 }catch(Exception e){
                     setActive(false);
+                    e.printStackTrace();
                 }
             }
         });
@@ -544,17 +573,25 @@ public class ClientCLI {
         return t;
     }
 
-    private boolean isCorrectInput(String[] choose, ArrayList<Coordinates> possibleMoves) {
-        String[] coordinate = choose[1].split(",");
-        int x = Integer.parseInt(coordinate[0]);
-        int y = Integer.parseInt(coordinate[1]);
+    private boolean isCorrectInput(String choose, ArrayList<Coordinates> possibleMoves) {
+        String[] coordinate = choose.split(",");
+        if(coordinate.length==2){
+        Integer x,y = null;
+        try{
+            x= Integer.parseInt(coordinate[0]);
+            y= Integer.parseInt(coordinate[1]);
+        } catch (NumberFormatException e){
+            throw new NumberFormatException();
+        }
         Coordinates coordinate1= new Coordinates(x,y);
-        for(Coordinates c : possibleMoves){
-            if(coordinate1.equals(c)) {
+        for(Coordinates c : possibleMoves) {
+            if (coordinate1.equals(c)) {
                 return true;
             }
         }
+        }
         return false;
+
     }
 
     public void startCLIBoard() {
