@@ -10,10 +10,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestRoundArtemis {
-    Player player1 = new Player("pippo", "RED", 1,2, God.APOLLO,1);
+    Player player1 = new Player("pippo", "RED", 1,2, God.ARTEMIS,1);
     Worker worker1 = new Worker(player1,"RED",1);
     Worker worker2 = new Worker(player1,"RED",2);
-    Player player2 = new Player("pluto", "BLUE", 3,4, God.APOLLO,2);
+    Player player2 = new Player("pluto", "BLUE", 3,4, God.ARTEMIS,2);
     Worker worker3 = new Worker(player2,"BLUE",3);
     Worker worker4 = new Worker(player2,"BLUE",4);
     Player players[] = {player1,player2};
@@ -101,5 +101,72 @@ public class TestRoundArtemis {
             assertEquals(board.getWorker(coordinates22),worker1);
 
         }catch (NullPointerException e ){}
+    }
+
+    @Test
+    public void TestDoMoveWinning(){
+        Coordinates coordinates21 = new Coordinates(2, 1);
+        Coordinates coordinates22 = new Coordinates(2,2);
+        board.setLevel(coordinates21);
+        board.setLevel(coordinates21);
+        board.setLevel(coordinates21);
+        board.setLevel(coordinates22);
+        board.setLevel(coordinates22);
+        board.moveWorker(coordinates22,worker1);
+        boolean win = TestRoundArtemis.doMove(coordinates21,false,worker1);
+        assertTrue(win);
+    }
+
+    @Test
+    public void TestDoMoveWinningWithHeraPower(){
+        Coordinates coordinates21 = new Coordinates(2, 1);
+        Coordinates coordinates22 = new Coordinates(2,2);
+        board.setHeraPlayer(2);
+        board.setLevel(coordinates21);
+        board.setLevel(coordinates21);
+        board.setLevel(coordinates21);
+        board.setLevel(coordinates22);
+        board.setLevel(coordinates22);
+        board.moveWorker(coordinates22,worker1);
+        boolean win = TestRoundArtemis.doMove(coordinates21,false,worker1);
+        assertTrue(win);
+    }
+
+    @Test
+    public void TestActiveWorkerSelection(){
+        try {
+            Coordinates coordinates00 = new Coordinates(0, 0);
+            Coordinates coordinates01 = new Coordinates(0, 1);
+            Coordinates coordinates10 = new Coordinates(1, 0);
+            Coordinates coordinates11 = new Coordinates(1, 1);
+            Coordinates coordinates21 = new Coordinates(2, 1);
+            board.setDome(coordinates01);
+            board.setDome(coordinates11);
+            board.setLevel(coordinates10);
+            board.setLevel(coordinates10);
+            board.moveWorker(coordinates00, worker1);
+            board.moveWorker(coordinates21, worker2);
+            TestRoundArtemis.activeWorkerSelection(0);
+            assertEquals(board.getCurrentActiveWorker(), worker2);
+        }catch (NullPointerException e){}
+    }
+
+    @Test
+    public void TestActiveWorkerSelection1(){
+        try {
+            Coordinates coordinates00 = new Coordinates(0, 0);
+            Coordinates coordinates01 = new Coordinates(0, 1);
+            Coordinates coordinates10 = new Coordinates(1, 0);
+            Coordinates coordinates11 = new Coordinates(1, 1);
+            Coordinates coordinates21 = new Coordinates(2, 1);
+            board.setDome(coordinates01);
+            board.setDome(coordinates11);
+            board.setLevel(coordinates10);
+            board.setLevel(coordinates10);
+            board.moveWorker(coordinates00, worker1);
+            board.moveWorker(coordinates21, worker2);
+            TestRoundArtemis.activeWorkerSelection(1);
+            assertEquals(board.getCurrentActiveWorker(), worker2);
+        }catch (NullPointerException e){}
     }
 }

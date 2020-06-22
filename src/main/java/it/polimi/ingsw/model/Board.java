@@ -93,7 +93,6 @@ public class Board{
     //method to build a dome in the cell x,y
     public void setDome(Coordinates coordinates){
         board[coordinates.getX()][coordinates.getY()].setDome();
-   //     observableModel.Notify();   commento da togliere messo solo per i test
     }
 
     //method to know if there is a dome in the cell x,y
@@ -118,7 +117,6 @@ public class Board{
     //method to build in the cell x,y
     public void setLevel(Coordinates coordinates) {
         board[coordinates.getX()][coordinates.getY()].setLevel();
-        //observableModel.Notify();          commento da togliere messo solo per i test
     }
 
     //method to move the worker
@@ -142,7 +140,6 @@ public class Board{
         board[coordinates.getX()][coordinates.getY()].setWorker(null);
 
         board[coordinates.getX()][coordinates.getY()].setOccupied(false);
-       // observableModel.Notify();    commento da togliere fatto solo per i test
     }
 
     public void setWorker(Coordinates coordinates,int id){
@@ -214,7 +211,7 @@ public class Board{
         return currentActiveWorker;
     }
 
-    public void firstBuildDemeter(Coordinates c,ArrayList<Coordinates> currentPossibleBuilds){
+    public void firstBuildDemeterAndHestia(Coordinates c,ArrayList<Coordinates> currentPossibleBuilds){
         this.currentPossibleBuilds=currentPossibleBuilds;
         int level = getLevel(c);
         boolean dome = isDome(c);

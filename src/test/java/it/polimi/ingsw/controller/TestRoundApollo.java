@@ -38,6 +38,17 @@ public class TestRoundApollo {
     }
 
     @Test
+    public void TestDoBuildDome(){
+        Coordinates coordinates = new Coordinates(2,1);
+        board.setLevel(coordinates);
+        board.setLevel(coordinates);
+        board.setLevel(coordinates);
+        TestRoundApollo.doBuild(coordinates);
+        boolean isDome = board.isDome(coordinates);
+        assertTrue(isDome);
+    }
+
+    @Test
     public void TestIsDome(){
         Coordinates coordinates = new Coordinates(2,1);
         boolean isDome;

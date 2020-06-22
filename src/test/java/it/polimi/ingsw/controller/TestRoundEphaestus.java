@@ -7,7 +7,7 @@ public class TestRoundEphaestus {
     Player player1 = new Player("pippo", "RED", 1, 2, God.EPHAESTUS, 1);
     Worker worker1 = new Worker(player1, "RED", 1);
     Worker worker2 = new Worker(player1, "RED", 2);
-    Player player2 = new Player("pluto", "BLUE", 3, 4, God.HERA, 2);
+    Player player2 = new Player("pluto", "BLUE", 3, 4, God.EPHAESTUS, 2);
     Worker worker3 = new Worker(player2, "BLUE", 3);
     Worker worker4 = new Worker(player2, "BLUE", 4);
     Player players[] = {player1, player2};

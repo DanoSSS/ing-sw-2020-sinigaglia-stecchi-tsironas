@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 public class Worker implements Serializable {
     private int IdWorker;
-    private boolean ActiveWorker=false;
     private String color;
     private Coordinates coordinates= new Coordinates(0,0);
     private Player player;
@@ -24,15 +23,6 @@ public class Worker implements Serializable {
     public void setPlayer(Player player) {
         this.player = player;
     }
-
-
-    public boolean isActiveWorker() {
-        return ActiveWorker;
-    }     //da spostare in board
-
-    public void setActiveWorker(boolean activeWorker) {
-        ActiveWorker = activeWorker;
-    }    //da spostare in board
 
     //get the worker's coordinates  MODIFICATO DA CONTROLLARE
     public Coordinates getCoordinates() { return coordinates; }

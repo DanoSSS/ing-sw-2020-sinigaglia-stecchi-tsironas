@@ -14,7 +14,7 @@ public class RoundHestia extends Round {
         super(board, player);
     }
 
-    public ArrayList<Coordinates> canBuildSecond(Worker worker, Coordinates previousCoordinate) {
+    public ArrayList<Coordinates> canBuildSecond(Worker worker) {
         Coordinates coordinates, newCoordinates;
         int x, y;
         ArrayList<Coordinates> possiblesBuildsCoordinates = new ArrayList<>();
@@ -25,7 +25,7 @@ public class RoundHestia extends Round {
             for (int j = y - 1; j <= y + 1; j++) {
                 if (i > 0 && i < 4 && j > 0 && j < 4) {
                     newCoordinates = new Coordinates(i, j);
-                    if (!board.isOccupied(newCoordinates) && !board.isDome(newCoordinates) && (newCoordinates.getX()!=previousCoordinate.getX() || newCoordinates.getY()!=previousCoordinate.getY())) {
+                    if (!board.isOccupied(newCoordinates) && !board.isDome(newCoordinates)) {
                         possiblesBuildsCoordinates.add(newCoordinates);
                     }
                 }
@@ -36,11 +36,11 @@ public class RoundHestia extends Round {
 
     public void firstBuild(Coordinates coordinates) {
         doBuild(coordinates);
-        possibleBuilds = canBuildSecond(board.getCurrentActiveWorker(), coordinates);
+        possibleBuilds = canBuildSecond(board.getCurrentActiveWorker());
         if (possibleBuilds.size() == 0) {
             board.loseGame();
         } else {
-            board.firstBuildDemeter(coordinates, possibleBuilds);
+            board.firstBuildDemeterAndHestia(coordinates, possibleBuilds);
         }
     }
 

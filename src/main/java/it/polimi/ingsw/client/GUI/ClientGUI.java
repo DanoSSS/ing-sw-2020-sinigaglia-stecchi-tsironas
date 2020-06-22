@@ -381,7 +381,7 @@ public class ClientGUI  {
                             "NO"};
                     int i = JOptionPane.showOptionDialog(santoriniMainFrame,
                             "Do you want build a second time",
-                            "DEMETER POWER",
+                            "SECOND BUILD POWER",
                             JOptionPane.YES_NO_OPTION,
                             JOptionPane.QUESTION_MESSAGE,
                             null,     //do not use a custom Icon

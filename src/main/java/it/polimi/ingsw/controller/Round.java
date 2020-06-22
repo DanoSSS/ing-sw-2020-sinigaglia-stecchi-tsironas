@@ -13,7 +13,6 @@ public abstract class Round implements Observer<Object>{
      protected Player player;
      protected Worker firstActiveWorker, otherActiveWorker;
      protected ArrayList<Coordinates> possibleMoves,possibleBuilds;
-     int times=0;
 
     public Round(Board board, Player player) {
         this.board = board;

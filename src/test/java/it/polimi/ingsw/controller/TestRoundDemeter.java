@@ -9,10 +9,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestRoundDemeter {
 
-    Player player1 = new Player("pippo", "RED", 1,2, God.APOLLO,1);
+    Player player1 = new Player("pippo", "RED", 1,2, God.DEMETER,1);
     Worker worker1 = new Worker(player1,"RED",1);
     Worker worker2 = new Worker(player1,"RED",2);
-    Player player2 = new Player("pluto", "BLUE", 3,4, God.APOLLO,2);
+    Player player2 = new Player("pluto", "BLUE", 3,4, God.DEMETER,2);
     Worker worker3 = new Worker(player2,"BLUE",3);
     Worker worker4 = new Worker(player2,"BLUE",4);
     Player players[] = {player1,player2};
@@ -42,5 +42,16 @@ public class TestRoundDemeter {
             assertEquals(1, board.getLevel(coordinates11));
         }catch (NullPointerException e) {
         }
+    }
+
+    @Test
+    public void TestSecondBuildEndTurn(){
+        try {
+            board.setNround(2);
+            Coordinates coordinates11 = new Coordinates(1, 1);
+            testRoundDemeter.secondBuildEndTurn("1,1");
+            int level = board.getLevel(coordinates11);
+            assertEquals(1, level);
+        }catch (NullPointerException e){}
     }
 }

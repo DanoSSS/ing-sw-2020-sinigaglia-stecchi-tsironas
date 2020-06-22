@@ -9,11 +9,9 @@ public class Player implements Serializable {
     private String nickname;
     private String color;
     private int idPlayer;
-    private boolean IsChallenger=false;
     private Worker worker1;
     private Worker worker2;
     private God god;
-    private Worker activeworker;
 
     public Player(String name, String color, int id1, int id2, God god,int id){
         this.nickname=name;
@@ -21,12 +19,8 @@ public class Player implements Serializable {
         this.idPlayer=id;
         this.worker1 = new Worker(this,color,id1);
         this.worker2 = new Worker(this,color,id2);
-        if(this.worker1.getIdWorker()==1){
-            this.IsChallenger = true;
-        }
         this.god = god;
     }
-
 
     public Worker getWorker2() {
         return worker2;
@@ -44,18 +38,10 @@ public class Player implements Serializable {
         this.worker1 = worker1;
     }
 
-    public void SetWorkerInCell(Worker worker) {
-
-    }
-
     public String getNickname(){return nickname;}
 
     public God getGod() {
         return god;
-    }
-
-    public boolean isChallenger() {
-        return IsChallenger;
     }
 
     public int getIdPlayer() {

@@ -64,4 +64,39 @@ public class TestRoundMinotaur {
         assertNull(board.getWorker(coordinates13));
     }
 
+    @Test
+    public void TestCanMoveWithAthenaPower(){
+        boolean tag = false;
+        ArrayList<Coordinates> possiblesMovesCoordinates = new ArrayList<Coordinates>();
+        Coordinates coordinates22 = new Coordinates(2,2);
+        Coordinates coordinates21 = new Coordinates(2,1);
+        board.setNround(2);
+        board.setLevel(coordinates21);
+        board.setLevel(coordinates21);
+        board.setLevel(coordinates22);
+        board.moveWorker(coordinates22,worker1);
+        possiblesMovesCoordinates = TestRoundMinotaur.canMove(worker1);
+        for(Coordinates c:possiblesMovesCoordinates) {
+            if (c.getX() == coordinates21.getX() && c.getY() == coordinates21.getY()) {
+                tag = true;
+            }
+        }
+        assertFalse(tag);
+    }
+
+    @Test
+    public void TestDoMoveWinning(){
+        try {
+            Coordinates coordinates22 = new Coordinates(2, 2);
+            Coordinates coordinates21 = new Coordinates(2, 1);
+            board.setLevel(coordinates21);
+            board.setLevel(coordinates21);
+            board.setLevel(coordinates21);
+            board.setLevel(coordinates22);
+            board.setLevel(coordinates22);
+            board.moveWorker(coordinates22, worker1);
+            boolean gameOver = TestRoundMinotaur.doMove(coordinates21, false, worker1);
+            assertTrue(gameOver);
+        }catch (NullPointerException e){}
+    }
 }

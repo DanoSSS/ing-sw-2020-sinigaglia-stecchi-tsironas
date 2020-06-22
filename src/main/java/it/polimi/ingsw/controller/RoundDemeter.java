@@ -42,7 +42,7 @@ public class RoundDemeter extends Round {
         if (possibleBuilds.size() == 0) {
             board.loseGame();
         } else {
-            board.firstBuildDemeter(coordinates, possibleBuilds);
+            board.firstBuildDemeterAndHestia(coordinates, possibleBuilds);
         }
     }
 
