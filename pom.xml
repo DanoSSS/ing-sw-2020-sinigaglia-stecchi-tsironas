@@ -40,6 +40,12 @@
   </dependencies>
 
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
+
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
         <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
@@ -92,6 +98,70 @@
                   <target>8</target>
               </configuration>
           </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-assembly-plugin</artifactId>
+
+          <executions>
+            <execution>
+              <id>server</id>
+              <goals><goal>single</goal></goals>
+              <phase>package</phase>
+              <configuration>
+                <finalName>server</finalName>
+                <archive>
+                  <manifest>
+                    <mainClass>it.polimi.ingsw.StartServer</mainClass>
+                  </manifest>
+                </archive>
+                <descriptorRefs>
+                  <descriptorRef>jar-with-dependencies</descriptorRef>
+                </descriptorRefs>
+                <appendAssemblyId>false</appendAssemblyId>
+
+              </configuration>
+            </execution>
+            <execution>
+              <id>clientGUI</id>
+              <goals><goal>single</goal></goals>
+              <phase>package</phase>
+              <configuration>
+                <finalName>clientGUI</finalName>
+                <archive>
+                  <manifest>
+                    <mainClass>it.polimi.ingsw.StartClientGUI</mainClass>
+                  </manifest>
+                </archive>
+                <descriptorRefs>
+                  <descriptorRef>jar-with-dependencies</descriptorRef>
+                </descriptorRefs>
+                <appendAssemblyId>false</appendAssemblyId>
+
+              </configuration>
+            </execution>
+            <execution>
+              <id>clientCLI</id>
+              <goals><goal>single</goal></goals>
+              <phase>package</phase>
+              <configuration>
+                <finalName>clientCLI</finalName>
+                <archive>
+                  <manifest>
+                    <mainClass>it.polimi.ingsw.StartClientCLI</mainClass>
+                  </manifest>
+                </archive>
+                <descriptorRefs>
+                  <descriptorRef>jar-with-dependencies</descriptorRef>
+                </descriptorRefs>
+                <appendAssemblyId>false</appendAssemblyId>
+
+              </configuration>
+            </execution>
+
+          </executions>
+        </plugin>
       </plugins>
   </build>
+
+
 </project>

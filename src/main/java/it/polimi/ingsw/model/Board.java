@@ -277,7 +277,7 @@ public class Board{
 
     public void buildAres(Coordinates c){
         Worker otherWorker;
-        ArrayList<Coordinates> possiblesAresPowerCoordinates = new ArrayList<Coordinates>();
+        ArrayList<Coordinates> possiblesAresPowerCoordinates = new ArrayList<>();
         if(currentActiveWorker.getPlayer().getWorker1().getIdWorker()==currentActiveWorker.getIdWorker()){
             otherWorker = currentActiveWorker.getPlayer().getWorker2();
         }else {
