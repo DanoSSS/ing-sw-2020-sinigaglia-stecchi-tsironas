@@ -181,19 +181,20 @@ public class ClientCLI {
                             case BUILD_END_TURN:
                             case ARES_END_TURN:
                                 id = inputObject.getCurrentActiveWorker();
+                                idWorkers= clientController.getIdWorkers();
                                 buildCellMessage(inputObject.getCoordinate().getX() * 2, inputObject.getCoordinate().getY(), inputObject.getLevel(), inputObject.getDome());
                                 playerNames= clientController.getOtherNickname();
                                 int n = inputObject.getnCurrentPlayer();
                                 if (clientController.getIdPlayer() == inputObject.getnCurrentPlayer()) {
                                     print();
-                                    System.out.println("your worker " + id + "build in\t" + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY() + " level:" + inputObject.getLevel() + " dome:" + inputObject.getDome());
+                                    System.out.println("your worker " + id + " build in\t" + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY() + " level:" + inputObject.getLevel() + " dome:" + inputObject.getDome());
                                     setClientAction(Action.NOT_YOUR_TURN);
                                     System.out.println("wait your turn");
                                 } else if (clientController.getIdPlayer() == inputObject.getNextNPlayer() && clientController.getIdPlayer() != loseRound) {
                                     print();
                                     System.out.println("player " + playerNames[n-1] + " build with his worker " + id + " in cell:\t" + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY() + " level:" + inputObject.getLevel() + " dome:" + inputObject.getDome());
                                     setClientAction(Action.SELECT_ACTIVE_WORKER);
-                                    System.out.println("it's your turn!\nselect active worker:");
+                                    System.out.println("it's your turn!\nselect active worker: "+ idWorkers[0]+ " or " + idWorkers[1]);
                                 } else if (clientController.getIdPlayer() != loseRound) {
                                     print();
                                     System.out.println("player " + playerNames[n-1] + " build with his worker " + id + " in cell:\t" + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY() + " level:" + inputObject.getLevel() + " dome:" + inputObject.getDome());
@@ -268,7 +269,7 @@ public class ClientCLI {
                                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
                                     setClientAction(a);
                                     ArrayList<Coordinates> possibleBuilds = inputObject.getCurrentPossibleMoves();
-                                    setPossibleMoves(possibleBuilds);
+                                    setPossibleMoves(possibleMoves);
                                     print();
                                     System.out.println("your worker "+id+" is now in coordinate\t"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+"\nSelect coordinate to build among the following.\n(If you want activate power and build a dome write dome follow by coordinate otherwise write std follow by coordinate)");
                                     for(Coordinates c: possibleBuilds){
@@ -288,10 +289,11 @@ public class ClientCLI {
                                 freeWorkerCellMessage(inputObject.getCoordinateOld().getX()*2+1,inputObject.getCoordinateOld().getY());
                                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
                                     setClientAction(a);
-                                    ArrayList<Coordinates> possibleBuilds = inputObject.getCurrentPossibleMoves();
+                                    ArrayList<Coordinates> possibleB= inputObject.getCurrentPossibleMoves();
+                                    setPossibleMoves(possibleB);
                                     print();
                                     System.out.println("your worker "+id+" is now in coordinate\t"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+"\nSelect coordinate to build among the following.\n(If you want activate power and build a second time in the same space write yes follow by coordinate otherwise write no follow by coordinate)");
-                                    for(Coordinates c: possibleBuilds){
+                                    for(Coordinates c: possibleB){
                                         System.out.println(c.getX()+","+c.getY());
                                     }
                                 }
@@ -468,12 +470,12 @@ public class ClientCLI {
                 try {
                     while (isActive()) {
                         boolean correctInput =false;
+                        String[] choose = null;
                         String inputObject = stdin.nextLine();
                         switch (getClientAction()) {
                             case STRING:
                             case FIRST_MESSAGE:
                             case NOT_YOUR_TURN:
-                            case BUILD_EPHAESTUS:
                             case FIRST_BUILD_DEMETER:
                             case BUILD_ATLAS:
                             case NUMBER_OF_PLAYERS:
@@ -543,15 +545,28 @@ public class ClientCLI {
 
 
                             case PROMETHEUS_CHOOSE:  // BUILD 2,3  -> {BUILD} {2,3}  -> {2} {3}
-                                String[] choose = inputObject.split(" ");
-                                if(choose[0].toUpperCase() == "BUILD"){
+                                choose = inputObject.split(" ");
+                                if(choose[0].toUpperCase().equals("BUILD")){
                                     correctInput = isCorrectInput(choose[1], possibleBuilds);
-                                } else if (choose[0].toUpperCase() =="MOVE"){
+                                } else if (choose[0].toUpperCase().equals("MOVE")){
                                     correctInput = isCorrectInput(choose[1], possibleMoves);
                                 }
                                 if(!correctInput){
                                         System.out.println("ERROR: write MOVE \"x,y\" or \"BUILD x,y\".\nx,y must be correct.");
                                     }else if(correctInput) {
+                                    socketOut.writeObject(new Message(getClientAction().getValue(), inputObject));
+                                }
+                                break;
+                            case BUILD_EPHAESTUS:
+                                choose = inputObject.split(" ");
+                                if(choose[0].toUpperCase().equals("YES")){
+                                    correctInput = isCorrectInput(choose[1], possibleMoves);
+                                } else if (choose[0].toUpperCase().equals("NO")){
+                                    correctInput = isCorrectInput(choose[1], possibleMoves);
+                                }
+                                if(!correctInput){
+                                    System.out.println("ERROR: write yes \"x,y\" or \"no x,y\".\nx,y must be correct.");
+                                }else if(correctInput) {
                                     socketOut.writeObject(new Message(getClientAction().getValue(), inputObject));
                                 }
                                 break;
