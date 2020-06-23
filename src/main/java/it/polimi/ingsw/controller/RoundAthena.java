@@ -10,6 +10,11 @@ public class RoundAthena extends Round {
         super(board, player);
     }
 
+    /**
+     * method that calculate possible cell in wich current worker can move according Athena rules
+     * @param worker
+     * @return possibleMovesCoordinate
+     */
     public ArrayList<Coordinates> canMove(Worker worker) {
         Coordinates coordinates, newCoordinates;
         int x, y;
@@ -30,6 +35,14 @@ public class RoundAthena extends Round {
         return possiblesMovesCoordinates;
     }
 
+    /**
+     * method that move worker in moveCoordinates(one from possibleMovesCoordinate found in RoundApollo's canMove ),
+     * check if player wins and set board attribute Nround equal to the number of players less 1 if active worker levels up
+     * @param moveCoordinates
+     * @param GameOver
+     * @param activeWorker
+     * @return GameOver
+     */
     public boolean doMove(Coordinates moveCoordinates,boolean GameOver,Worker activeWorker) {
         int count;
         Coordinates oldCoordinates;

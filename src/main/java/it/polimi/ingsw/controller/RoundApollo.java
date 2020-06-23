@@ -10,6 +10,12 @@ public class RoundApollo extends Round {
         super(board, player);
     }
 
+    /**
+     * method that calculate possible cell in wich current worker can move according Apollo rules
+     * (worker can move also in cell occupied by other players' workers)
+     * @param worker
+     * @return possibleMovesCoordinate
+     */
     public ArrayList<Coordinates> canMove(Worker worker) {
         Coordinates coordinates, newCoordinates;
         int x, y;
@@ -44,6 +50,13 @@ public class RoundApollo extends Round {
         return possiblesMovesCoordinates;
     }
 
+    /**
+     * method that move worker in moveCoordinates(one from possibleMovesCoordinate found in RoundApollo's canMove ) and check if player wins
+     * @param moveCoordinates
+     * @param GameOver
+     * @param activeWorker
+     * @return GameOver
+     */
     public boolean doMove(Coordinates moveCoordinates,boolean GameOver,Worker activeWorker) {
         Coordinates oldCoordinates;
         int x=activeWorker.getCoordinates().getX();

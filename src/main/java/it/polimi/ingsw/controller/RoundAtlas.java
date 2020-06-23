@@ -14,6 +14,11 @@ public class RoundAtlas extends Round {
         super(board, player);
     }
 
+    /**
+     * method that increase cell's level given coordinate if domePower is false else build a dome
+     * @param buildCoordinate
+     * @param domePower
+     */
     public void doBuild(Coordinates buildCoordinate,boolean domePower) {
         if (domePower) {
             board.setDome(buildCoordinate);
@@ -32,6 +37,10 @@ public class RoundAtlas extends Round {
         }
     }
 
+    /**
+     * method that analyzes input and consequently set domePower
+     * @param input
+     */
     public void buildDomeorNot(String input){
         boolean domePower=false;
         int i;
