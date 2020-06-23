@@ -18,6 +18,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
+    private static final int PORT=34512;
     private ServerSocket serverSocket;
     private ExecutorService executor = Executors.newFixedThreadPool(128);
     private Map<String, ClientConnection> waitingConnection = new HashMap<>();
@@ -33,8 +34,8 @@ public class Server {
     boolean boolP1 = false, boolP2 = false, boolP3 = false, bool = false;
 
 
-    public Server(int port) throws IOException {
-        this.serverSocket = new ServerSocket(port);
+    public Server() throws IOException {
+        this.serverSocket = new ServerSocket(PORT);
     }
 
     public synchronized void deregisterConnection2(ClientConnection c,int playerNumber) {

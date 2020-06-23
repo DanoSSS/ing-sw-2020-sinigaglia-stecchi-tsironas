@@ -524,8 +524,6 @@ public class ClientGUI  {
                 startingFrame.dispatchEvent(new WindowEvent(startingFrame, WindowEvent.WINDOW_CLOSING)); //simulate the closing frame event
                 System.out.println("Player n°" + playerDisconnected  +" disconnected from the server.\ngameover");
                 break;
-
-
         }
     }
 
