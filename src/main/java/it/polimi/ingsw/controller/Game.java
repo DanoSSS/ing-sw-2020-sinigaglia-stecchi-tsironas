@@ -161,11 +161,11 @@ public class Game extends Observable<Object> implements Observer<Object> {
             int firstToStartID = board.getCurrentRound();
             //int idPlayer1= idPlayers[messageFromPlayerNumber];
             //String nicknameP1=players[messageFromPlayerNumber];
-            board.getObservableModel().notify(new ReturnMessage(3, workerPosition, players, idPlayers, NumberOfPlayers, firstToStartID));
+            board.notify(new ReturnMessage(3, workerPosition, players, idPlayers, NumberOfPlayers, firstToStartID));
         }
         else if (a == Action.END_GAME){
             int win =((Message) message).getIdWorker();
-            board.getObservableModel().notify(new ReturnMessage(28,win));
+            board.notify(new ReturnMessage(28,win));
 
         }
     }

@@ -40,7 +40,7 @@ public abstract class Round implements Observer<Object>{
         int d=board.getNumberOfDome()+1;
         board.setNumberOfDome(d);
         if(d==5){
-            board.getObservableModel().notify(new ReturnMessage(18,board.getChronusPlayer()));
+            board.notify(new ReturnMessage(18,board.getChronusPlayer()));
         }
     }
 

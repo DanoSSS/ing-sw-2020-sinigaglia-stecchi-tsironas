@@ -26,7 +26,7 @@ public class Player implements Serializable {
         return worker2;
     }
 
-    public void setWorker(Worker worker2) {
+    public void setWorker2(Worker worker2) {
         this.worker2 = worker2;
     }
 

@@ -53,7 +53,7 @@ public class RoundArtemis extends Round {
             board.winGame();
         } else {
             ArrayList<Coordinates> secondPossibleMove = canMoveSecond(board.getCurrentActiveWorker(), oldCoordinate);
-            board.getObservableModel().notify(new ReturnMessage(9,oldCoordinate, newC, board.getCurrentActiveWorker().getIdWorker(), secondPossibleMove));
+            board.notify(new ReturnMessage(9,oldCoordinate, newC, board.getCurrentActiveWorker().getIdWorker(), secondPossibleMove));
         }
     }
 
@@ -83,7 +83,7 @@ public class RoundArtemis extends Round {
                 }
             }
         }
-        board.getObservableModel().notify(new ReturnMessage(10,board.getCurrentActiveWorker().getIdWorker(),oldCoordinate,coordinates,possibleBuilds,board.getCurrentRound(),null));
+        board.notify(new ReturnMessage(10,board.getCurrentActiveWorker().getIdWorker(),oldCoordinate,coordinates,possibleBuilds,board.getCurrentRound(),null));
     }
 
     @Override

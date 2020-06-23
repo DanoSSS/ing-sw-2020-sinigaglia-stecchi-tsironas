@@ -1,10 +1,11 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.utils.ReturnMessage;
 
 import java.util.ArrayList;
 
-public class Board{
+public class Board extends Observable<Object> {
     private int NumberOfPlayers;
     private static final int HEIGHT = 5;
     private static final int WIDTH = 5;
@@ -12,9 +13,13 @@ public class Board{
     private Worker[] workers = new Worker[6];
     private Player[] players;
     private int nround=0;
-    private ObservableModel observableModel;
     private Worker currentActiveWorker;
-    private ArrayList<Coordinates> currentPossibleMoves, currentPossibleBuilds;
+
+    private ArrayList<Coordinates> currentPossibleMoves;
+
+
+
+    private ArrayList<Coordinates> currentPossibleBuilds;
     private int currentRound=2;
     private int loseRound;
     private boolean flag=false;
@@ -42,10 +47,6 @@ public class Board{
 
     }
 
-    public void setObservableModel(Board board){
-        this.observableModel= new ObservableModel(board);
-    }
-
     public Board(Player[] players , Worker worker1, Worker worker2, Worker worker3, Worker worker4, Worker worker5, Worker worker6, int NPlayer) {
         this.players =players;
         board = new Cell[HEIGHT][WIDTH];                        //i==row && j==col
@@ -64,6 +65,14 @@ public class Board{
 
         this.NumberOfPlayers = NPlayer;
 
+    }
+
+    public void setCurrentRound(int currentRound) {
+        this.currentRound = currentRound;
+    }
+
+    public ArrayList<Coordinates> getCurrentPossibleMoves() {
+        return currentPossibleMoves;
     }
 
     public int getNumberOfPlayers() {
@@ -88,6 +97,10 @@ public class Board{
 
     public void setNround(int nround) {
         this.nround = nround;
+    }
+
+    public ArrayList<Coordinates> getCurrentPossibleBuilds() {
+        return currentPossibleBuilds;
     }
 
     //method to build a dome in the cell x,y
@@ -148,9 +161,6 @@ public class Board{
         board[coordinates.getX()][coordinates.getY()].setOccupied(true);
     }
 
-    public ObservableModel getObservableModel(){
-        return observableModel;
-    }
 
     public String[] getPlayerNicknames() {
         String players[] = NumberOfPlayers==2 ? new String[2] : new String[3];
@@ -215,21 +225,21 @@ public class Board{
         this.currentPossibleBuilds=currentPossibleBuilds;
         int level = getLevel(c);
         boolean dome = isDome(c);
-        observableModel.notify(new ReturnMessage(14,currentActiveWorker.getIdWorker(),c,level,dome,currentPossibleBuilds));
+        notify(new ReturnMessage(14,currentActiveWorker.getIdWorker(),c,level,dome,currentPossibleBuilds));
     }
 
     public void setCurrentActiveWorkerAndChoosePrometheus(Worker activeWorker,ArrayList<Coordinates> currentPossibleMoves,ArrayList<Coordinates> currentPossibleBuilds){
         this.currentActiveWorker=activeWorker;
         this.currentPossibleMoves=currentPossibleMoves;
         this.currentPossibleBuilds=currentPossibleBuilds;
-        observableModel.notify(new ReturnMessage(15,currentActiveWorker.getIdWorker(),currentPossibleMoves,currentPossibleBuilds,currentRound));
+        notify(new ReturnMessage(15,currentActiveWorker.getIdWorker(),currentPossibleMoves,currentPossibleBuilds,currentRound));
     }
 
     public void buildBeforePrometheus(Coordinates coordinates,ArrayList<Coordinates> possibleMoves){
         int level = getLevel(coordinates);
         boolean dome = isDome(coordinates);
         this.currentPossibleMoves = possibleMoves;
-        observableModel.notify(new ReturnMessage(16,currentActiveWorker.getIdWorker(),coordinates,level,dome,possibleMoves));
+        notify(new ReturnMessage(16,currentActiveWorker.getIdWorker(),coordinates,level,dome,possibleMoves));
     }
 
     public int getCurrentRound() {
@@ -239,16 +249,16 @@ public class Board{
     public void setCurrentActiveWorkerAndPossibleMoves(Worker currentActiveWorker,ArrayList<Coordinates> currentPossibleMoves){
         this.currentActiveWorker=currentActiveWorker;
         this.currentPossibleMoves=currentPossibleMoves;
-        observableModel.notify(new ReturnMessage(6,currentActiveWorker.getIdWorker(),currentPossibleMoves,currentRound));
+        notify(new ReturnMessage(6,currentActiveWorker.getIdWorker(),currentPossibleMoves,currentRound));
     }
 
     public void moveWorkerAndPossibleBuilds(Coordinates oldC,Coordinates newC,ArrayList<Coordinates> currentPossibleBuilds,Worker oppWorker){
         this.currentPossibleBuilds=currentPossibleBuilds;
         if(players[currentRound-1].getGod()==God.ATLAS) {
-            observableModel.notify(new ReturnMessage(11, currentActiveWorker.getIdWorker(), oldC, newC, currentPossibleBuilds, currentRound, oppWorker));
+            notify(new ReturnMessage(11, currentActiveWorker.getIdWorker(), oldC, newC, currentPossibleBuilds, currentRound, oppWorker));
         }else if (players[currentRound-1].getGod()==God.EPHAESTUS){
-            observableModel.notify(new ReturnMessage(12, currentActiveWorker.getIdWorker(), oldC, newC, currentPossibleBuilds, currentRound, oppWorker));
-        }else observableModel.notify(new ReturnMessage(7,currentActiveWorker.getIdWorker(),oldC,newC,currentPossibleBuilds,currentRound,oppWorker));
+            notify(new ReturnMessage(12, currentActiveWorker.getIdWorker(), oldC, newC, currentPossibleBuilds, currentRound, oppWorker));
+        }else notify(new ReturnMessage(7,currentActiveWorker.getIdWorker(),oldC,newC,currentPossibleBuilds,currentRound,oppWorker));
     }
 
     public void buildEndTurn(Coordinates c) {
@@ -257,9 +267,9 @@ public class Board{
         if (c != null) {
             int level = getLevel(c);
             boolean dome = isDome(c);
-            observableModel.notify(new ReturnMessage(8, currentActiveWorker.getIdWorker(), c, level, oldRound, newRound, dome));
+            notify(new ReturnMessage(8, currentActiveWorker.getIdWorker(), c, level, oldRound, newRound, dome));
         } else {
-            observableModel.notify(new ReturnMessage(13, currentActiveWorker.getIdWorker(), oldRound, newRound));
+            notify(new ReturnMessage(13, currentActiveWorker.getIdWorker(), oldRound, newRound));
         }
     }
 
@@ -269,9 +279,9 @@ public class Board{
         if (c != null) {
             int level = getLevel(c);
             boolean dome = isDome(c);
-            observableModel.notify(new ReturnMessage(31, currentActiveWorker.getIdWorker(), c, level, oldRound, newRound, dome));
+            notify(new ReturnMessage(31, currentActiveWorker.getIdWorker(), c, level, oldRound, newRound, dome));
         } else {
-            observableModel.notify(new ReturnMessage(13, currentActiveWorker.getIdWorker(), oldRound, newRound));
+            notify(new ReturnMessage(13, currentActiveWorker.getIdWorker(), oldRound, newRound));
         }
     }
 
@@ -295,7 +305,7 @@ public class Board{
         }
         int level= getLevel(c);
         boolean dome= isDome(c);
-        observableModel.notify(new ReturnMessage(30,currentActiveWorker.getIdWorker(), c, level, dome, possiblesAresPowerCoordinates));
+        notify(new ReturnMessage(30,currentActiveWorker.getIdWorker(), c, level, dome, possiblesAresPowerCoordinates));
     }
 
     public void loseGame(){
@@ -305,16 +315,16 @@ public class Board{
             int newRound=UpdateRound();
             freeCellFromWorker(players[loseRound-1].getWorker1().getCoordinates());
             freeCellFromWorker(players[loseRound-1].getWorker2().getCoordinates());
-            observableModel.notify(new ReturnMessage(17,loseRound,newRound,players[loseRound-1].getWorker1(),players[loseRound-1].getWorker2()));
+            notify(new ReturnMessage(17,loseRound,newRound,players[loseRound-1].getWorker1(),players[loseRound-1].getWorker2()));
         }else if(getNumberOfPlayers()==3 && flag){
-            observableModel.notify(new ReturnMessage(5,currentRound));
+            notify(new ReturnMessage(5,currentRound));
         }else{
-            observableModel.notify(new ReturnMessage(5,currentRound));
+            notify(new ReturnMessage(5,currentRound));
         }
     }
 
     public void winGame(){
-        observableModel.notify(new ReturnMessage(18,currentRound));
+        notify(new ReturnMessage(18,currentRound));
     }
 
     public void setCurrentActiveWorker(Worker currentActiveWorker) {
