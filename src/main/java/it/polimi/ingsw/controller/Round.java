@@ -19,6 +19,10 @@ public abstract class Round implements Observer<Object>{
         this.player = player;
     }
 
+    /**
+     * method that increase cell's level given coordinate (std build)
+     * @param buildCoordinate
+     */
     public void doBuild(Coordinates buildCoordinate){
         board.setLevel(buildCoordinate);
         if(board.getLevel(buildCoordinate)==4) {
@@ -29,6 +33,9 @@ public abstract class Round implements Observer<Object>{
         }
     }
 
+    /**
+     * method that check if there are 5 dome on the board to make chronus win the game
+     */
     public void chronusWin(){
         int d=board.getNumberOfDome()+1;
         board.setNumberOfDome(d);
@@ -37,12 +44,24 @@ public abstract class Round implements Observer<Object>{
         }
     }
 
+    /**
+     * method for checking that c are not on the border
+     * @param c
+     * @return
+     */
     public boolean heraPower(Coordinates c){
         if((c.getX()==0 || c.getX()==4 || c.getY()==0 || c.getY()==4)&&board.getCurrentRound()!=board.getHeraPlayer()){
             return true;
         }else return false;
     }
 
+    /**
+     * method that move worker in moveCoordinates and check if player wins according std rules (std move)
+     * @param moveCoordinates
+     * @param GameOver
+     * @param activeWorker
+     * @return
+     */
     public boolean doMove(Coordinates moveCoordinates,boolean GameOver,Worker activeWorker){
         Coordinates oldCoordinates;
         int x=activeWorker.getCoordinates().getX();
@@ -62,6 +81,11 @@ public abstract class Round implements Observer<Object>{
         return GameOver;
     }
 
+    /**
+     * method that calculate possible cell in wich current worker can move according std rules
+     * @param worker
+     * @return possiblesMovesCoordinates
+     */
     public ArrayList<Coordinates> canMove(Worker worker) {
         Coordinates coordinates, newCoordinates;
         int x, y;
@@ -88,6 +112,11 @@ public abstract class Round implements Observer<Object>{
         return possiblesMovesCoordinates;
     }
 
+    /**
+     * method that calculate possible cell in wich current worker can build according std rules
+     * @param worker
+     * @return
+     */
     public ArrayList<Coordinates> canBuild(Worker worker) {
         Coordinates coordinates, newCoordinates;
         int x, y;
@@ -111,6 +140,10 @@ public abstract class Round implements Observer<Object>{
         return possiblesBuildsCoordinates;
     }
 
+    /**
+     * method that swich worker if the first one selcted by that player has no possible cell to move
+     * @param id
+     */
     public void activeWorkerSelection(int id) {
         firstActiveWorker = board.getWorkerById(id);
         possibleMoves = canMove(firstActiveWorker);
@@ -130,6 +163,10 @@ public abstract class Round implements Observer<Object>{
         } else board.setCurrentActiveWorkerAndPossibleMoves(firstActiveWorker, possibleMoves);
     }
 
+    /**
+     * method that informs board about all changes of domove
+     * @param newC
+     */
     public void moveInCoordinate(Coordinates newC){
         boolean win= false;
         Worker oppositeWorker=null;
@@ -152,6 +189,10 @@ public abstract class Round implements Observer<Object>{
         }
     }
 
+    /**
+     * method that informs board about all changes of dobuild
+     * @param c
+     */
     public void buildInCoordinate(Coordinates c){
         int i;
         doBuild(c);
@@ -163,6 +204,10 @@ public abstract class Round implements Observer<Object>{
         board.buildEndTurn(c);
     }
 
+    /**
+     * method that makes an other build if god's power admits it
+     * @param input
+     */
     public void  secondBuildEndTurn(String input){
         int i;
         Coordinates coordinates=null;

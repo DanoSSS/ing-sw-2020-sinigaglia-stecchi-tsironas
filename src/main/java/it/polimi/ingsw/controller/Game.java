@@ -13,7 +13,13 @@ public class Game extends Observable<Object> implements Observer<Object> {
     private Map<Player,Round> round = new HashMap<Player,Round>();
     private int NumberOfPlayers;
 
-
+    /**
+     * board 2 player constructor
+     * @param board
+     * @param i
+     * @param p1
+     * @param p2
+     */
     public Game(Board board,int i,Player p1,Player p2){
         this.board=board;
         this.NumberOfPlayers=i;
@@ -21,6 +27,14 @@ public class Game extends Observable<Object> implements Observer<Object> {
         this.players.add(p2);
     }
 
+    /**
+     * board 3 player constructor
+     * @param board
+     * @param i
+     * @param p1
+     * @param p2
+     * @param p3
+     */
     public Game(Board board,int i,Player p1,Player p2,Player p3){
         this.board=board;
         this.NumberOfPlayers=i;
@@ -30,6 +44,11 @@ public class Game extends Observable<Object> implements Observer<Object> {
     }
 
 
+    /**
+     * method that create only the god round selected by each player
+     * @param player
+     * @param r
+     */
     public void RoundCreation(Player player,Round r) {
         if (player.getGod()== God.APOLLO) {
             r = new RoundApollo(board,player);
@@ -100,10 +119,14 @@ public class Game extends Observable<Object> implements Observer<Object> {
         }
     }
 
+    /**
+     * method that return the player's round
+     * @param player
+     * @return
+     */
     public Round getRound(Player player){
         return round.get(player);
     }
-
 
     @Override
     public void update(Object message) {
