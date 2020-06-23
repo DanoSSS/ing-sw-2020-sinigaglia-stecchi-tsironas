@@ -11,12 +11,20 @@ public class RoundAres extends Round {
         super(board, player);
     }
 
+    /**
+     * methiod that make a sample build with no end turn
+     * @param c
+     */
     public void buildInCoordinateAres(Coordinates c){
         int i;
         doBuild(c);
         board.buildAres(c);
     }
 
+    /**
+     * method that analyzes input and reduce level of coordinate's cell given with the input or not then end turn
+     * @param input
+     */
     public void aresPowerThenEndTurn(String input){
         Coordinates coordinates=null;
         int i;

@@ -16,6 +16,12 @@ public class RoundDemeter extends Round {
         super(board, player);
     }
 
+    /**
+     * method that calculate possible cell in wich current worker can build a second time according Demeter power
+     * @param worker
+     * @param previousCoordinate
+     * @return possibleBuildsCoordinates
+     */
     public ArrayList<Coordinates> canBuildSecond(Worker worker,Coordinates previousCoordinate) {
         Coordinates coordinates, newCoordinates;
         int x, y;
@@ -36,6 +42,10 @@ public class RoundDemeter extends Round {
         return possiblesBuildsCoordinates;
     }
 
+    /**
+     * method that calls doBuild and calculate possibleBuilds for a possible second build
+     * @param coordinates
+     */
     public void firstBuild(Coordinates coordinates) {
         doBuild(coordinates);
         possibleBuilds = canBuildSecond(board.getCurrentActiveWorker(), coordinates);
