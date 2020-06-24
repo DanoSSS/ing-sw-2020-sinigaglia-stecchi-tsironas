@@ -13,6 +13,11 @@ public class RoundMinotaur extends Round {
         super(board, player);
     }
 
+    /**
+     * method that calculate possible cell in wich current worker can move according Minotaur rules
+     * @param worker
+     * @return possiblesMovesCoordinates
+     */
     public ArrayList<Coordinates> canMove(Worker worker) {
         Coordinates coordinates, newCoordinates;
         int x, y;
@@ -47,6 +52,13 @@ public class RoundMinotaur extends Round {
         return possiblesMovesCoordinates;
     }
 
+    /**
+     * method that move worker in moveCoordinates(one from possibleMovesCoordinate found in RoundMinotaur's canMove ) and check if player wins
+     * @param moveCoordinates
+     * @param GameOver
+     * @param activeWorker
+     * @return GameOver
+     */
     public boolean doMove(Coordinates moveCoordinates,boolean GameOver,Worker activeWorker){
         Coordinates oldCoordinates;
         int x=activeWorker.getCoordinates().getX();
@@ -71,6 +83,12 @@ public class RoundMinotaur extends Round {
 
     }
 
+    /**
+     * method that calculate if worker with minotaur power can or not forcing an opponent's worker according Minotaur power
+     * @param workerCoordinates
+     * @param opponentCoordinates
+     * @return
+     */
     public boolean minotaurForcing (Coordinates workerCoordinates, Coordinates opponentCoordinates){
         int x,y;
         Coordinates newCoordinates;
@@ -82,6 +100,12 @@ public class RoundMinotaur extends Round {
         }else return false;
     }
 
+    /**
+     * method that calculate new cell for opponent worker according minotaur power
+     * @param workerCoordinates
+     * @param opponentCoordinates
+     * @return newCoordinates
+     */
     public Coordinates newOpponentCoordinate (Coordinates workerCoordinates, Coordinates opponentCoordinates) {
         int x, y;
         Coordinates newCoordinates;

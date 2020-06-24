@@ -22,28 +22,56 @@ public class Player implements Serializable {
         this.god = god;
     }
 
+    /**
+     *
+     * @return worker2
+     */
     public Worker getWorker2() {
         return worker2;
     }
 
+    /**
+     *
+     * @param worker2
+     */
     public void setWorker2(Worker worker2) {
         this.worker2 = worker2;
     }
 
+    /**
+     *
+     * @return worker1
+     */
     public Worker getWorker1() {
         return worker1;
     }
 
+    /**
+     *
+     * @param worker1
+     */
     public void setWorker1(Worker worker1) {
         this.worker1 = worker1;
     }
 
+    /**
+     *
+     * @return nickname
+     */
     public String getNickname(){return nickname;}
 
+    /**
+     *
+     * @return god
+     */
     public God getGod() {
         return god;
     }
 
+    /**
+     *
+     * @return idPlayer
+     */
     public int getIdPlayer() {
         return idPlayer;
     }

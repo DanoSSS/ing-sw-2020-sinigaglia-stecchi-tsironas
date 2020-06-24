@@ -37,10 +37,18 @@ package it.polimi.ingsw.utils;
 
     private int value;
 
+    /**
+     *
+     * @param value
+     */
     Action(int value){
         this.value=value;
     }
 
+    /**
+     *
+     * @return value
+     */
     public int getValue() {
          return value;
      }

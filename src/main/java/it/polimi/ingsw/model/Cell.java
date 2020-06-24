@@ -13,16 +13,32 @@ public class Cell {
         coordinates= new Coordinates(x,y);
     }
 
+    /**
+     *
+     * @return IsOccupied
+     */
     public boolean isOccupied() { return IsOccupied; }
 
+    /**
+     *
+     * @param occupied
+     */
     public void setOccupied(boolean occupied) {
         IsOccupied = occupied;
     }
 
+    /**
+     *
+     * @return IsDome
+     */
     public boolean isDome() { return IsDome; }
 
     public void setDome() { IsDome = true; }
 
+    /**
+     *
+     * @return level
+     */
     public int getLevel() {
         return level;
     }
@@ -33,10 +49,18 @@ public class Cell {
         this.level--;
     }
 
+    /**
+     *
+     * @return worker
+     */
     public Worker getWorker() {
         return worker;
     }
 
+    /**
+     *
+     * @param worker
+     */
     public void setWorker(Worker worker) {
         this.worker = worker;
     }

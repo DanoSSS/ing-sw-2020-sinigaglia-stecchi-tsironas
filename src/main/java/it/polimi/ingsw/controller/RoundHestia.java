@@ -14,6 +14,12 @@ public class RoundHestia extends Round {
         super(board, player);
     }
 
+    /**
+     * method that calculate possible cell in wich current worker can move according Hestia rules
+     * (not on a perimeter space)
+     * @param worker
+     * @return possiblesBuildsCoordinates
+     */
     public ArrayList<Coordinates> canBuildSecond(Worker worker) {
         Coordinates coordinates, newCoordinates;
         int x, y;
@@ -34,6 +40,10 @@ public class RoundHestia extends Round {
         return possiblesBuildsCoordinates;
     }
 
+    /**
+     * method that calls doBuild and calls method to calculate second possibleBuilds
+     * @param coordinates
+     */
     public void firstBuild(Coordinates coordinates) {
         doBuild(coordinates);
         possibleBuilds = canBuildSecond(board.getCurrentActiveWorker());

@@ -9,6 +9,13 @@ public class RoundPan extends Round {
         super(board, player);
     }
 
+    /**
+     * method that move worker in moveCoordinates and check if player wins according pan win conditions
+     * @param moveCoordinates
+     * @param GameOver
+     * @param activeWorker
+     * @return GameOver
+     */
     public boolean doMove(Coordinates moveCoordinates,boolean GameOver,Worker activeWorker){
         Coordinates oldCoordinates;
         int x=activeWorker.getCoordinates().getX();

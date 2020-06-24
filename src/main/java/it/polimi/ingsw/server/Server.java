@@ -32,16 +32,22 @@ public class Server {
     private ArrayList<Coordinates> workerPositions = new ArrayList<>();
     boolean boolP1 = false, boolP2 = false, boolP3 = false, bool = false;
 
-
+    /**
+     * constructo
+     * @param port
+     * @throws IOException
+     */
     public Server(int port) throws IOException {
         this.serverSocket = new ServerSocket(port);
     }
 
+    /**
+     * method that deregisters all client connection if one cuts off (2 players)
+     * @param c
+     * @param playerNumber
+     */
     public synchronized void deregisterConnection2(ClientConnection c,int playerNumber) {
         ClientConnection opponent = playingConnection.get(c);
-  /*      if(opponent != null) {
-            opponent.closeConnection();
-        }*/
         opponent.asyncSend(new ReturnMessage(29,playerNumber));
         playingConnection.remove(c);
         playingConnection.remove(opponent);
@@ -51,6 +57,11 @@ public class Server {
         }
     }
 
+    /**
+     * method that deregisters all client connection if one cuts off (3 players)
+     * @param c
+     * @param playerNumber
+     */
     public synchronized void deregisterConnection3(ClientConnection c, int playerNumber){
         ClientConnection opponent1 = playingConnection.get(c);
         ClientConnection opponent2 = playingConnection1.get(c);
@@ -90,6 +101,13 @@ public class Server {
     }
 
 
+    /**
+     * method called when a client connects to server
+     * @param c
+     * @param name
+     * @param god
+     * @param idplayer
+     */
     public synchronized void lobby(ClientConnection c, String name, God god,int idplayer) {
         waitingConnection.put(name, c);
         playerGodAssociation.put(name, god);
@@ -220,6 +238,10 @@ public class Server {
         player3View.addObserver(game.getRound(player3));
     }
 
+    /**
+     * method that put in wait first player
+     * @throws InterruptedException
+     */
     public synchronized void putInWaitP1() throws InterruptedException {
         while(!boolP1){
             try{
@@ -231,6 +253,10 @@ public class Server {
         boolP1 = false;
     }
 
+    /**
+     *
+     * @throws InterruptedException
+     */
     public synchronized void putInWaitStart() throws InterruptedException {
         while(!bool){
             try{
@@ -242,6 +268,10 @@ public class Server {
         bool = false;
     }
 
+    /**
+     * method that put in wait second player
+     * @throws InterruptedException
+     */
     public synchronized void putInWaitP2() throws InterruptedException {
         while(!boolP2){
             try{
@@ -253,6 +283,10 @@ public class Server {
         boolP2 = false;
     }
 
+    /**
+     * method that put in wait third player
+     * @throws InterruptedException
+     */
     public synchronized void putInWaitP3() throws InterruptedException {
         while(!boolP3 ){
             try{
@@ -264,6 +298,10 @@ public class Server {
         boolP3 = false;
     }
 
+    /**
+     * method that put in wait challenger player
+     * @throws InterruptedException
+     */
     public synchronized void putInWaitChallenger() throws InterruptedException {
         while(gods.size()!=1){
             try{
@@ -279,16 +317,25 @@ public class Server {
             notifyAll();
     }
 
+    /**
+     * method that removes from wait first player
+     */
     public synchronized void removeFromWaitP1 (){
         boolP1 = true;
         notifyAll();
     }
 
+    /**
+     * method that removes from wait second player
+     */
     public synchronized void removeFromWaitP2 (){
         boolP2 = true;
         notifyAll();
     }
 
+    /**
+     * method that removes from wait third player
+     */
     public synchronized void removeFromWaitP3 (){
         boolP3 = true;
         notifyAll();
@@ -298,6 +345,11 @@ public class Server {
         notifyAll();
     }
 
+    /**
+     * method that checks if all nicknames are different
+     * @param name
+     * @return
+     */
     public synchronized boolean nicknameCheck(String name){
         Iterator<String> it = nicknames.iterator();
         String nickname;
@@ -311,6 +363,12 @@ public class Server {
         return true;
     }
 
+    /**
+     * method that creates an array with all starting workers position
+     * @param x
+     * @param y
+     * @return
+     */
     public synchronized boolean addWorkersPositions(int x, int y){
         Iterator<Coordinates> it = workerPositions.iterator();
         Coordinates newC, oldC;
@@ -326,6 +384,10 @@ public class Server {
         return true;
     }
 
+    /**
+     *
+     * @return workerPositions
+     */
     public ArrayList<Coordinates> getWorkerPositions() {
         return workerPositions;
     }

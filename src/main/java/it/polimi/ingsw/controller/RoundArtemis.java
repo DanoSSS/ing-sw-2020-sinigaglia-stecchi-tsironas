@@ -17,6 +17,12 @@ public class RoundArtemis extends Round {
         super(board, player);
     }
 
+    /**
+     * method that calculate possible cell in wich current worker can move according Artemis rules
+     * @param worker
+     * @param oldCoordinates
+     * @return possiblesMovesCoordinates
+     */
     public ArrayList<Coordinates> canMoveSecond(Worker worker,Coordinates oldCoordinates) {
         Coordinates coordinates, newCoordinates;
         int x, y;
@@ -43,6 +49,10 @@ public class RoundArtemis extends Round {
         return possiblesMovesCoordinates;
     }
 
+    /**
+     * method that calls first doMove for workers with artemis power
+     * @param newC
+     */
     public void firstMoveArtemis(Coordinates newC) {
         boolean win = false;
         int x=board.getCurrentActiveWorker().getCoordinates().getX();
@@ -57,6 +67,10 @@ public class RoundArtemis extends Round {
         }
     }
 
+    /**
+     * method that analyzes input, calls doMove for a second time in artemis round and calculate possibleBuilds
+     * @param answer
+     */
     public void possibleBuildsArtemis(String answer){
         boolean win = false;
         Coordinates coordinates=null;

@@ -17,6 +17,11 @@ public class RoundPrometheus extends Round {
         super(board, player);
     }
 
+    /**
+      method that calculate possibleMove if player has build before move
+     * @param worker
+     * @return
+     */
     public ArrayList<Coordinates> canMoveAfterBuild(Worker worker) {
         Coordinates coordinates, newCoordinates;
         int x, y;
@@ -37,6 +42,10 @@ public class RoundPrometheus extends Round {
         return possiblesMovesCoordinates;
     }
 
+    /**
+     * method that received active worker's id calculate possibleMove or possibleBuild
+     * @param id
+     */
     public void activeWorkerSelectionPrometheus(int id){
         Worker firstActiveWorker = board.getWorkerById(id);
         possibleBuilds = canBuild(firstActiveWorker);
@@ -57,6 +66,10 @@ public class RoundPrometheus extends Round {
         } else board.setCurrentActiveWorkerAndChoosePrometheus(firstActiveWorker, possibleMoves, possibleBuilds);
     }
 
+    /**
+     * method that analyzes input and based on that calls doBuild or doMove
+     * @param input
+     */
     public void moveOrBuild(String input){
         boolean win= false;
         String[] inputAnswer = input.split(" ");

@@ -16,24 +16,43 @@ public class Worker implements Serializable {
         this.IdWorker=id;
     }
 
+    /**
+     *
+     * @return player
+     */
     public Player getPlayer() {
         return player;
     }
 
+    /**
+     *
+     * @param player
+     */
     public void setPlayer(Player player) {
         this.player = player;
     }
 
-    //get the worker's coordinates  MODIFICATO DA CONTROLLARE
+    /**
+     * get the worker's coordinates
+     * @return coordinates
+     */
     public Coordinates getCoordinates() { return coordinates; }
 
 
-    //change the worker's coordinates  MODIFICATO DA CONTROLLARE
-    public void setCell(int x, int y) { // uguale alla locateworker
+    /**
+     * change the worker's coordinates
+     * @param x
+     * @param y
+     */
+    public void setCell(int x, int y) {
         coordinates.setX(x);
         coordinates.setY(y);
     }
 
+    /**
+     *
+     * @return IdWorker
+     */
     public int getIdWorker() {
         return IdWorker;
     }

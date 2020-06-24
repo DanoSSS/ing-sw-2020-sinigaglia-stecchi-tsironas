@@ -13,6 +13,10 @@ public class RoundEphaestus extends Round {
         super(board, player);
     }
 
+    /**
+     * method that according the input build one or two time in the same cell
+     * @param input
+     */
     public void buildSecond(String input){
         int i;
         String[] inputAnswer = input.split(" ");
