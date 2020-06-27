@@ -52,10 +52,6 @@ public class RoundEphaestus extends Round {
                 Coordinates moveC = ((Message) message).getCoordinates();
                 moveInCoordinate(moveC);
                 break;
-            case MOVE_AND_COORDINATE_BUILD:
-                Coordinates buildC = ((Message) message).getCoordinates();
-                buildInCoordinate(buildC);
-                break;
             case BUILD_EPHAESTUS:
                 String input = ((Message) message).getSentence();
                 buildSecond(input);

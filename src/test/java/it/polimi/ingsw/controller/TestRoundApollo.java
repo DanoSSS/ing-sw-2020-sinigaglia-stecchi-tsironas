@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.*;
 
+import it.polimi.ingsw.utils.Message;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -179,6 +180,37 @@ public class TestRoundApollo {
         }
         assertFalse(tag);
         assertTrue(tag2);
+    }
+
+    @Test
+    public void TestUpdateActiveWorker(){
+        try{
+            Message message = new Message(1,0);
+            TestRoundApollo.update(message);
+            assertEquals(board.getCurrentActiveWorker(),worker1);
+        }catch (NullPointerException e){}
+    }
+
+    @Test
+    public void TestUpdateSelectCoordinateMove(){
+        try{
+            board.setCurrentActiveWorker(worker1);
+            Coordinates coordinates11 = new Coordinates(1,1);
+            Message message = new Message(6,coordinates11);
+            TestRoundApollo.update(message);
+            assertEquals(worker1,board.getWorker(coordinates11));
+        }catch (NullPointerException e){}
+    }
+
+    @Test
+    public void TestUpdateMoveAndCoordinateBuild(){
+        try{
+            board.setCurrentActiveWorker(worker1);
+            Coordinates coordinates11 = new Coordinates(1,1);
+            Message message = new Message(7,coordinates11);
+            TestRoundApollo.update(message);
+            assertEquals(1,board.getLevel(coordinates11));
+        }catch (NullPointerException e){}
     }
 
 }

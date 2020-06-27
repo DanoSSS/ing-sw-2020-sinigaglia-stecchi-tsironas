@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.utils.Message;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,5 +34,36 @@ public class TestRoundEphaestus {
             TestRoundEphaestus.buildSecond("no 1,0");
             assertEquals(2, board.getLevel(coordinates10));
         } catch (NullPointerException e) {}
+    }
+
+    @Test
+    public void TestUpdateActiveWorker(){
+        try{
+            Message message = new Message(1,0);
+            TestRoundEphaestus.update(message);
+            assertEquals(board.getCurrentActiveWorker(),worker1);
+        }catch (NullPointerException e){}
+    }
+
+    @Test
+    public void TestUpdateSelectCoordinateMove(){
+        try{
+            board.setCurrentActiveWorker(worker1);
+            Coordinates coordinates11 = new Coordinates(1,1);
+            Message message = new Message(6,coordinates11);
+            TestRoundEphaestus.update(message);
+            assertEquals(worker1,board.getWorker(coordinates11));
+        }catch (NullPointerException e){}
+    }
+
+    @Test
+    public void TestUpdateBuildEphaestus(){
+        try{
+            board.setCurrentActiveWorker(worker1);
+            Coordinates coordinates11 = new Coordinates(1,1);
+            Message message = new Message(12,"no 1,1");
+            TestRoundEphaestus.update(message);
+            assertEquals(1,board.getLevel(coordinates11));
+        }catch (NullPointerException e){}
     }
 }

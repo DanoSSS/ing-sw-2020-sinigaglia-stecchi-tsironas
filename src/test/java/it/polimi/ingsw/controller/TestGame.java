@@ -1,11 +1,10 @@
 package it.polimi.ingsw.controller;
-import it.polimi.ingsw.model.Board;
-import it.polimi.ingsw.model.God;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.utils.Message;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -84,4 +83,39 @@ public class TestGame {
         assertEquals(r.player,player14);
     }
 
+    @Test
+    public void TestUpdateInitWorkers(){
+        try{
+            //2 players
+            ArrayList<Coordinates> coordinates= new ArrayList<>();
+            Coordinates coordinates11 = new Coordinates(1,1);
+            coordinates.add(coordinates11);
+            Coordinates coordinates21 = new Coordinates(2,1);
+            coordinates.add(coordinates21);
+            Coordinates coordinates22 = new Coordinates(2,2);
+            coordinates.add(coordinates22);
+            Coordinates coordinates12 = new Coordinates(1,2);
+            coordinates.add(coordinates12);
+            Message message = new Message(0,coordinates);
+            game2p.update(message);
+            assertEquals(worker3, board2p.getWorker(coordinates11));
+            assertEquals(worker4, board2p.getWorker(coordinates21));
+            assertEquals(worker1, board2p.getWorker(coordinates22));
+            assertEquals(worker2, board2p.getWorker(coordinates12));
+
+            //3 players
+            Coordinates coordinates13 = new Coordinates(1,3);
+            coordinates.add(coordinates13);
+            Coordinates coordinates32 = new Coordinates(3,2);
+            coordinates.add(coordinates32);
+            Message message1 = new Message(0,coordinates);
+            game3p.update(message1);
+            assertEquals(worker3, board3p.getWorker(coordinates11));
+            assertEquals(worker4, board3p.getWorker(coordinates21));
+            assertEquals(worker5, board3p.getWorker(coordinates22));
+            assertEquals(worker6, board3p.getWorker(coordinates12));
+            assertEquals(worker1, board3p.getWorker(coordinates13));
+            assertEquals(worker2, board3p.getWorker(coordinates32));
+        }catch (NullPointerException e){}
+    }
 }

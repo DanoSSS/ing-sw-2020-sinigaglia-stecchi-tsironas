@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.utils.Message;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -52,6 +53,48 @@ public class TestRoundDemeter {
             testRoundDemeter.secondBuildEndTurn("1,1");
             int level = board.getLevel(coordinates11);
             assertEquals(1, level);
+        }catch (NullPointerException e){}
+    }
+
+    @Test
+    public void TestUpdateActiveWorker(){
+        try{
+            Message message = new Message(1,0);
+            testRoundDemeter.update(message);
+            assertEquals(board.getCurrentActiveWorker(),worker1);
+        }catch (NullPointerException e){}
+    }
+
+    @Test
+    public void TestUpdateSelectCoordinateMove(){
+        try{
+            board.setCurrentActiveWorker(worker1);
+            Coordinates coordinates11 = new Coordinates(1,1);
+            Message message = new Message(6,coordinates11);
+            testRoundDemeter.update(message);
+            assertEquals(worker1,board.getWorker(coordinates11));
+        }catch (NullPointerException e){}
+    }
+
+    @Test
+    public void TestUpdateMoveAndCoordinateBuild(){
+        try{
+            board.setCurrentActiveWorker(worker1);
+            Coordinates coordinates11 = new Coordinates(1,1);
+            Message message = new Message(7,coordinates11);
+            testRoundDemeter.update(message);
+            assertEquals(1,board.getLevel(coordinates11));
+        }catch (NullPointerException e){}
+    }
+
+    @Test
+    public void TestUpdateFirstBuildDemeter(){
+        try{
+            board.setCurrentActiveWorker(worker1);
+            Coordinates coordinates11 = new Coordinates(1,1);
+            Message message = new Message(14,coordinates11);
+            testRoundDemeter.update(message);
+            assertEquals(1,board.getLevel(coordinates11));
         }catch (NullPointerException e){}
     }
 }

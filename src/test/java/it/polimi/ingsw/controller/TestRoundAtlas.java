@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.utils.Message;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -76,6 +77,46 @@ public class TestRoundAtlas {
             testRoundAtlas.buildInCoordinate(c1);
             int level = board.getLevel(c1);
             assertEquals(1,level);
+        }catch (NullPointerException e){}
+    }
+    @Test
+    public void TestUpdateActiveWorker(){
+        try{
+            Message message = new Message(1,0);
+            testRoundAtlas.update(message);
+            assertEquals(board.getCurrentActiveWorker(),worker1);
+        }catch (NullPointerException e){}
+    }
+
+    @Test
+    public void TestUpdateSelectCoordinateMove(){
+        try{
+            board.setCurrentActiveWorker(worker1);
+            Coordinates coordinates11 = new Coordinates(1,1);
+            Message message = new Message(6,coordinates11);
+            testRoundAtlas.update(message);
+            assertEquals(worker1,board.getWorker(coordinates11));
+        }catch (NullPointerException e){}
+    }
+
+    @Test
+    public void TestUpdateMoveAndCoordinateBuild(){
+        try{
+            board.setCurrentActiveWorker(worker1);
+            Coordinates coordinates11 = new Coordinates(1,1);
+            Message message = new Message(7,coordinates11);
+            testRoundAtlas.update(message);
+            assertEquals(1,board.getLevel(coordinates11));
+        }catch (NullPointerException e){}
+    }
+
+    @Test
+    public void TestUpdateBuildAtlas(){
+        try{
+            Coordinates coordinates11 = new Coordinates(1,1);
+            Message message = new Message(11,"dome 1,1");
+            testRoundAtlas.update(message);
+            assertTrue(board.isDome(coordinates11));
         }catch (NullPointerException e){}
     }
 }

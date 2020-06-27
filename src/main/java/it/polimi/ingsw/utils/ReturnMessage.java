@@ -255,5 +255,4 @@ public class ReturnMessage implements Serializable {
         return god3;
     }
 
-
 }

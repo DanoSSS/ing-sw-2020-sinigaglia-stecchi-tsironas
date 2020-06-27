@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.utils.Message;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -48,6 +49,48 @@ public class TestRoundHestia {
             testRoundHestia.firstBuild(coordinates12);
             int i = board.getLevel(coordinates12);
             assertEquals(2, i);
+        }catch (NullPointerException e){}
+    }
+
+    @Test
+    public void TestUpdateActiveWorker(){
+        try{
+            Message message = new Message(1,0);
+            testRoundHestia.update(message);
+            assertEquals(board.getCurrentActiveWorker(),worker1);
+        }catch (NullPointerException e){}
+    }
+
+    @Test
+    public void TestUpdateSelectCoordinateMove(){
+        try{
+            board.setCurrentActiveWorker(worker1);
+            Coordinates coordinates11 = new Coordinates(1,1);
+            Message message = new Message(6,coordinates11);
+            testRoundHestia.update(message);
+            assertEquals(worker1,board.getWorker(coordinates11));
+        }catch (NullPointerException e){}
+    }
+
+    @Test
+    public void TestUpdateMoveAndCoordinateBuild(){
+        try{
+            board.setCurrentActiveWorker(worker1);
+            Coordinates coordinates11 = new Coordinates(1,1);
+            Message message = new Message(7,coordinates11);
+            testRoundHestia.update(message);
+            assertEquals(1,board.getLevel(coordinates11));
+        }catch (NullPointerException e){}
+    }
+
+    @Test
+    public void TestUpdateFirstBuild(){
+        try{
+            board.setCurrentActiveWorker(worker1);
+            Coordinates coordinates11 = new Coordinates(1,1);
+            Message message = new Message(14,"1,1");
+            testRoundHestia.update(message);
+            assertEquals(1,board.getLevel(coordinates11));
         }catch (NullPointerException e){}
     }
 }
