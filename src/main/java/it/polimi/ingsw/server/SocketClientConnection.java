@@ -23,6 +23,13 @@ public class SocketClientConnection extends Observable<Object> implements Client
     private int playerNumber;
     private  int winner=-1;
 
+    /**
+     * contructor of the class
+     * @param socket
+     * @param server
+     * @param playerNumber
+     * @throws IOException
+     */
     public SocketClientConnection(Socket socket, Server server, int playerNumber) throws IOException {
         this.socket = socket;
         this.server = server;
@@ -31,10 +38,19 @@ public class SocketClientConnection extends Observable<Object> implements Client
         this.in = new ObjectInputStream(socket.getInputStream());
     }
 
+    /**
+     * @return
+     */
     private synchronized boolean isActive() {
         return active;
     }
 
+    /**
+     * This method reads a message from the client and returns the sentence it contains
+     * @return
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private synchronized String read() throws IOException, ClassNotFoundException {
         String s = null;
         Message recv = (Message) in.readObject();
@@ -42,6 +58,10 @@ public class SocketClientConnection extends Observable<Object> implements Client
         return s;
     }
 
+    /**
+     * This method sends to the client the message it receives
+     * @param message
+     */
     private synchronized void send(Object message) {
         try {
             out.reset();
@@ -52,6 +72,9 @@ public class SocketClientConnection extends Observable<Object> implements Client
         }
     }
 
+    /**
+     * This method closes opponents sockets and then this socket
+     */
     private void close() {
         if(boolPlayerDisconnected==true) {   //se players si disconnette
             if (server.getNPlayers() == 2) {
@@ -68,6 +91,9 @@ public class SocketClientConnection extends Observable<Object> implements Client
         closeConnection();
     }
 
+    /**
+     * This method closes the socket
+     */
     @Override
     public synchronized void closeConnection() {
         //send(new ReturnMessage(4,"Connection closed!"));
@@ -79,6 +105,10 @@ public class SocketClientConnection extends Observable<Object> implements Client
         active = false;
     }
 
+    /**
+     * This method sends to the client the message it receives in a new thread except if the message is a WIN message or a LOOSE message, in those two cases it sets active to false to exit the while loop in the run method
+     * @param message
+     */
     @Override
     public void asyncSend(Object message) {
         ReturnMessage mesg=(ReturnMessage)message;
@@ -101,7 +131,9 @@ public class SocketClientConnection extends Observable<Object> implements Client
         }).start();
     }
 
-
+    /**
+     * This method is used to exchange messages with the client during the setup phase and then enters in a loop while that is used to receive messages from the clients during the whole game
+     */
     @Override
     public void run() {
         String name;
@@ -209,6 +241,13 @@ public class SocketClientConnection extends Observable<Object> implements Client
         }
     }
 
+    /**
+     * This method receives the number of players and handles the god selection
+     * @param n
+     * @return
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private String godSelection(int n) throws IOException, ClassNotFoundException {
         String read = read().toUpperCase();
         while (server.removeGods1(read)) {
@@ -222,6 +261,11 @@ public class SocketClientConnection extends Observable<Object> implements Client
         return read;
     }
 
+    /**
+     * This method handles the worker's setup exchanging messages with the clients
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private synchronized void askForCoordinates() throws IOException, ClassNotFoundException {
         try {
             send(new ReturnMessage(25,"set your first worker in coordinate: (x,y)",server.getWorkerPositions(),1));

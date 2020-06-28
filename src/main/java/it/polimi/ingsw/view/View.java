@@ -18,6 +18,7 @@ public abstract class View extends Observable<Object> implements Observer<Object
         return player;
     }
 
+
     protected void handleMessage(Object m,int idPlayer){  //getplayerbyid
                 ((Message) m).setPlayerValue(idPlayer);
                 notify(m);
