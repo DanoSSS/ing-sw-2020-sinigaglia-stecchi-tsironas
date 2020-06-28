@@ -142,6 +142,10 @@ public class Server {
         System.out.println("\nMatch created!");
     }
 
+    /**
+     * This method instantiates all the classes necessary for the game with 2 players
+     * @param keys
+     */
     public void startGameAndObservers2(List<String> keys){
         int[] idWorker = {0,1,2,3};
         Player[] players = new Player[2];
@@ -186,6 +190,10 @@ public class Server {
         player2View.addObserver(game.getRound(player2));
     }
 
+    /**
+     * This method instantiates all the classes necessary for the game with 3 players
+     * @param keys
+     */
     public void startGameAndObservers3(List<String> keys){
         int[] idWorker = {0,1,2,3,4,5};
         Player[] players = new Player[3];
