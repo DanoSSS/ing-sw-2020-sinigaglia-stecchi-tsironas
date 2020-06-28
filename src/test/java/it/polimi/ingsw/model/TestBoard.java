@@ -264,4 +264,14 @@ public class TestBoard {
         assertEquals(worker1,board2p.getCurrentActiveWorker());
 
     }
+
+    @Test
+    public void TestsetcurrentPossibleMoves(){
+        ArrayList<Coordinates> possibleMove = new ArrayList<>();
+        Coordinates c11 = new Coordinates(1,1);
+        possibleMove.add(c11);
+        board2p.setCurrentActiveWorkerAndPossibleMoves(worker1,possibleMove);
+        assertEquals(1,board2p.getCurrentPossibleMoves().size());
+    }
+    
 }
