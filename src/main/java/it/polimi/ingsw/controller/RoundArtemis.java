@@ -39,7 +39,7 @@ public class RoundArtemis extends Round {
                             possiblesMovesCoordinates.add(newCoordinates);
                         }
                     } else {
-                        if (!board.isDome(newCoordinates) && (board.getLevel(newCoordinates) - board.getLevel(coordinates)) == 0 && !board.isOccupied(newCoordinates) && (newCoordinates.getX()!=oldCoordinates.getX() || newCoordinates.getY()!=oldCoordinates.getY())) {
+                        if (!board.isDome(newCoordinates) && (board.getLevel(newCoordinates) - board.getLevel(coordinates)) <= 0 && !board.isOccupied(newCoordinates) && (newCoordinates.getX()!=oldCoordinates.getX() || newCoordinates.getY()!=oldCoordinates.getY())) {
                             possiblesMovesCoordinates.add(newCoordinates);
                         }
                     }

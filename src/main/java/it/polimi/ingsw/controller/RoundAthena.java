@@ -51,7 +51,7 @@ public class RoundAthena extends Round {
         oldCoordinates = new Coordinates(x,y);
         if ((board.getLevel(moveCoordinates) - board.getLevel(oldCoordinates)) == 1) {
             count = board.getNumberOfPlayers();
-            board.setNround(count - 1);
+            board.setNround(count);
         }
         board.freeCellFromWorker(oldCoordinates);
         board.moveWorker(moveCoordinates, activeWorker);

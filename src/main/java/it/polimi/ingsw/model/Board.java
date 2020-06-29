@@ -490,6 +490,12 @@ public class Board extends Observable<Object> {
     public void loseGame(){
         if(getNumberOfPlayers()==3 &&!flag){
             setLoseRound(currentRound);
+            if(players[currentRound-1].getGod()==God.HERA){
+                heraPlayer=-1;
+            }
+            if(players[currentRound-1].getGod()==God.CHRONUS){
+                chronusPlayer=-1;
+            }
             flag=true;
             int newRound=UpdateRound();
             freeCellFromWorker(players[loseRound-1].getWorker1().getCoordinates());

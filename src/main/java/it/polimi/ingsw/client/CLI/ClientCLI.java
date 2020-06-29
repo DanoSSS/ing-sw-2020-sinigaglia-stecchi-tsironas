@@ -27,46 +27,86 @@ public class ClientCLI {
     private ArrayList<Coordinates> possibleMoves = null;
     private ArrayList<Coordinates> possibleBuilds = null;
 
-
+    /**
+     * constructor clientCli
+     * @param ip
+     * @param port
+     */
     public ClientCLI(String ip, int port){
         this.ip = ip;
         this.port = port;
     }
 
 
+    /**
+     *
+     * @param a
+     */
     public void setClientAction(Action a) {
         this.clientAction = a;
     }
 
+    /**
+     *
+     * @return clientAction
+     */
     public Action getClientAction() {
         return clientAction;
     }
 
+    /**
+     *
+     * @return possibleMoves
+     */
     public ArrayList<Coordinates> getPossibleMoves() {
         return possibleMoves;
     }
 
+    /**
+     *
+     * @param possibleMoves
+     */
     public void setPossibleMoves(ArrayList<Coordinates> possibleMoves) {
         this.possibleMoves = possibleMoves;
     }
 
+    /**
+     *
+     * @return possibleBuilds
+     */
     public ArrayList<Coordinates> getPossibleBuilds() {
         return possibleBuilds;
     }
 
+    /**
+     *
+     * @param possibleBuilds
+     */
     public void setPossibleBuilds(ArrayList<Coordinates> possibleBuilds) {
         this.possibleBuilds = possibleBuilds;
     }
 
-
+    /**
+     *
+     * @return active
+     */
     public synchronized boolean isActive(){
         return active;
     }
 
+    /**
+     *
+     * @param active
+     */
     public synchronized void setActive(boolean active){
         this.active = active;
     }
 
+    /**
+     *
+     * @param socketIn
+     * @return
+     */
     public Thread asyncReadFromSocket(final ObjectInputStream socketIn){
         Thread t = new Thread(new Runnable() {
             @Override
@@ -463,6 +503,12 @@ public class ClientCLI {
         return t;
     }
 
+    /**
+     *
+     * @param stdin
+     * @param socketOut
+     * @return
+     */
     public Thread asyncWriteToSocket(final Scanner stdin, final ObjectOutputStream socketOut){
         Thread t = new Thread(new Runnable() {
             @Override
@@ -609,6 +655,9 @@ public class ClientCLI {
 
     }
 
+    /**
+     * method that create board cli
+     */
     public void startCLIBoard() {
         board = new CellMessage[10][5];
         for (int i = 0; i < 10; i=i+2) {
@@ -623,6 +672,12 @@ public class ClientCLI {
         }
     }
 
+    /**
+     * method that draw worker in their initial position in board cli
+     * @param id
+     * @param x
+     * @param y
+     */
     public void setWorkerCellMessage(int id,int x,int y){
         switch (id){
             case 0:
@@ -646,10 +701,22 @@ public class ClientCLI {
         }
     }
 
+    /**
+     * method that remove a worker from cell in board cli
+     * @param x
+     * @param y
+     */
     public void freeWorkerCellMessage(int x,int y){
         board[x][y] = CellMessage.free;
     }
 
+    /**
+     * method that draw level in board cli
+     * @param x
+     * @param y
+     * @param level
+     * @param dome
+     */
     public void buildCellMessage(int x,int y,int level,boolean dome) {
         if (dome) {
             board[x][y] = CellMessage.DOME;
@@ -673,6 +740,9 @@ public class ClientCLI {
         }
     }
 
+    /**
+     * method that draw board cli
+     */
     public void print(){
         System.out.println("---------------------------------------------");
         for (int i = 0; i < 10; i++) {

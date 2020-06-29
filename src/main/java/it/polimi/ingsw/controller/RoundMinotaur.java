@@ -38,7 +38,7 @@ public class RoundMinotaur extends Round {
                             }
                         }
                     } else {
-                        if (!board.isDome(newCoordinates) && (board.getLevel(newCoordinates) - board.getLevel(coordinates)) == 0 ) {
+                        if (!board.isDome(newCoordinates) && (board.getLevel(newCoordinates) - board.getLevel(coordinates)) <= 0 ) {
                             if(!board.isOccupied(newCoordinates)) {
                                 possiblesMovesCoordinates.add(newCoordinates);
                             }else if(board.getWorker(newCoordinates).getPlayer() != player && minotaurForcing(coordinates,newCoordinates)){

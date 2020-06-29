@@ -33,7 +33,7 @@ public class Server {
     boolean boolP1 = false, boolP2 = false, boolP3 = false, bool = false;
 
     /**
-     * constructo
+     * constructor
      * @param port
      * @throws IOException
      */
@@ -83,6 +83,9 @@ public class Server {
         }
     }
 
+    /**
+     * method that reset all variable for a new game
+     */
     private void restartForNewGame() {
         this.nPlayers=0;
         this.nPlayersConnected=0;
@@ -400,6 +403,11 @@ public class Server {
         return workerPositions;
     }
 
+    /**
+     * method to analyze challenger gods selection
+     * @param read
+     * @return
+     */
     public boolean setGods1(String read) {      //try to create god card from input of P1
         God g;
         String[] inputGod = read.split(",");
@@ -419,18 +427,35 @@ public class Server {
         return true;
     }
 
+    /**
+     * methods to clear challenger god selection
+     */
     public void clearGods(){
         gods.clear();
     }
 
+    /**
+     *
+     * @param god
+     */
     public void setGods(String god){        //put god card in list
         gods.add(God.valueOf(god));
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     public String getGods(int i){
         return gods.get(i).toString();
     }
 
+    /**
+     * method analyze not challenger players god selection
+     * @param read
+     * @return
+     */
     public boolean removeGods1(String read) {
         God g;
         try {
@@ -446,14 +471,26 @@ public class Server {
         return false;
     }
 
+    /**
+     *
+     * @param god
+     */
     public void removeGods(String god){
         gods.remove(God.valueOf(god));
     }
 
+    /**
+     *
+     * @param i
+     */
     public void setNPlayers(int i){
         nPlayers = i;
     }
 
+    /**
+     *
+     * @return nPlayers
+     */
     public int getNPlayers(){
         return nPlayers;
     }

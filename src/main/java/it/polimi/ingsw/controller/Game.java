@@ -128,6 +128,10 @@ public class Game extends Observable<Object> implements Observer<Object> {
         return round.get(player);
     }
 
+    /**
+     * update from remoteview
+     * @param message
+     */
     @Override
     public void update(Object message) {
         Action a=((Message) message).getAction(); //0

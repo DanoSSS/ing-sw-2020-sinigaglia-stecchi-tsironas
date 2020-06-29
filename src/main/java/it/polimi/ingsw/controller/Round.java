@@ -102,7 +102,7 @@ public abstract class Round implements Observer<Object>{
                             possiblesMovesCoordinates.add(newCoordinates);
                         }
                     } else {
-                        if (!board.isDome(newCoordinates) && (board.getLevel(newCoordinates) - board.getLevel(coordinates)) == 0 && !board.isOccupied(newCoordinates)) {
+                        if (!board.isDome(newCoordinates) && (board.getLevel(newCoordinates) - board.getLevel(coordinates)) <= 0 && !board.isOccupied(newCoordinates)) {
                             possiblesMovesCoordinates.add(newCoordinates);
                         }
                     }

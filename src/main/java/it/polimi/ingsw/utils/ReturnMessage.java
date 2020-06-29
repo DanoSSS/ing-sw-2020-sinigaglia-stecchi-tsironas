@@ -33,14 +33,24 @@ public class ReturnMessage implements Serializable {
     private String god1,god2,god3;
 
 
-    //case STRING
+    /**
+     * constructor returnMessage for string
+     * @param nAction
+     * @param sentence
+     */
     public ReturnMessage(int nAction,String sentence){
         this.action = Action.values()[nAction];
         this.sentence = sentence;
         this.clientController=null;
     }
 
-    //case SET_WORKER_POSITION,ERROR_SET_WORKER_POSITIONS
+    /**
+     * constructor returnMessage to set worker in initial position
+     * @param nAction
+     * @param sentence
+     * @param workerPositions
+     * @param n
+     */
     public ReturnMessage(int nAction,String sentence,ArrayList<Coordinates> workerPositions, int n){
         this.action = Action.values()[nAction];
         this.sentence = sentence;
@@ -50,8 +60,13 @@ public class ReturnMessage implements Serializable {
     }
 
 
-
-    //case SELECTCOORDINATEMOVE
+    /**
+     * constructor returnMessage for current active worker and possible move cells
+     * @param nAction
+     * @param currentActiveWorker
+     * @param currentPossibleMoves
+     * @param nCurrentPlayer
+     */
     public ReturnMessage(int nAction,int currentActiveWorker,ArrayList<Coordinates> currentPossibleMoves,int nCurrentPlayer){
         this.action = Action.values()[nAction];
         this.currentActiveWorker = currentActiveWorker;
@@ -60,7 +75,16 @@ public class ReturnMessage implements Serializable {
         this.clientController=null;
     }
 
-    //case BUILDENDTURN
+    /**
+     * constructor returnMessage to build and end turn
+     * @param nAction
+     * @param currentActiveWorker
+     * @param coordinate
+     * @param level
+     * @param nCurrentPlayer
+     * @param nextNPlayer
+     * @param dome
+     */
     public ReturnMessage(int nAction,int currentActiveWorker,Coordinates coordinate,int level,int nCurrentPlayer,int nextNPlayer,boolean dome){
         this.action = Action.values()[nAction];
         this.currentActiveWorker = currentActiveWorker;
@@ -72,7 +96,16 @@ public class ReturnMessage implements Serializable {
         this.clientController = null;
     }
 
-    //case MOVEANDCOORDINATEBUILD
+    /**
+     * constructor returnMessage to move and send possible build cells
+     * @param nAction
+     * @param currentActiveWorker
+     * @param oldC
+     * @param newC
+     * @param currentPossibleBuilds
+     * @param nCurrentPlayer
+     * @param oppWorker
+     */
     public ReturnMessage(int nAction,int currentActiveWorker,Coordinates oldC,Coordinates newC,ArrayList<Coordinates> currentPossibleBuilds,int nCurrentPlayer,Worker oppWorker){
         this.action = Action.values()[nAction];
         this.currentActiveWorker = currentActiveWorker;
@@ -85,8 +118,13 @@ public class ReturnMessage implements Serializable {
     }
 
 
-
-    //case WORKERSET
+    /**
+     * WORKERSET
+     * @param nAction
+     * @param workersSettingInBoard
+     * @param clientController
+     * @param workerPosition
+     */
     public ReturnMessage (int nAction, String[] workersSettingInBoard, ClientController clientController,Map<Worker, Coordinates> workerPosition){
         this.clientController=clientController;
         this.action=Action.values()[nAction];
@@ -94,7 +132,15 @@ public class ReturnMessage implements Serializable {
         this.workerPosition = workerPosition;
     }
 
-    //case WORKERSET,message receiver
+    /**
+     * WORKERSET
+     * @param nAction
+     * @param workerPosition
+     * @param nicknames
+     * @param idPlayers
+     * @param NPlayer
+     * @param firstToStartID
+     */
     public ReturnMessage(int nAction, Map<Worker, Coordinates> workerPosition, String[] nicknames, Integer[] idPlayers, int NPlayer,int firstToStartID) {
         this.action = Action.values()[nAction];
         this.workerPosition = workerPosition;
@@ -105,7 +151,14 @@ public class ReturnMessage implements Serializable {
         this.clientController = null;
     }
 
-    //case ARTEMIS
+    /**
+     * constructor ReturnMessage used in firstmoveArtemis
+     * @param nAction
+     * @param coordinateOld
+     * @param coordinate
+     * @param currentActiveWorker
+     * @param currentPossibleMoves
+     */
     public ReturnMessage(int nAction,Coordinates coordinateOld,Coordinates coordinate,int currentActiveWorker,ArrayList<Coordinates> currentPossibleMoves) {
         this.action = Action.values()[nAction];
         this.coordinate = coordinate;
@@ -115,7 +168,13 @@ public class ReturnMessage implements Serializable {
         this.clientController = null;
     }
 
-    //case END_TURN
+    /**
+     * constructor returnMessage to end turn
+     * @param nAction
+     * @param currentActiveWorker
+     * @param nCurrentPlayer
+     * @param nextNPlayer
+     */
     public ReturnMessage(int nAction,int currentActiveWorker,int nCurrentPlayer,int nextNPlayer){
         this.action = Action.values()[nAction];
         this.currentActiveWorker = currentActiveWorker;
@@ -124,7 +183,15 @@ public class ReturnMessage implements Serializable {
         this.clientController = null;
     }
 
-    //case FIRST_BUILD_DEMETER
+    /**
+     * constructor returnMessage used in firstbuilddemeterandHestia, buildbeforePrometheus and build ares
+     * @param nAction
+     * @param currentActiveWorker
+     * @param coordinates
+     * @param level
+     * @param dome
+     * @param currentPossibleBuilds
+     */
     public ReturnMessage(int nAction,int currentActiveWorker,Coordinates coordinates,int level,boolean dome,ArrayList<Coordinates> currentPossibleBuilds){
         this.action = Action.values()[nAction];
         this.currentActiveWorker = currentActiveWorker;
@@ -140,12 +207,25 @@ public class ReturnMessage implements Serializable {
         this.clientController=null;
     }
 
+    /**
+     * constructor returnMessage used to send currentRound or number of player
+     * @param nAction
+     * @param nCurrentPlayer
+     */
     public ReturnMessage(int nAction, int nCurrentPlayer) {
         this.action = Action.values()[nAction];
         this.nCurrentPlayer = nCurrentPlayer;
         this.clientController = null;
     }
 
+    /**
+     * constructor returnMessage used for loseGame
+     * @param nAction
+     * @param nCurrentPlayer
+     * @param nextNPlayer
+     * @param wk1
+     * @param wk2
+     */
     public ReturnMessage(int nAction,int nCurrentPlayer,int nextNPlayer,Worker wk1, Worker wk2){
         this.action = Action.values()[nAction];
         this.nCurrentPlayer = nCurrentPlayer;
@@ -162,6 +242,14 @@ public class ReturnMessage implements Serializable {
         this.clientController = null;
     }
 
+    /**
+     * constructor returnMessage used in choosePrometheus
+     * @param nAction
+     * @param idWorker
+     * @param currentPossibleMoves
+     * @param currentPossibleBuilds
+     * @param currentRound
+     */
     public ReturnMessage(int nAction, int idWorker, ArrayList<Coordinates> currentPossibleMoves, ArrayList<Coordinates> currentPossibleBuilds, int currentRound) {
         this.action = Action.values()[nAction];
         this.currentActiveWorker = idWorker;
@@ -171,6 +259,14 @@ public class ReturnMessage implements Serializable {
         this.clientController = null;
     }
 
+    /**
+     * constructor returnMessage used to set gods
+     * @param nAction
+     * @param NPlayer
+     * @param god1
+     * @param god2
+     * @param god3
+     */
     public ReturnMessage(int nAction,int NPlayer,String god1,String god2,String god3){
         this.action = Action.values()[nAction];
         this.NPlayer = NPlayer;
@@ -180,6 +276,12 @@ public class ReturnMessage implements Serializable {
         this.clientController = null;
     }
 
+    /**
+     * constructor returnMessage used for win
+     * @param nAction
+     * @param winner
+     * @param nCurrentPlayer
+     */
     public ReturnMessage(int nAction, int winner, int nCurrentPlayer) {
         this.action = Action.values()[nAction];
         this.level=winner;

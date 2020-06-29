@@ -33,7 +33,7 @@ public class RoundPrometheus extends Round {
             for (int j = y - 1; j <= y + 1; j++) {
                 if (i >= 0 && i <= 4 && j >= 0 && j <= 4) {
                     newCoordinates = new Coordinates(i, j);
-                    if (!board.isDome(newCoordinates) && (board.getLevel(newCoordinates) - board.getLevel(coordinates)) == 0 && !board.isOccupied(newCoordinates)) {
+                    if (!board.isDome(newCoordinates) && (board.getLevel(newCoordinates) - board.getLevel(coordinates)) <= 0 && !board.isOccupied(newCoordinates)) {
                         possiblesMovesCoordinates.add(newCoordinates);
                     }
                 }
