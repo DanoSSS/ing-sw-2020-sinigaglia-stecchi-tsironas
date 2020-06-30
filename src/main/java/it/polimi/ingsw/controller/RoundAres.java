@@ -29,19 +29,19 @@ public class RoundAres extends Round {
         Coordinates coordinates=null;
         boolean correctInput=false;
         int i;
-        if(!input.equals("NO")){
+        if(!input.equals("NO")) {
             String[] c = input.split(",");
-            try{
-                coordinates = new Coordinates(Integer.parseInt(c[0]),Integer.parseInt(c[1]));
-                correctInput=true;
-            }catch(NullPointerException | NumberFormatException e){
-                correctInput=false;
+            try {
+                coordinates = new Coordinates(Integer.parseInt(c[0]), Integer.parseInt(c[1]));
+                correctInput = true;
+            } catch (NullPointerException | NumberFormatException e) {
+                correctInput = false;
             }
-            if(correctInput){
+            if (correctInput) {
                 board.reduceLevel(coordinates);
             }
         }
-        if(board.getNround()!=0) {
+        if (board.getNround() != 0) {
             i = board.getNround();
             i--;
             board.setNround(i);

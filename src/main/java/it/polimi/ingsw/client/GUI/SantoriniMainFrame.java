@@ -59,16 +59,24 @@ public class SantoriniMainFrame extends JFrame {
      * @param playersList
      */
     public void addNamesAndGods(ArrayList<Player> playersList){
+        int n=playersList.size();
         for(Player p: playersList){
             JLabel playerLabel = new JLabel(p.getNickname()+":"+p.getGod().toString());
-            if(p.getIdPlayer()==1){
+            if(p.getIdPlayer()==2){
                 playerLabel.setForeground(new Color(14,104,7));
             }
-            if(p.getIdPlayer()==2){
-                playerLabel.setForeground(Color.RED);
+            if(n==2) {
+                if (p.getIdPlayer() == 1) {
+                    playerLabel.setForeground(Color.RED);
+                }
             }
-            if(p.getIdPlayer()==3){
-                playerLabel.setForeground(Color.BLUE);
+            else if(n==3) {
+                if (p.getIdPlayer() == 3) {
+                    playerLabel.setForeground(Color.RED);
+                }
+                if (p.getIdPlayer() == 1) {
+                    playerLabel.setForeground(Color.BLUE);
+                }
             }
             this.namesPanel.add(playerLabel);
         }

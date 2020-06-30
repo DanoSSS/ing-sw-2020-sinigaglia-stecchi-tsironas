@@ -352,7 +352,7 @@ public class ClientCLI {
                                 }
                                 else if(clientController.getIdPlayer() == id && clientController.getIdPlayer() != loseRound){
                                     setClientAction(Action.SELECT_ACTIVE_WORKER);
-                                    System.out.println("it's your turn!\nselect active worker: " + idWorkers[0] + " or " + idWorkers[1]);
+                                    System.out.println("it's your turn!\nselect active worker");
                                 }
                                 else if(clientController.getIdPlayer() != loseRound){
                                     setClientAction(Action.NOT_YOUR_TURN);
@@ -522,7 +522,6 @@ public class ClientCLI {
                             case STRING:
                             case FIRST_MESSAGE:
                             case NOT_YOUR_TURN:
-
                             case WRONG_GODS:
                             case CHOOSE_GOD:
                             case NICKNAME_ALREADY_USED:
