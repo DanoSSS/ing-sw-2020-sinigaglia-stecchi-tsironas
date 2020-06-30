@@ -309,9 +309,9 @@ public class ClientCLI {
                                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
                                     setClientAction(a);
                                     ArrayList<Coordinates> possibleBuilds = inputObject.getCurrentPossibleMoves();
-                                    setPossibleMoves(possibleMoves);
+                                    setPossibleMoves(possibleBuilds);
                                     print();
-                                    System.out.println("your worker "+id+" is now in coordinate\t"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+"\nSelect coordinate to build among the following.\n(If you want activate power and build a dome write dome follow by coordinate otherwise write std follow by coordinate)");
+                                    System.out.println("your worker "+id+" is now in coordinate\t"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+"\nSelect coordinate to build among the following.\n('DOME x,y' | 'STD x,y')If you want activate power and build a dome write dome follow by coordinate \n\t\t\t\t\t\totherwise write std follow by coordinate)");
                                     for(Coordinates c: possibleBuilds){
                                         System.out.println(c.getX()+","+c.getY());
                                     }
@@ -440,7 +440,7 @@ public class ClientCLI {
                                         for (Coordinates c : possibleMoves) {
                                             System.out.println(c.getX() + "," + c.getY());
                                         }
-                                    } else System.out.println("you cannot activate Ares power");
+                                    } else System.out.println("you cannot activate Ares power\nWrite NO to end turn");
                                 } else if (clientController.getIdPlayer() != loseRound) {
                                     n = clientController.getCurrentRoundIdPlayer();
                                     print();
@@ -522,21 +522,44 @@ public class ClientCLI {
                             case STRING:
                             case FIRST_MESSAGE:
                             case NOT_YOUR_TURN:
-                            case FIRST_BUILD_DEMETER:
-                            case BUILD_ATLAS:
-                            case NUMBER_OF_PLAYERS:
+
                             case WRONG_GODS:
                             case CHOOSE_GOD:
                             case NICKNAME_ALREADY_USED:
                             case SELECT_GODS_CHALLENGER:
                             case ERROR_SET_WORKER_POSITION:
-                            case ARES_POWER:
                                 socketOut.writeObject(new Message(getClientAction().getValue(), inputObject));
+                                break;
+                            case NUMBER_OF_PLAYERS:
+                                boolean iscorr = false;
+                                try{
+                                    if(Integer.parseInt(inputObject)==2 || Integer.parseInt(inputObject)==3){
+                                        iscorr = true;
+                                    }
+                                }catch (NumberFormatException|NullPointerException e) {
+                                    iscorr=false;
+                                }
+                                if(iscorr) {
+                                    socketOut.writeObject(new Message(getClientAction().getValue(), inputObject));
+                                } else {
+                                    System.out.println("ERROR: WRITE 2 or 3");
+                                }
                                 break;
                             case SET_WORKER_POSITION:
                                     String[] testInput = inputObject.split(","); //test if correct the input (es: '1,1' and not '1m1')
                                     if(testInput.length==2) {
-                                        socketOut.writeObject(new Message(getClientAction().getValue(), inputObject));
+                                        try{
+                                            Integer i1 = Integer.parseInt(testInput[0]);
+                                            Integer i2 = Integer.parseInt(testInput[1]);
+                                            correctInput=true;
+                                        }catch(NumberFormatException | NullPointerException e){
+                                            correctInput= false;
+                                        }
+                                        if(correctInput){
+                                            socketOut.writeObject(new Message(getClientAction().getValue(), inputObject));
+                                        } else {
+                                            System.out.println("ERROR: format numeric only");
+                                        }
                                     } else {
                                         System.out.println("ERROR: format -> x,y");
                                     }
@@ -577,9 +600,24 @@ public class ClientCLI {
                                     System.out.println("ERROR: Write one of the previous coordinate in the same format: \"x,y\"");
                                 }
                                 break;
+                            case BUILD_ATLAS: // DOME 2,3  -> {DOME} {2,3}  -> {2} {3}
+                                choose = inputObject.split(" ");
+                                if(choose[0].toUpperCase().equals("DOME")){
+                                    correctInput = isCorrectInput(choose[1], possibleMoves);
+                                } else if (choose[0].toUpperCase().equals("STD")){
+                                    correctInput = isCorrectInput(choose[1], possibleMoves);
+                                }
+                                if(!correctInput){
+                                    System.out.println("ERROR: ('dome X,X' | 'std X,Y') write DOME \"x,y\" or \"STD x,y\".\nx,y must be correct.");
+                                }else if(correctInput) {
+                                    socketOut.writeObject(new Message(getClientAction().getValue(), inputObject));
+                                }
+                                break;
                             case ARTEMIS_FIRST_MOVE:
+                            case FIRST_BUILD_DEMETER:
+                            case ARES_POWER:
                                 try {
-                                    if (!inputObject.isEmpty() && (inputObject.toUpperCase() == "NO" || isCorrectInput(inputObject, possibleMoves))) {
+                                    if (!inputObject.isEmpty() && (inputObject.toUpperCase().equals("NO") || isCorrectInput(inputObject, possibleMoves))) {
                                         socketOut.writeObject(new Message(getClientAction().getValue(), inputObject));
                                     } else {
                                         System.out.println("ERROR: Write NO or write one of the previous coordinate in the same format: \"x,y\"");
@@ -588,8 +626,6 @@ public class ClientCLI {
                                     System.out.println("ERROR: Write NO or write one of the previous coordinate in the same format: \"x,y\"");
                                 }
                                 break;
-
-
                             case PROMETHEUS_CHOOSE:  // BUILD 2,3  -> {BUILD} {2,3}  -> {2} {3}
                                 choose = inputObject.split(" ");
                                 if(choose[0].toUpperCase().equals("BUILD")){
@@ -616,6 +652,7 @@ public class ClientCLI {
                                     socketOut.writeObject(new Message(getClientAction().getValue(), inputObject));
                                 }
                                 break;
+
                             case GAME_OVER:
                                 socketOut.writeObject(new Message(4,inputObject));
                                 System.exit(-1);

@@ -249,7 +249,7 @@ public class SocketClientConnection extends Observable<Object> implements Client
      * @throws ClassNotFoundException
      */
     private String godSelection(int n) throws IOException, ClassNotFoundException {
-        String read = read().toUpperCase();
+        String read = read();
         while (server.removeGods1(read)) {
             if (n==3) {
                 send(new ReturnMessage(4, "you have entered a god card that doesn't exist, select your god between: " + server.getGods(0) + "\t" + server.getGods(1) + "\t" + server.getGods(2)));

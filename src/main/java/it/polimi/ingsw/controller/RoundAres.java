@@ -27,18 +27,28 @@ public class RoundAres extends Round {
      */
     public void aresPowerThenEndTurn(String input){
         Coordinates coordinates=null;
+        boolean correctInput=false;
         int i;
         if(!input.equals("NO")){
             String[] c = input.split(",");
-            coordinates = new Coordinates(Integer.parseInt(c[0]),Integer.parseInt(c[1]));
-            board.reduceLevel(coordinates);
+            try{
+                coordinates = new Coordinates(Integer.parseInt(c[0]),Integer.parseInt(c[1]));
+                correctInput=true;
+            }catch(NullPointerException | NumberFormatException e){
+                correctInput=false;
+            }
+            if(correctInput){
+                board.reduceLevel(coordinates);
+            }
         }
         if(board.getNround()!=0) {
             i = board.getNround();
             i--;
             board.setNround(i);
         }
-        board.aresEndTurn(coordinates); }
+        board.aresEndTurn(coordinates);
+    }
+
 
     /**
      * update from remote view
