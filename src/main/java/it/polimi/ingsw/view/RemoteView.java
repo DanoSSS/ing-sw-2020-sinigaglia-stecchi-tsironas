@@ -95,7 +95,8 @@ public class RemoteView extends View{
                 String nickname= players[numberRW-1];
                 int idPlayer= idPlayers[numberRW-1];
                 int NPlayer = workers.size()/2;
-                ClientController clientController= new ClientController(nickname,idPlayer,NPlayer,idPlayers,players,currentPlayer);
+                ArrayList<Player> playersList= ((ReturnMessage)message).getPlayersList();
+                ClientController clientController= new ClientController(nickname,idPlayer,NPlayer,idPlayers,players,currentPlayer,playersList);
                 for(int i=0;i<workers.size();i++) {
                     messageSettingWorkersPositions[i]= workers.get(i).getIdWorker() + " set in cell " + m.get(workers.get(i)).getX() + "," + m.get(workers.get(i)).getY();
                     int x=(m.get(workers.get(i)).getX()*2)+1;

@@ -57,9 +57,7 @@ public class Message implements Serializable {
     }
 
 
-    public int getPlayerValue() {
-        return playerValue;
-    }
+
     public void setPlayerValue(int playerValue) {
         this.playerValue = playerValue;
     }
@@ -75,5 +73,4 @@ public class Message implements Serializable {
     public Coordinates getCoordinates(){
         return coordinates;
     }
-
 }

@@ -17,14 +17,26 @@ public enum CellMessage{
 
     private final String message;
 
+    /**
+     *
+     * @return message
+     */
     public String getMessage() {
         return message;
     }
 
+    /**
+     *
+     * @param message
+     */
     CellMessage(String message){
         this.message = message;
     }
 
+    /**
+     *
+     * @return message
+     */
     @Override
     public String toString() {
         return message;

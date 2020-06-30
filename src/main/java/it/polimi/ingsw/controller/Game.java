@@ -9,7 +9,7 @@ import java.util.*;
 
 public class Game extends Observable<Object> implements Observer<Object> {
     private Board board;
-    private List<Player> players= new ArrayList<>();
+    private ArrayList<Player> players= new ArrayList<>();
     private Map<Player,Round> round = new HashMap<Player,Round>();
     private int NumberOfPlayers;
 
@@ -163,9 +163,8 @@ public class Game extends Observable<Object> implements Observer<Object> {
             String[] players = board.getPlayerNicknames();
             Integer[] idPlayers = board.getIdPlayers();
             int firstToStartID = board.getCurrentRound();
-            //int idPlayer1= idPlayers[messageFromPlayerNumber];
-            //String nicknameP1=players[messageFromPlayerNumber];
-            board.notify(new ReturnMessage(3, workerPosition, players, idPlayers, NumberOfPlayers, firstToStartID));
+            ArrayList<Player> playersList = this.players;
+            board.notify(new ReturnMessage(3, workerPosition, players, idPlayers, NumberOfPlayers, firstToStartID,playersList));
         }
         else if (a == Action.END_GAME){
             int win =((Message) message).getIdWorker();

@@ -25,6 +25,12 @@ public class BoardPanel extends JPanel {
     private ArrayList<Coordinates> possibleTile = null;
     private int activeWorker;
 
+    /**
+     * constructor
+     * @param nRow
+     * @param nColumn
+     * @param clientGUI
+     */
     public BoardPanel(int nRow, int nColumn, ClientGUI clientGUI) {
         super(new GridLayout(nRow, nColumn));
         this.clientGUI = clientGUI;
@@ -33,6 +39,9 @@ public class BoardPanel extends JPanel {
         createBoardTile();
     }
 
+    /**
+     * This method creates 25 tiles and adds them to the board panel
+     */
     public void createBoardTile() {  //init empty Tile[][]
         tile = new TilePanel[5][5];
         for (int i = 0; i < nRow; i++) {
@@ -43,53 +52,33 @@ public class BoardPanel extends JPanel {
         }
     }
 
-    public void drawFirstWorker(int x, int y, int idWorker) throws IOException {
+    /**
+     * This method draws the worker it receives in the tile x,y
+     * @param x
+     * @param y
+     * @param idWorker
+     * @throws IOException
+     */
+    public void drawWorker(int x, int y, int idWorker) throws IOException {
         tile[x][y].addWorker(idWorker);
-        //repaint in clientGUI
     }
 
-    public void drawWorker(int x, int y, int idWorker) throws IOException {//da vedere e sistemare insieme
-        tile[x][y].addWorker(idWorker);
-    }
-        /*Coordinates oldC;
-        if (idWorker >= 0 && idWorker==activeWorker) {
-            if(tile[x][y].getIdWorker()==idWorker){
-                return; //cannot move in the same position as the worker
-            } else if(tile[x][y].getIdWorker()>=0 && tile[x][y].getIdWorker()!=idWorker) {
-                removeWorker(x,y);
-                tile[x][y].addWorker(idWorker);
-            } else {
-                tile[x][y].addWorker(idWorker);
-            }
-        } else {  //coordinate x and y are of the opponent Worker
-
-        }
-
-
-        if (idWorker!=activeWorker && idWorker>0) { //if cell has worker, swap TODO:controllare prima di aver finito di implementare tutti i round prima di controllare errori
-            removeWorker(x,y);
-            tile[x][y].addWorker(idWorker);
-        } else {
-            tile[x][y].addWorker(idWorker);
-        }
-        revalidate();
-    }*/
-
-    public void removeWorker(int x, int y) {    //da vedere e sistemare insieme
+    /**
+     * This method removes the worker in the tile x,y
+     * @param x
+     * @param y
+     */
+    public void removeWorker(int x, int y) {
         tile[x][y].removeWorker();
     }
 
-    public Coordinates locateIdWorker(int idWorker) {
-        Coordinates tileOccupiedByWorker = null;
-        for (Coordinates c : possibleTile) {
-            if (tile[c.getX()][c.getY()].getIdWorker() > 0 && tile[c.getX()][c.getY()].getIdWorker() == idWorker) {
-                tileOccupiedByWorker = new Coordinates(c.getX(), c.getY());
-            }
-        }
-        return tileOccupiedByWorker;
-    }
-
-
+    /**
+     * Handles the clicks on every tile of the board, it does differnt things in function of the Action setted in the Client Controller
+     * @param x
+     * @param y
+     * @throws IOException
+     * @throws InterruptedException
+     */
     public void handleClick(int x, int y) throws IOException, InterruptedException {
         Action a = clientGUI.getClientAction();
         boolean flag = false; //clientGUI.getClientController().checkPresenceWorker(tile[x][y].getIdWorker()); // for normal BUILD & MOVE
@@ -119,7 +108,6 @@ public class BoardPanel extends JPanel {
                     if (!flag) {
                         clientGUI.getSantoriniMainFrame().getLog().append("\n----\nError:\nYou cannot move there!\nChoose another tile");
                     }
-                    //TODO: capire come gestire gli errori dopo aver implementato tuti i diversi round ed eliminare questa parte sopra (4 righe circa)
                     break;
                 case ARTEMIS_FIRST_MOVE:
                 case FIRST_BUILD_DEMETER:
@@ -216,6 +204,10 @@ public class BoardPanel extends JPanel {
         }
     }
 
+    /**
+     * This method colors the borders of the tiles contained in the possibleMove Arraylist
+     * @param possibleMove
+     */
     public void drawPossibleBorder(ArrayList<Coordinates> possibleMove) {
         possibleTile = possibleMove;  //register the tile where you can move
         for (int i = 0; i < nRow; i++) {
@@ -230,6 +222,9 @@ public class BoardPanel extends JPanel {
         }
     }
 
+    /**
+     * This method resets the borders of all the tiles
+     */
     public void setDefaultBorder() {
         if (possibleTile != null && possibleTile.size() > 0) {
             for (Coordinates c : possibleTile) {
@@ -241,6 +236,13 @@ public class BoardPanel extends JPanel {
         }
     }
 
+    /**
+     * Colors the tile in function of the level
+     * @param x
+     * @param y
+     * @param level
+     * @param dome
+     */
     public void drawLevel(int x, int y, int level, boolean dome) {
         tile[x][y].build(level, dome);
     }

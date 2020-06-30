@@ -16,6 +16,12 @@ public class TilePanel extends JPanel {
     private Dimension d;
     private boolean dome=false;
 
+    /**
+     * Constructor
+     * @param x
+     * @param y
+     * @param boardGUI
+     */
     public TilePanel(int x, int y, BoardPanel boardGUI) {
         super();
         this.x = x;
@@ -30,6 +36,11 @@ public class TilePanel extends JPanel {
         this.add(BorderLayout.NORTH,levelLabel);
     }
 
+    /**
+     * Adds an image of the worker on the tile in function of the idWorker it receives
+     * @param idWorker
+     * @throws IOException
+     */
     public void addWorker(int idWorker) throws IOException {   //da vedere e sistemare insieme
         workerLabel= new JLabel();
         this.idWorker=idWorker;
@@ -71,16 +82,28 @@ public class TilePanel extends JPanel {
         workerLabel.setVisible(true);
     }
 
+    /**
+     * It removes the worker off the tile
+     */
     public void removeWorker(){      //da vedere e sistemare insieme
         workerLabel.setVisible(false);
         this.idWorker=-1;
         this.remove(workerLabel);
     }
 
+    /**
+     *
+     * @return idWorker
+     */
     public int getIdWorker() {
         return idWorker;
     }
 
+    /**
+     * It changes the color of the tile in function of the level
+     * @param level
+     * @param dome
+     */
     public void build(int level, boolean dome) {
         this.level=level;
         this.dome=dome;
@@ -112,10 +135,18 @@ public class TilePanel extends JPanel {
         }
     }
 
+    /**
+     *
+     * @return dome
+     */
     public boolean getDome() {
         return dome;
     }
 
+    /**
+     *
+     * @return this.level
+     */
     public int getLevel() {
         return this.level;
     }

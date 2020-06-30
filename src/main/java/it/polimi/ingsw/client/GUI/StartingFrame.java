@@ -8,7 +8,12 @@ import java.io.IOException;
 public class StartingFrame extends JFrame {
         private SantoriniMainFrame santoriniMainFrame;
 
-
+    /**
+     * Construnctor that creates the starting frame
+     * @param santoriniMainFrame
+     * @param clientGUI
+     * @throws IOException
+     */
         public StartingFrame(SantoriniMainFrame santoriniMainFrame, ClientGUI clientGUI) throws IOException {
                 this.santoriniMainFrame = santoriniMainFrame;
 
@@ -88,6 +93,10 @@ public class StartingFrame extends JFrame {
 
         }
 
+    /**
+     *
+     * @return this
+     */
         public StartingFrame returnFrame (){
                 return this;
         }

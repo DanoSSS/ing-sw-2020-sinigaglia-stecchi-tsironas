@@ -265,7 +265,7 @@ public class Server {
     }
 
     /**
-     *
+     *method that put in wait first player
      * @throws InterruptedException
      */
     public synchronized void putInWaitStart() throws InterruptedException {
@@ -323,6 +323,9 @@ public class Server {
         }
     }
 
+    /**
+     *   method that removes from wait first player
+     */
     public synchronized void removeFromWaitStart (){
             bool = true;
             notifyAll();

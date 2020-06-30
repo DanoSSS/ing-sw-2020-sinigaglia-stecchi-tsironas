@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.Worker;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ReturnMessage implements Serializable {
@@ -31,6 +32,7 @@ public class ReturnMessage implements Serializable {
     private int nextNPlayer;
     private Worker oppWorker,otherWorker;
     private String god1,god2,god3;
+    private ArrayList<Player> playersList;
 
 
     /**
@@ -141,13 +143,14 @@ public class ReturnMessage implements Serializable {
      * @param NPlayer
      * @param firstToStartID
      */
-    public ReturnMessage(int nAction, Map<Worker, Coordinates> workerPosition, String[] nicknames, Integer[] idPlayers, int NPlayer,int firstToStartID) {
+    public ReturnMessage(int nAction, Map<Worker, Coordinates> workerPosition, String[] nicknames, Integer[] idPlayers, int NPlayer, int firstToStartID, ArrayList<Player> playersList) {
         this.action = Action.values()[nAction];
         this.workerPosition = workerPosition;
         this.nicknames=nicknames.clone();
         this.idPlayers=idPlayers.clone();
         this.nCurrentPlayer=firstToStartID;
         this.NPlayer=NPlayer;
+        this.playersList=playersList;
         this.clientController = null;
     }
 
@@ -289,7 +292,7 @@ public class ReturnMessage implements Serializable {
         this.clientController=null;
     }
 
-
+    public ArrayList<Player> getPlayersList(){return playersList;}
     public Map<Worker, Coordinates> getWorkerPosition() {
         return workerPosition;
     }

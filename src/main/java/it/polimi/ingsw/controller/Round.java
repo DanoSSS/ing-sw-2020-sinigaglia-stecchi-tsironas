@@ -224,6 +224,10 @@ public abstract class Round implements Observer<Object>{
         board.buildEndTurn(coordinates);
     }
 
+    /**
+     * update from remote view
+     * @param message
+     */
     @Override
     public void update(Object message) {
         Action a = ((Message) message).getAction();

@@ -100,6 +100,10 @@ public class RoundArtemis extends Round {
         board.notify(new ReturnMessage(10,board.getCurrentActiveWorker().getIdWorker(),oldCoordinate,coordinates,possibleBuilds,board.getCurrentRound(),null));
     }
 
+    /**
+     * update from remote view
+     * @param message
+     */
     @Override
     public void update(Object message) {
         Action a = ((Message) message).getAction();

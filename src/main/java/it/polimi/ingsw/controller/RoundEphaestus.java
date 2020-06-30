@@ -40,6 +40,10 @@ public class RoundEphaestus extends Round {
         board.buildEndTurn(coordinates);
     }
 
+    /**
+     * update from remote view
+     * @param message
+     */
     @Override
     public void update(Object message) {
         Action a = ((Message) message).getAction();

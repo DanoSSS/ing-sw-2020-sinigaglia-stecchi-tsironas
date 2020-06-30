@@ -9,12 +9,22 @@ public class MoveListener implements MouseListener {
     protected int y;
     protected BoardPanel board;
 
+    /**
+     * Constructor
+     * @param x
+     * @param y
+     * @param board
+     */
     public MoveListener(int x, int y,BoardPanel board){
         this.x=x;
         this.y=y;
         this.board=board;
     }
 
+    /**
+     * When a tile is clicked it calls the board method handle click with x,y of the tile as parametres
+     * @param mouseEvent
+     */
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
         try {

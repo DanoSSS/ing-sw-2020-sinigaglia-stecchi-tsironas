@@ -14,7 +14,14 @@ public class GodSelectionFrame extends JFrame {
     private ArrayList<String> selectedGods = new ArrayList<>();
     private int count=0;
 
-
+    /**
+     * constructor that creates a frame with nButtons containing the names of the gods and save choosen gods in the selectedGods ArrayList
+     * @param nButtons
+     * @param sentence
+     * @param gods
+     * @param np
+     * @param client
+     */
     public GodSelectionFrame(int nButtons, String sentence, ArrayList<String> gods,int np,ClientGUI client){
         this.client=client;
         JTextField jTextField = new JTextField(sentence);
@@ -56,10 +63,17 @@ public class GodSelectionFrame extends JFrame {
         this.setVisible(true);
     }
 
+    /**
+     *
+     * @return selectedGods
+     */
     public ArrayList<String> getSelectedGods() {
         return selectedGods;
     }
 
+    /**
+     * It closes the frame
+     */
     public void closeFrame(){
         this.dispose();
     }

@@ -40,7 +40,10 @@ public class RoundAres extends Round {
         }
         board.aresEndTurn(coordinates); }
 
-
+    /**
+     * update from remote view
+     * @param message
+     */
     @Override
     public void update(Object message) {
         Action a = ((Message) message).getAction();

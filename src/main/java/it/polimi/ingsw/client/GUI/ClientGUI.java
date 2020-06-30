@@ -38,48 +38,85 @@ public class ClientGUI  {
     private int loseRound=-1;
 
 
-
+    /**
+     *
+     * @return socket
+     */
     public Socket getSocket() {
         return socket;
     }
 
-    public StartingFrame getStartingFrame() {
-        return startingFrame;
-    }
-
+    /**
+     *
+     * @param startingFrame
+     */
     public void setStartingFrame(StartingFrame startingFrame) {
         this.startingFrame = startingFrame;
     }
 
+    /**
+     *
+     * @return santoriniMainFrame
+     */
     public SantoriniMainFrame getSantoriniMainFrame() {
         return santoriniMainFrame;
     }
 
+    /**
+     *
+     * @param santoriniMainFrame
+     */
     public void setSantoriniMainFrame(SantoriniMainFrame santoriniMainFrame) {
         this.santoriniMainFrame = santoriniMainFrame;
     }
 
+    /**
+     *
+     * @param a
+     */
     public void setClientAction(Action a) {
         this.clientAction = a;
     }
 
+    /**
+     *
+     * @return clientAction
+     */
     public Action getClientAction() {
         return clientAction;
     }
 
+    /**
+     * constructor
+     * @param ip
+     * @param port
+     */
     public ClientGUI(String ip, int port){
         this.ip = ip;
         this.port = port;
     }
 
+    /**
+     *
+     * @return active
+     */
     public synchronized boolean isActive(){
         return active;
     }
 
+    /**
+     *
+     * @param active
+     */
     public synchronized void setActive(boolean active){
         this.active = active;
     }
 
+    /**
+     * Reads messages from the server and call the messageHandler for each message
+     * @param socketIn
+     * @return
+     */
     public Thread asyncReadFromSocket(final ObjectInputStream socketIn){
         Thread t = new Thread(new Runnable() {
             @Override
@@ -98,6 +135,11 @@ public class ClientGUI  {
         return t;
     }
 
+    /**
+     * Writes async messages to the server
+     * @param message
+     * @return
+     */
     public Thread asyncWriteToSocket(Message message){
         Thread t = new Thread(new Runnable() {
             @Override
@@ -113,6 +155,12 @@ public class ClientGUI  {
         return t;
     }
 
+    /**
+     * handles the message it receives from the server in function of the Action setted in the client controller
+     * @param message
+     * @throws InterruptedException
+     * @throws IOException
+     */
     public void messageHandler (ReturnMessage message) throws InterruptedException, IOException {
         Action a = message.getAction();
         switch (a){
@@ -222,13 +270,14 @@ public class ClientGUI  {
                 break;
             case WORKER_SET:
                 clientController = message.getClientController().clone();
+                santoriniMainFrame.addNamesAndGods(clientController.getPlayersList());
                 List<Worker> keys= new ArrayList<Worker>(message.getWorkerPosition().keySet());
                 if(keys.size()==4){
                     for(int i=0;i<4;i++){
                         int x=message.getWorkerPosition().get(keys.get(i)).getX();
                         int y=message.getWorkerPosition().get(keys.get(i)).getY();
 
-                        santoriniMainFrame.getBoardPanel().drawFirstWorker(x,y,keys.get(i).getIdWorker());
+                        santoriniMainFrame.getBoardPanel().drawWorker(x,y,keys.get(i).getIdWorker());
                         santoriniMainFrame.repaint();
                     }
                 }
@@ -236,7 +285,7 @@ public class ClientGUI  {
                     for (int i=0;i<6;i++) {
                         int x=message.getWorkerPosition().get(keys.get(i)).getX();
                         int y=message.getWorkerPosition().get(keys.get(i)).getY();
-                        santoriniMainFrame.getBoardPanel().drawFirstWorker(x,y, keys.get(i).getIdWorker());
+                        santoriniMainFrame.getBoardPanel().drawWorker(x,y, keys.get(i).getIdWorker());
                         santoriniMainFrame.repaint();
                     }
                 }
@@ -502,24 +551,6 @@ public class ClientGUI  {
                 setClientAction(a);
                 int playerDisconnected = message.getnCurrentPlayer();
                 System.out.println("Message: closing Santorini...");
-                /* add a window listener
-                JDialog jdialog = new JDialog((Dialog) null, "ERROR: Player n°" + playerDisconnected + "has lost the connection with the server" , true);
-                jdialog.addWindowListener(new WindowAdapter()
-                {
-                    public void windowClosing(WindowEvent e)
-                    {
-                        System.out.println("Dialog: closing Santorini...");
-                        santoriniMainFrame.dispatchEvent(new WindowEvent(santoriniMainFrame, WindowEvent.WINDOW_CLOSING));
-                        startingFrame.dispatchEvent(new WindowEvent(startingFrame, WindowEvent.WINDOW_CLOSING)); //simulate the closing frame event
-                        try {
-                            throw new InterruptedException();
-                        } catch (InterruptedException interruptedException) {
-                            interruptedException.printStackTrace();
-                        }
-                    }
-                });
-                santoriniMainFrame.add(jdialog);
-                santoriniMainFrame.pack();*/
                 santoriniMainFrame.dispatchEvent(new WindowEvent(santoriniMainFrame, WindowEvent.WINDOW_CLOSING));
                 startingFrame.dispatchEvent(new WindowEvent(startingFrame, WindowEvent.WINDOW_CLOSING)); //simulate the closing frame event
                 System.out.println("Player n°" + playerDisconnected  +" disconnected from the server.\ngameover");
@@ -527,14 +558,26 @@ public class ClientGUI  {
         }
     }
 
+    /**
+     *
+     * @return choosePrometheus
+     */
     public int getChoosePrometheus(){
         return choosePrometheus;
     }
 
+    /**
+     *
+     * @return client controller
+     */
     public ClientController getClientController() {
         return clientController;
     }
 
+    /**
+     * This method creates the starting frame and the main frame(fot the moment with setvisible=false)
+     * @throws IOException
+     */
     public void run() throws IOException {
         this.socket = new Socket(ip, port);
         System.out.println("Connection established");

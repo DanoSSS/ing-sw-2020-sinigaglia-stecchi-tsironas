@@ -14,10 +14,11 @@ public abstract class View extends Observable<Object> implements Observer<Object
         this.player = player;
     }
 
-    protected Player getPlayer(){
-        return player;
-    }
-
+    /**
+     * Handles messages coming from clients and notifies Game and Round
+     * @param m
+     * @param idPlayer
+     */
     protected void handleMessage(Object m,int idPlayer){  //getplayerbyid
                 ((Message) m).setPlayerValue(idPlayer);
                 notify(m);
