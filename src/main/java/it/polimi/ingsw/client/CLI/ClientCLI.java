@@ -427,7 +427,6 @@ public class ClientCLI {
                             case ARES_POWER:
                                 id = inputObject.getCurrentActiveWorker();
                                 buildCellMessage(inputObject.getCoordinate().getX()*2,inputObject.getCoordinate().getY(),inputObject.getLevel(),inputObject.getDome());
-                                n =inputObject.getnCurrentPlayer();
                                 playerNames=clientController.getOtherNickname();
                                 if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
                                     setClientAction(a);
@@ -601,9 +600,9 @@ public class ClientCLI {
                                 break;
                             case BUILD_ATLAS: // DOME 2,3  -> {DOME} {2,3}  -> {2} {3}
                                 choose = inputObject.split(" ");
-                                if(choose[0].toUpperCase().equals("DOME")){
+                                if(choose[0].equals("dome") || choose[0].equals("DOME")){
                                     correctInput = isCorrectInput(choose[1], possibleMoves);
-                                } else if (choose[0].toUpperCase().equals("STD")){
+                                    } else if (choose[0].equals("std") || choose[0].equals("STD")){
                                     correctInput = isCorrectInput(choose[1], possibleMoves);
                                 }
                                 if(!correctInput){
@@ -616,7 +615,7 @@ public class ClientCLI {
                             case FIRST_BUILD_DEMETER:
                             case ARES_POWER:
                                 try {
-                                    if (!inputObject.isEmpty() && (inputObject.toUpperCase().equals("NO") || isCorrectInput(inputObject, possibleMoves))) {
+                                    if (inputObject !=null && !(inputObject.equals("")) && (inputObject.equals("NO") || inputObject.equals("no") || isCorrectInput(inputObject, possibleMoves))) {
                                         socketOut.writeObject(new Message(getClientAction().getValue(), inputObject));
                                     } else {
                                         System.out.println("ERROR: Write NO or write one of the previous coordinate in the same format: \"x,y\"");
@@ -627,9 +626,9 @@ public class ClientCLI {
                                 break;
                             case PROMETHEUS_CHOOSE:  // BUILD 2,3  -> {BUILD} {2,3}  -> {2} {3}
                                 choose = inputObject.split(" ");
-                                if(choose[0].toUpperCase().equals("BUILD")){
+                                if(choose[0].equals("BUILD") || choose[0].equals("build")){
                                     correctInput = isCorrectInput(choose[1], possibleBuilds);
-                                } else if (choose[0].toUpperCase().equals("MOVE")){
+                                } else if (choose[0].equals("MOVE") || choose[0].equals("move")){
                                     correctInput = isCorrectInput(choose[1], possibleMoves);
                                 }
                                 if(!correctInput){
@@ -640,9 +639,9 @@ public class ClientCLI {
                                 break;
                             case BUILD_EPHAESTUS:
                                 choose = inputObject.split(" ");
-                                if(choose[0].toUpperCase().equals("YES")){
+                                if(choose[0].equals("YES") || choose[0].equals("yes") ){
                                     correctInput = isCorrectInput(choose[1], possibleMoves);
-                                } else if (choose[0].toUpperCase().equals("NO")){
+                                } else if (choose[0].equals("NO") || choose[0].equals("no") ){
                                     correctInput = isCorrectInput(choose[1], possibleMoves);
                                 }
                                 if(!correctInput){
