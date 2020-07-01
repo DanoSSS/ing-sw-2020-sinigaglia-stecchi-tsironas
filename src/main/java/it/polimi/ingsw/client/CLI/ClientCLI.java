@@ -615,7 +615,7 @@ public class ClientCLI {
                             case FIRST_BUILD_DEMETER:
                             case ARES_POWER:
                                 try {
-                                    if (inputObject !=null && !(inputObject.equals("")) && (inputObject.equals("NO") || inputObject.equals("no") || isCorrectInput(inputObject, possibleMoves))) {
+                                    if ((inputObject.equals("NO") || inputObject.equals("no") || isCorrectInput(inputObject, possibleMoves))) {
                                         socketOut.writeObject(new Message(getClientAction().getValue(), inputObject));
                                     } else {
                                         System.out.println("ERROR: Write NO or write one of the previous coordinate in the same format: \"x,y\"");
