@@ -31,7 +31,6 @@ public class RemoteView extends View{
          */
         @Override
         public void update(Object m) {
-            System.out.println("Received");
             Action a =((Message) m).getAction();switch (a) {
                 case INIT_WORKERS:
                 case SELECT_ACTIVE_WORKER:

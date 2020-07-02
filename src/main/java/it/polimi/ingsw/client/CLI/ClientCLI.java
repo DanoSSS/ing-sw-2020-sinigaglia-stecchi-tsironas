@@ -366,6 +366,7 @@ public class ClientCLI {
                                 }
                                 break;
                             case END_TURN:
+                                idWorkers= clientController.getIdWorkers();
                                 id = inputObject.getNextNPlayer();
                                 n =inputObject.getnCurrentPlayer();
                                 if(clientController.getIdPlayer() == n){
@@ -374,7 +375,7 @@ public class ClientCLI {
                                 }
                                 else if(clientController.getIdPlayer() == id && clientController.getIdPlayer() != loseRound){
                                     setClientAction(Action.SELECT_ACTIVE_WORKER);
-                                    System.out.println("it's your turn!\nselect active worker");
+                                    System.out.println("it's your turn!\nselect active worker: " + idWorkers[0] + " or " + idWorkers[1]);
                                 }
                                 else if(clientController.getIdPlayer() != loseRound){
                                     setClientAction(Action.NOT_YOUR_TURN);

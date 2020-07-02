@@ -65,10 +65,6 @@ public class Server {
     public synchronized void deregisterConnection3(ClientConnection c, int playerNumber){
         ClientConnection opponent1 = playingConnection.get(c);
         ClientConnection opponent2 = playingConnection1.get(c);
-        /*if(opponent1 != null && opponent2!=null) {
-            opponent1.closeConnection();
-            opponent2.closeConnection();
-        }*/
         if(opponent1!=null && opponent2!=null) {
             opponent1.asyncSend(new ReturnMessage(29, playerNumber));
             opponent2.asyncSend(new ReturnMessage(29, playerNumber));
@@ -116,7 +112,6 @@ public class Server {
         playerGodAssociation.put(name, god);
         playerIdAssociation.put(name,idplayer);
         if (waitingConnection.size() == 2 && nPlayers == 2) {               // 2 players
-            System.out.println("entrato in lobby nel ramo nplayer == 2");
             List<String> keys = new ArrayList<>(waitingConnection.keySet());
 
             startGameAndObservers2(keys);
@@ -124,10 +119,10 @@ public class Server {
             playingConnection.put(waitingConnection.get(keys.get(0)), waitingConnection.get(keys.get(1)));  //(c1,c2)
             playingConnection.put(waitingConnection.get(keys.get(1)), waitingConnection.get(keys.get(0)));  //(c2,c1)
             waitingConnection.clear();
-            System.out.println("fine if 2");
+
+            System.out.println("\nMatch created!");
         }
         else if (waitingConnection.size() == 3 && nPlayers == 3) {               //3 players
-            System.out.println("entrato in lobby nel ramo nplayer == 3");
             List<String> keys = new ArrayList<>(waitingConnection.keySet());
 
             startGameAndObservers3(keys);
@@ -139,10 +134,10 @@ public class Server {
             playingConnection1.put(waitingConnection.get(keys.get(2)), waitingConnection.get(keys.get(1)));  //(c3,c2)
             playingConnection1.put(waitingConnection.get(keys.get(1)), waitingConnection.get(keys.get(2)));  //(c2,c3)
             waitingConnection.clear();
-            System.out.println("fine if 3");
+
+            System.out.println("\nMatch created!");
         }
 
-        System.out.println("\nMatch created!");
     }
 
     /**
@@ -159,8 +154,6 @@ public class Server {
         Round roundP1=null;
         Round roundP2=null;
 
-        //God god1 = playerGodAssociation.get(keys.get(0));
-        //God god2 = playerGodAssociation.get(keys.get(1));
         for(int i=0;i<2;i++){
             switch (playerIdAssociation.get(keys.get(i))){
                 case 1:
@@ -173,8 +166,6 @@ public class Server {
                     break;
             }
         }
-        //Player player1 = new Player(keys.get(0), "RED", idWorker[0], idWorker[1], playerGodAssociation.get(keys.get(0)),playerIdAssociation.get(keys.get(0)));
-        //Player player2 = new Player(keys.get(1), "GREEN", idWorker[2], idWorker[3], playerGodAssociation.get(keys.get(1)),playerIdAssociation.get(keys.get(1)));
         players[0] = player1;
         players[1] = player2;
         View player1View = new RemoteView(player1, c1, player1.getIdPlayer());
