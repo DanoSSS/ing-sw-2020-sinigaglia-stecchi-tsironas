@@ -1,0 +1,609 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Board</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Board (it.polimi.ingsw.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Board</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    97,7%
+  </span>
+  <span class="absValue">
+    (43/ 44)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92,9%
+  </span>
+  <span class="absValue">
+    (156/ 168)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.observer.Observable;
+<i>4</i>&nbsp;import it.polimi.ingsw.utils.ReturnMessage;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import java.util.ArrayList;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;public class Board extends Observable&lt;Object&gt; {
+<i>9</i>&nbsp;    private int NumberOfPlayers;
+<i>10</i>&nbsp;    private static final int HEIGHT = 5;
+<i>11</i>&nbsp;    private static final int WIDTH = 5;
+<i>12</i>&nbsp;    private Cell [][] board;
+<b class="fc"><i>13</i>&nbsp;    private Worker[] workers = new Worker[6];</b>
+<i>14</i>&nbsp;    private Player[] players;
+<b class="fc"><i>15</i>&nbsp;    private int nround=0;</b>
+<i>16</i>&nbsp;    private Worker currentActiveWorker;
+<i>17</i>&nbsp;    private ArrayList&lt;Coordinates&gt; currentPossibleMoves;
+<i>18</i>&nbsp;    private ArrayList&lt;Coordinates&gt; currentPossibleBuilds;
+<b class="fc"><i>19</i>&nbsp;    private int currentRound=2;</b>
+<i>20</i>&nbsp;    private int loseRound;
+<b class="fc"><i>21</i>&nbsp;    private boolean flag=false;</b>
+<b class="fc"><i>22</i>&nbsp;    private int chronusPlayer=-1;</b>
+<b class="fc"><i>23</i>&nbsp;    private int heraPlayer=-1;</b>
+<b class="fc"><i>24</i>&nbsp;    private int numberOfDome=0;</b>
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    /**
+<i>28</i>&nbsp;     * constructor 2 players
+<i>29</i>&nbsp;     * @param players
+<i>30</i>&nbsp;     * @param worker1
+<i>31</i>&nbsp;     * @param worker2
+<i>32</i>&nbsp;     * @param worker3
+<i>33</i>&nbsp;     * @param worker4
+<i>34</i>&nbsp;     * @param NPlayer
+<i>35</i>&nbsp;     */
+<b class="fc"><i>36</i>&nbsp;    public Board(Player[] players, Worker worker1, Worker worker2, Worker worker3, Worker worker4, int NPlayer) {</b>
+<b class="fc"><i>37</i>&nbsp;        this.players =players;</b>
+<b class="fc"><i>38</i>&nbsp;        board = new Cell[HEIGHT][WIDTH];                        //i==row &amp;&amp; j==col</b>
+<b class="fc"><i>39</i>&nbsp;        for (int i = 0; i &lt; WIDTH; i++) {</b>
+<b class="fc"><i>40</i>&nbsp;            for (int j = 0; j &lt; HEIGHT; j++) {</b>
+<b class="fc"><i>41</i>&nbsp;                board[i][j] = new Cell(i,j);</b>
+<i>42</i>&nbsp;            }
+<i>43</i>&nbsp;        }
+<i>44</i>&nbsp;
+<b class="fc"><i>45</i>&nbsp;        this.workers[0] = worker1;</b>
+<b class="fc"><i>46</i>&nbsp;        this.workers[1] = worker2;</b>
+<b class="fc"><i>47</i>&nbsp;        this.workers[2] = worker3;</b>
+<b class="fc"><i>48</i>&nbsp;        this.workers[3] = worker4;</b>
+<i>49</i>&nbsp;
+<b class="fc"><i>50</i>&nbsp;        this.NumberOfPlayers = NPlayer;</b>
+<i>51</i>&nbsp;
+<b class="fc"><i>52</i>&nbsp;    }</b>
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;    /**
+<i>55</i>&nbsp;     * constructor 3 players
+<i>56</i>&nbsp;     * @param players
+<i>57</i>&nbsp;     * @param worker1
+<i>58</i>&nbsp;     * @param worker2
+<i>59</i>&nbsp;     * @param worker3
+<i>60</i>&nbsp;     * @param worker4
+<i>61</i>&nbsp;     * @param worker5
+<i>62</i>&nbsp;     * @param worker6
+<i>63</i>&nbsp;     * @param NPlayer
+<i>64</i>&nbsp;     */
+<b class="fc"><i>65</i>&nbsp;    public Board(Player[] players , Worker worker1, Worker worker2, Worker worker3, Worker worker4, Worker worker5, Worker worker6, int NPlayer) {</b>
+<b class="fc"><i>66</i>&nbsp;        this.players =players;</b>
+<b class="fc"><i>67</i>&nbsp;        board = new Cell[HEIGHT][WIDTH];                        //i==row &amp;&amp; j==col</b>
+<b class="fc"><i>68</i>&nbsp;        for (int i = 0; i &lt; WIDTH; i++) {</b>
+<b class="fc"><i>69</i>&nbsp;            for (int j = 0; j &lt; HEIGHT; j++) {</b>
+<b class="fc"><i>70</i>&nbsp;                board[i][j] = new Cell(i,j);</b>
+<i>71</i>&nbsp;            }
+<i>72</i>&nbsp;        }
+<i>73</i>&nbsp;
+<b class="fc"><i>74</i>&nbsp;        this.workers[0] = worker1;</b>
+<b class="fc"><i>75</i>&nbsp;        this.workers[1] = worker2;</b>
+<b class="fc"><i>76</i>&nbsp;        this.workers[2] = worker3;</b>
+<b class="fc"><i>77</i>&nbsp;        this.workers[3] = worker4;</b>
+<b class="fc"><i>78</i>&nbsp;        this.workers[4] = worker5;</b>
+<b class="fc"><i>79</i>&nbsp;        this.workers[5] = worker6;</b>
+<i>80</i>&nbsp;
+<b class="fc"><i>81</i>&nbsp;        this.NumberOfPlayers = NPlayer;</b>
+<i>82</i>&nbsp;
+<b class="fc"><i>83</i>&nbsp;    }</b>
+<i>84</i>&nbsp;
+<i>85</i>&nbsp;    /**
+<i>86</i>&nbsp;     *
+<i>87</i>&nbsp;     * @param currentRound
+<i>88</i>&nbsp;     */
+<i>89</i>&nbsp;    public void setCurrentRound(int currentRound) {
+<b class="fc"><i>90</i>&nbsp;        this.currentRound = currentRound;</b>
+<b class="fc"><i>91</i>&nbsp;    }</b>
+<i>92</i>&nbsp;
+<i>93</i>&nbsp;    /**
+<i>94</i>&nbsp;     *
+<i>95</i>&nbsp;     * @return currentPossibleMoves
+<i>96</i>&nbsp;     */
+<i>97</i>&nbsp;    public ArrayList&lt;Coordinates&gt; getCurrentPossibleMoves() {
+<b class="fc"><i>98</i>&nbsp;        return currentPossibleMoves;</b>
+<i>99</i>&nbsp;    }
+<i>100</i>&nbsp;
+<i>101</i>&nbsp;    /**
+<i>102</i>&nbsp;     *
+<i>103</i>&nbsp;     * @return NumberOfPlayers
+<i>104</i>&nbsp;     */
+<i>105</i>&nbsp;    public int getNumberOfPlayers() {
+<b class="fc"><i>106</i>&nbsp;        return NumberOfPlayers;</b>
+<i>107</i>&nbsp;    }
+<i>108</i>&nbsp;
+<i>109</i>&nbsp;    /**
+<i>110</i>&nbsp;     *
+<i>111</i>&nbsp;     * @param numberOfPlayers
+<i>112</i>&nbsp;     */
+<i>113</i>&nbsp;    public void setNumberOfPlayers(int numberOfPlayers) {
+<b class="fc"><i>114</i>&nbsp;        NumberOfPlayers = numberOfPlayers;</b>
+<b class="fc"><i>115</i>&nbsp;    }</b>
+<i>116</i>&nbsp;
+<i>117</i>&nbsp;    /**
+<i>118</i>&nbsp;     *
+<i>119</i>&nbsp;     * @return loseRound
+<i>120</i>&nbsp;     */
+<i>121</i>&nbsp;    public int getLoseRound() {
+<b class="fc"><i>122</i>&nbsp;        return loseRound;</b>
+<i>123</i>&nbsp;    }
+<i>124</i>&nbsp;
+<i>125</i>&nbsp;    /**
+<i>126</i>&nbsp;     *
+<i>127</i>&nbsp;     * @param loseRound
+<i>128</i>&nbsp;     */
+<i>129</i>&nbsp;    public void setLoseRound(int loseRound) {
+<b class="fc"><i>130</i>&nbsp;        this.loseRound = loseRound;</b>
+<b class="fc"><i>131</i>&nbsp;    }</b>
+<i>132</i>&nbsp;
+<i>133</i>&nbsp;    /**
+<i>134</i>&nbsp;     *
+<i>135</i>&nbsp;     * @return nround
+<i>136</i>&nbsp;     */
+<i>137</i>&nbsp;    public int getNround() {
+<b class="fc"><i>138</i>&nbsp;        return nround;</b>
+<i>139</i>&nbsp;    }
+<i>140</i>&nbsp;
+<i>141</i>&nbsp;    /**
+<i>142</i>&nbsp;     *
+<i>143</i>&nbsp;     * @param nround
+<i>144</i>&nbsp;     */
+<i>145</i>&nbsp;    public void setNround(int nround) {
+<b class="fc"><i>146</i>&nbsp;        this.nround = nround;</b>
+<b class="fc"><i>147</i>&nbsp;    }</b>
+<i>148</i>&nbsp;
+<i>149</i>&nbsp;    /**
+<i>150</i>&nbsp;     *
+<i>151</i>&nbsp;     * @return currentPossibleBuilds
+<i>152</i>&nbsp;     */
+<i>153</i>&nbsp;    public ArrayList&lt;Coordinates&gt; getCurrentPossibleBuilds() {
+<b class="nc"><i>154</i>&nbsp;        return currentPossibleBuilds;</b>
+<i>155</i>&nbsp;    }
+<i>156</i>&nbsp;
+<i>157</i>&nbsp;    /**
+<i>158</i>&nbsp;     * method to build a dome in the cell x,y
+<i>159</i>&nbsp;     * @param coordinates
+<i>160</i>&nbsp;     */
+<i>161</i>&nbsp;    public void setDome(Coordinates coordinates){
+<b class="fc"><i>162</i>&nbsp;        board[coordinates.getX()][coordinates.getY()].setDome();</b>
+<b class="fc"><i>163</i>&nbsp;    }</b>
+<i>164</i>&nbsp;
+<i>165</i>&nbsp;    /**
+<i>166</i>&nbsp;     * method to know if there is a dome in the cell x,y
+<i>167</i>&nbsp;     * @param coordinates
+<i>168</i>&nbsp;     * @return
+<i>169</i>&nbsp;     */
+<i>170</i>&nbsp;    public boolean isDome(Coordinates coordinates){
+<b class="fc"><i>171</i>&nbsp;        return board[coordinates.getX()][coordinates.getY()].isDome();</b>
+<i>172</i>&nbsp;    }
+<i>173</i>&nbsp;
+<i>174</i>&nbsp;    /**
+<i>175</i>&nbsp;     * method to know if the cell x,y is occupied by a worker
+<i>176</i>&nbsp;     * @param coordinates
+<i>177</i>&nbsp;     * @return
+<i>178</i>&nbsp;     */
+<i>179</i>&nbsp;    public boolean isOccupied(Coordinates coordinates){
+<b class="fc"><i>180</i>&nbsp;        return board[coordinates.getX()][coordinates.getY()].isOccupied();</b>
+<i>181</i>&nbsp;    }
+<i>182</i>&nbsp;
+<i>183</i>&nbsp;    /**
+<i>184</i>&nbsp;     * method to know the level of the cell x,y
+<i>185</i>&nbsp;     * @param coordinates
+<i>186</i>&nbsp;     * @return
+<i>187</i>&nbsp;     */
+<i>188</i>&nbsp;    public int getLevel(Coordinates coordinates){
+<b class="fc"><i>189</i>&nbsp;        return board[coordinates.getX()][coordinates.getY()].getLevel();</b>
+<i>190</i>&nbsp;    }
+<i>191</i>&nbsp;
+<i>192</i>&nbsp;    /**
+<i>193</i>&nbsp;     *
+<i>194</i>&nbsp;     * @param coordinates
+<i>195</i>&nbsp;     */
+<i>196</i>&nbsp;    public void reduceLevel(Coordinates coordinates){
+<b class="fc"><i>197</i>&nbsp;        board[coordinates.getX()][coordinates.getY()].reduceLevel();</b>
+<b class="fc"><i>198</i>&nbsp;    }</b>
+<i>199</i>&nbsp;
+<i>200</i>&nbsp;    /**
+<i>201</i>&nbsp;     * method to build in the cell x,y
+<i>202</i>&nbsp;     * @param coordinates
+<i>203</i>&nbsp;     */
+<i>204</i>&nbsp;    public void setLevel(Coordinates coordinates) {
+<b class="fc"><i>205</i>&nbsp;        board[coordinates.getX()][coordinates.getY()].setLevel();</b>
+<b class="fc"><i>206</i>&nbsp;    }</b>
+<i>207</i>&nbsp;
+<i>208</i>&nbsp;    /**
+<i>209</i>&nbsp;     * method to move the worker
+<i>210</i>&nbsp;     * @param coordinates
+<i>211</i>&nbsp;     * @param worker
+<i>212</i>&nbsp;     */
+<i>213</i>&nbsp;    public void moveWorker(Coordinates coordinates,Worker worker){
+<b class="fc"><i>214</i>&nbsp;        worker.setCell(coordinates.getX(),coordinates.getY());</b>
+<b class="fc"><i>215</i>&nbsp;        board[coordinates.getX()][coordinates.getY()].setWorker(worker);</b>
+<b class="fc"><i>216</i>&nbsp;        board[coordinates.getX()][coordinates.getY()].setOccupied(true);</b>
+<b class="fc"><i>217</i>&nbsp;    }</b>
+<i>218</i>&nbsp;
+<i>219</i>&nbsp;    /**
+<i>220</i>&nbsp;     *
+<i>221</i>&nbsp;     * @param coordinates
+<i>222</i>&nbsp;     * @return
+<i>223</i>&nbsp;     */
+<i>224</i>&nbsp;    public Worker getWorker(Coordinates coordinates){
+<b class="fc"><i>225</i>&nbsp;        return board[coordinates.getX()][coordinates.getY()].getWorker();</b>
+<i>226</i>&nbsp;    }
+<i>227</i>&nbsp;
+<i>228</i>&nbsp;    /**
+<i>229</i>&nbsp;     *
+<i>230</i>&nbsp;     * @param id
+<i>231</i>&nbsp;     * @return
+<i>232</i>&nbsp;     */
+<i>233</i>&nbsp;    public Worker getWorkerById(int id){
+<b class="fc"><i>234</i>&nbsp;        return this.workers[id];</b>
+<i>235</i>&nbsp;    }
+<i>236</i>&nbsp;
+<i>237</i>&nbsp;    /**
+<i>238</i>&nbsp;     * method to remove a worker from a cell when it&#39;s moved
+<i>239</i>&nbsp;     * @param coordinates
+<i>240</i>&nbsp;     */
+<i>241</i>&nbsp;    public void freeCellFromWorker(Coordinates coordinates){
+<b class="fc"><i>242</i>&nbsp;        board[coordinates.getX()][coordinates.getY()].setWorker(null);</b>
+<i>243</i>&nbsp;
+<b class="fc"><i>244</i>&nbsp;        board[coordinates.getX()][coordinates.getY()].setOccupied(false);</b>
+<b class="fc"><i>245</i>&nbsp;    }</b>
+<i>246</i>&nbsp;
+<i>247</i>&nbsp;    /**
+<i>248</i>&nbsp;     *
+<i>249</i>&nbsp;     * @param coordinates
+<i>250</i>&nbsp;     * @param id
+<i>251</i>&nbsp;     */
+<i>252</i>&nbsp;    public void setWorker(Coordinates coordinates,int id){
+<b class="fc"><i>253</i>&nbsp;        workers[id].setCell(coordinates.getX(),coordinates.getY());</b>
+<b class="fc"><i>254</i>&nbsp;        board[coordinates.getX()][coordinates.getY()].setWorker(workers[id]);</b>
+<b class="fc"><i>255</i>&nbsp;        board[coordinates.getX()][coordinates.getY()].setOccupied(true);</b>
+<b class="fc"><i>256</i>&nbsp;    }</b>
+<i>257</i>&nbsp;
+<i>258</i>&nbsp;    /**
+<i>259</i>&nbsp;     * metthod that return array with players&#39; nicknames
+<i>260</i>&nbsp;     * @return players
+<i>261</i>&nbsp;     */
+<i>262</i>&nbsp;    public String[] getPlayerNicknames() {
+<b class="fc"><i>263</i>&nbsp;        String players[] = NumberOfPlayers==2 ? new String[2] : new String[3];</b>
+<b class="fc"><i>264</i>&nbsp;        for (int i=0;i&lt;this.players.length;i++){</b>
+<b class="fc"><i>265</i>&nbsp;            players[i]=this.players[i].getNickname();</b>
+<i>266</i>&nbsp;        }
+<b class="fc"><i>267</i>&nbsp;        return players;</b>
+<i>268</i>&nbsp;    }
+<i>269</i>&nbsp;
+<i>270</i>&nbsp;    /**
+<i>271</i>&nbsp;     * metthod that return array with players&#39; id
+<i>272</i>&nbsp;     * @return idPlayers
+<i>273</i>&nbsp;     */
+<i>274</i>&nbsp;    public Integer[] getIdPlayers(){
+<b class="fc"><i>275</i>&nbsp;        Integer idPlayers[] = NumberOfPlayers==2 ? new Integer[2] : new Integer[3];</b>
+<b class="fc"><i>276</i>&nbsp;        for (int i=0;i&lt;this.players.length;i++){</b>
+<b class="fc"><i>277</i>&nbsp;            idPlayers[i]=this.players[i].getIdPlayer();</b>
+<i>278</i>&nbsp;        }
+<b class="fc"><i>279</i>&nbsp;        return idPlayers;</b>
+<i>280</i>&nbsp;    }
+<i>281</i>&nbsp;
+<i>282</i>&nbsp;    /**
+<i>283</i>&nbsp;     *
+<i>284</i>&nbsp;     * @return numberOfDome
+<i>285</i>&nbsp;     */
+<i>286</i>&nbsp;    public int getNumberOfDome() {
+<b class="fc"><i>287</i>&nbsp;        return numberOfDome;</b>
+<i>288</i>&nbsp;    }
+<i>289</i>&nbsp;
+<i>290</i>&nbsp;    /**
+<i>291</i>&nbsp;     *
+<i>292</i>&nbsp;     * @param numberOfDome
+<i>293</i>&nbsp;     */
+<i>294</i>&nbsp;    public void setNumberOfDome(int numberOfDome) {
+<b class="fc"><i>295</i>&nbsp;        this.numberOfDome = numberOfDome;</b>
+<b class="fc"><i>296</i>&nbsp;    }</b>
+<i>297</i>&nbsp;
+<i>298</i>&nbsp;    /**
+<i>299</i>&nbsp;     *
+<i>300</i>&nbsp;     * @return chronusPlayer
+<i>301</i>&nbsp;     */
+<i>302</i>&nbsp;    public int getChronusPlayer() {
+<b class="fc"><i>303</i>&nbsp;        return chronusPlayer;</b>
+<i>304</i>&nbsp;    }
+<i>305</i>&nbsp;
+<i>306</i>&nbsp;    /**
+<i>307</i>&nbsp;     *
+<i>308</i>&nbsp;     * @param chronusPlayer
+<i>309</i>&nbsp;     */
+<i>310</i>&nbsp;    public void setChronusPlayer(int chronusPlayer) {
+<b class="fc"><i>311</i>&nbsp;        this.chronusPlayer = chronusPlayer;</b>
+<b class="fc"><i>312</i>&nbsp;    }</b>
+<i>313</i>&nbsp;
+<i>314</i>&nbsp;    /**
+<i>315</i>&nbsp;     *
+<i>316</i>&nbsp;     * @return heraPlayer
+<i>317</i>&nbsp;     */
+<i>318</i>&nbsp;    public int getHeraPlayer() {
+<b class="fc"><i>319</i>&nbsp;        return heraPlayer;</b>
+<i>320</i>&nbsp;    }
+<i>321</i>&nbsp;
+<i>322</i>&nbsp;    /**
+<i>323</i>&nbsp;     *
+<i>324</i>&nbsp;     * @param heraPlayer
+<i>325</i>&nbsp;     */
+<i>326</i>&nbsp;    public void setHeraPlayer(int heraPlayer) {
+<b class="fc"><i>327</i>&nbsp;        this.heraPlayer = heraPlayer;</b>
+<b class="fc"><i>328</i>&nbsp;    }</b>
+<i>329</i>&nbsp;
+<i>330</i>&nbsp;    /**
+<i>331</i>&nbsp;     * method that every end turn calculate new current round
+<i>332</i>&nbsp;     * @return currentRound
+<i>333</i>&nbsp;     */
+<i>334</i>&nbsp;    public int UpdateRound(){
+<b class="fc"><i>335</i>&nbsp;        currentRound++;</b>
+<b class="fc"><i>336</i>&nbsp;        if(currentRound==loseRound){</b>
+<b class="fc"><i>337</i>&nbsp;            currentRound++;</b>
+<i>338</i>&nbsp;        }
+<b class="fc"><i>339</i>&nbsp;        if(NumberOfPlayers==2 &amp;&amp; currentRound==3){</b>
+<b class="fc"><i>340</i>&nbsp;            currentRound=1;</b>
+<i>341</i>&nbsp;        }
+<b class="fc"><i>342</i>&nbsp;        else if(NumberOfPlayers==3 &amp;&amp; currentRound==4){</b>
+<b class="fc"><i>343</i>&nbsp;            currentRound=1;</b>
+<i>344</i>&nbsp;        }
+<b class="fc"><i>345</i>&nbsp;        return currentRound;</b>
+<i>346</i>&nbsp;    }
+<i>347</i>&nbsp;
+<i>348</i>&nbsp;    /**
+<i>349</i>&nbsp;     *
+<i>350</i>&nbsp;     * @return currentActiveWorker
+<i>351</i>&nbsp;     */
+<i>352</i>&nbsp;    public Worker getCurrentActiveWorker() {
+<b class="fc"><i>353</i>&nbsp;        return currentActiveWorker;</b>
+<i>354</i>&nbsp;    }
+<i>355</i>&nbsp;
+<i>356</i>&nbsp;    /**
+<i>357</i>&nbsp;     * method called in demeter and hestia round that notifies remoteview of a build
+<i>358</i>&nbsp;     * @param c
+<i>359</i>&nbsp;     * @param currentPossibleBuilds
+<i>360</i>&nbsp;     */
+<i>361</i>&nbsp;    public void firstBuildDemeterAndHestia(Coordinates c,ArrayList&lt;Coordinates&gt; currentPossibleBuilds){
+<b class="fc"><i>362</i>&nbsp;        this.currentPossibleBuilds=currentPossibleBuilds;</b>
+<b class="fc"><i>363</i>&nbsp;        int level = getLevel(c);</b>
+<b class="fc"><i>364</i>&nbsp;        boolean dome = isDome(c);</b>
+<b class="fc"><i>365</i>&nbsp;        notify(new ReturnMessage(14,currentActiveWorker.getIdWorker(),c,level,dome,currentPossibleBuilds));</b>
+<b class="nc"><i>366</i>&nbsp;    }</b>
+<i>367</i>&nbsp;
+<i>368</i>&nbsp;    /**
+<i>369</i>&nbsp;     *  method called in Prometheus round that notifies remoteview with current active worker and possibleBuild and possibleMove
+<i>370</i>&nbsp;     * @param activeWorker
+<i>371</i>&nbsp;     * @param currentPossibleMoves
+<i>372</i>&nbsp;     * @param currentPossibleBuilds
+<i>373</i>&nbsp;     */
+<i>374</i>&nbsp;    public void setCurrentActiveWorkerAndChoosePrometheus(Worker activeWorker,ArrayList&lt;Coordinates&gt; currentPossibleMoves,ArrayList&lt;Coordinates&gt; currentPossibleBuilds){
+<b class="fc"><i>375</i>&nbsp;        this.currentActiveWorker=activeWorker;</b>
+<b class="fc"><i>376</i>&nbsp;        this.currentPossibleMoves=currentPossibleMoves;</b>
+<b class="fc"><i>377</i>&nbsp;        this.currentPossibleBuilds=currentPossibleBuilds;</b>
+<b class="fc"><i>378</i>&nbsp;        notify(new ReturnMessage(15,currentActiveWorker.getIdWorker(),currentPossibleMoves,currentPossibleBuilds,currentRound));</b>
+<b class="fc"><i>379</i>&nbsp;    }</b>
+<i>380</i>&nbsp;
+<i>381</i>&nbsp;    /**
+<i>382</i>&nbsp;     * method called in Prometheus round that notifies remoteview of a build before move
+<i>383</i>&nbsp;     * @param coordinates
+<i>384</i>&nbsp;     * @param possibleMoves
+<i>385</i>&nbsp;     */
+<i>386</i>&nbsp;    public void buildBeforePrometheus(Coordinates coordinates,ArrayList&lt;Coordinates&gt; possibleMoves){
+<b class="fc"><i>387</i>&nbsp;        int level = getLevel(coordinates);</b>
+<b class="fc"><i>388</i>&nbsp;        boolean dome = isDome(coordinates);</b>
+<b class="fc"><i>389</i>&nbsp;        this.currentPossibleMoves = possibleMoves;</b>
+<b class="fc"><i>390</i>&nbsp;        notify(new ReturnMessage(16,currentActiveWorker.getIdWorker(),coordinates,level,dome,possibleMoves));</b>
+<b class="nc"><i>391</i>&nbsp;    }</b>
+<i>392</i>&nbsp;
+<i>393</i>&nbsp;    /**
+<i>394</i>&nbsp;     *
+<i>395</i>&nbsp;     * @return currentRound
+<i>396</i>&nbsp;     */
+<i>397</i>&nbsp;    public int getCurrentRound() {
+<b class="fc"><i>398</i>&nbsp;        return currentRound;</b>
+<i>399</i>&nbsp;    }
+<i>400</i>&nbsp;
+<i>401</i>&nbsp;    /**
+<i>402</i>&nbsp;     * method that notifies remoteview with active worker&#39;s id and possiblemove
+<i>403</i>&nbsp;     * @param currentActiveWorker
+<i>404</i>&nbsp;     * @param currentPossibleMoves
+<i>405</i>&nbsp;     */
+<i>406</i>&nbsp;    public void setCurrentActiveWorkerAndPossibleMoves(Worker currentActiveWorker,ArrayList&lt;Coordinates&gt; currentPossibleMoves){
+<b class="fc"><i>407</i>&nbsp;        this.currentActiveWorker=currentActiveWorker;</b>
+<b class="fc"><i>408</i>&nbsp;        this.currentPossibleMoves=currentPossibleMoves;</b>
+<b class="fc"><i>409</i>&nbsp;        notify(new ReturnMessage(6,currentActiveWorker.getIdWorker(),currentPossibleMoves,currentRound));</b>
+<b class="fc"><i>410</i>&nbsp;    }</b>
+<i>411</i>&nbsp;
+<i>412</i>&nbsp;    /**
+<i>413</i>&nbsp;     * method that notifies remoteview with move coordinate and possibleBuild
+<i>414</i>&nbsp;     * @param oldC
+<i>415</i>&nbsp;     * @param newC
+<i>416</i>&nbsp;     * @param currentPossibleBuilds
+<i>417</i>&nbsp;     * @param oppWorker
+<i>418</i>&nbsp;     */
+<i>419</i>&nbsp;    public void moveWorkerAndPossibleBuilds(Coordinates oldC,Coordinates newC,ArrayList&lt;Coordinates&gt; currentPossibleBuilds,Worker oppWorker){
+<b class="fc"><i>420</i>&nbsp;        this.currentPossibleBuilds=currentPossibleBuilds;</b>
+<b class="fc"><i>421</i>&nbsp;        if(players[currentRound-1].getGod()==God.ATLAS) {</b>
+<b class="nc"><i>422</i>&nbsp;            notify(new ReturnMessage(11, currentActiveWorker.getIdWorker(), oldC, newC, currentPossibleBuilds, currentRound, oppWorker));</b>
+<b class="fc"><i>423</i>&nbsp;        }else if (players[currentRound-1].getGod()==God.EPHAESTUS){</b>
+<b class="nc"><i>424</i>&nbsp;            notify(new ReturnMessage(12, currentActiveWorker.getIdWorker(), oldC, newC, currentPossibleBuilds, currentRound, oppWorker));</b>
+<b class="fc"><i>425</i>&nbsp;        }else notify(new ReturnMessage(7,currentActiveWorker.getIdWorker(),oldC,newC,currentPossibleBuilds,currentRound,oppWorker));</b>
+<b class="nc"><i>426</i>&nbsp;    }</b>
+<i>427</i>&nbsp;
+<i>428</i>&nbsp;    /**
+<i>429</i>&nbsp;     * method that notifies remoteview of a build and that round it&#39;s over
+<i>430</i>&nbsp;     * @param c
+<i>431</i>&nbsp;     */
+<i>432</i>&nbsp;    public void buildEndTurn(Coordinates c) {
+<b class="fc"><i>433</i>&nbsp;        int oldRound = currentRound;</b>
+<b class="fc"><i>434</i>&nbsp;        int newRound = UpdateRound();</b>
+<b class="fc"><i>435</i>&nbsp;        if (c != null) {</b>
+<b class="fc"><i>436</i>&nbsp;            int level = getLevel(c);</b>
+<b class="fc"><i>437</i>&nbsp;            boolean dome = isDome(c);</b>
+<b class="fc"><i>438</i>&nbsp;            notify(new ReturnMessage(8, currentActiveWorker.getIdWorker(), c, level, oldRound, newRound, dome));</b>
+<b class="nc"><i>439</i>&nbsp;        } else {</b>
+<b class="fc"><i>440</i>&nbsp;            notify(new ReturnMessage(13, currentActiveWorker.getIdWorker(), oldRound, newRound));</b>
+<i>441</i>&nbsp;        }
+<b class="nc"><i>442</i>&nbsp;    }</b>
+<i>443</i>&nbsp;
+<i>444</i>&nbsp;    /**
+<i>445</i>&nbsp;     * method called in ares round that notifies remteview that ares round it&#39;s over
+<i>446</i>&nbsp;     * @param c
+<i>447</i>&nbsp;     */
+<i>448</i>&nbsp;    public void aresEndTurn(Coordinates c){
+<b class="fc"><i>449</i>&nbsp;        int oldRound = currentRound;</b>
+<b class="fc"><i>450</i>&nbsp;        int newRound = UpdateRound();</b>
+<b class="fc"><i>451</i>&nbsp;        if (c != null) {</b>
+<b class="fc"><i>452</i>&nbsp;            int level = getLevel(c);</b>
+<b class="fc"><i>453</i>&nbsp;            boolean dome = isDome(c);</b>
+<b class="fc"><i>454</i>&nbsp;            notify(new ReturnMessage(31, currentActiveWorker.getIdWorker(), c, level, oldRound, newRound, dome));</b>
+<b class="nc"><i>455</i>&nbsp;        } else {</b>
+<b class="fc"><i>456</i>&nbsp;            notify(new ReturnMessage(13, currentActiveWorker.getIdWorker(), oldRound, newRound));</b>
+<i>457</i>&nbsp;        }
+<b class="nc"><i>458</i>&nbsp;    }</b>
+<i>459</i>&nbsp;
+<i>460</i>&nbsp;    /**
+<i>461</i>&nbsp;     * method called in ares roun that notifies remoteview of a build
+<i>462</i>&nbsp;     * @param c
+<i>463</i>&nbsp;     */
+<i>464</i>&nbsp;    public void buildAres(Coordinates c){
+<i>465</i>&nbsp;        Worker otherWorker;
+<b class="fc"><i>466</i>&nbsp;        ArrayList&lt;Coordinates&gt; possiblesAresPowerCoordinates = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>467</i>&nbsp;        if(currentActiveWorker.getPlayer().getWorker1().getIdWorker()==currentActiveWorker.getIdWorker()){</b>
+<b class="fc"><i>468</i>&nbsp;            otherWorker = currentActiveWorker.getPlayer().getWorker2();</b>
+<i>469</i>&nbsp;        }else {
+<b class="fc"><i>470</i>&nbsp;            otherWorker=currentActiveWorker.getPlayer().getWorker1();</b>
+<i>471</i>&nbsp;        }
+<b class="fc"><i>472</i>&nbsp;        for (int i = otherWorker.getCoordinates().getX() - 1; i &lt;= otherWorker.getCoordinates().getX() + 1; i++) {</b>
+<b class="fc"><i>473</i>&nbsp;            for (int j = otherWorker.getCoordinates().getY() - 1; j &lt;= otherWorker.getCoordinates().getY() + 1; j++) {</b>
+<b class="fc"><i>474</i>&nbsp;                if (i &gt;= 0 &amp;&amp; i &lt;= 4 &amp;&amp; j &gt;= 0 &amp;&amp; j &lt;= 4) {</b>
+<b class="fc"><i>475</i>&nbsp;                    Coordinates newCoordinates = new Coordinates(i, j);</b>
+<b class="fc"><i>476</i>&nbsp;                    if (!isOccupied(newCoordinates) &amp;&amp; !isDome(newCoordinates) &amp;&amp; getLevel(newCoordinates) &gt; 0) {</b>
+<b class="nc"><i>477</i>&nbsp;                        possiblesAresPowerCoordinates.add(newCoordinates);</b>
+<i>478</i>&nbsp;                    }
+<i>479</i>&nbsp;                }
+<i>480</i>&nbsp;            }
+<i>481</i>&nbsp;        }
+<b class="fc"><i>482</i>&nbsp;        int level= getLevel(c);</b>
+<b class="fc"><i>483</i>&nbsp;        boolean dome= isDome(c);</b>
+<b class="fc"><i>484</i>&nbsp;        notify(new ReturnMessage(30,currentActiveWorker.getIdWorker(), c, level, dome, possiblesAresPowerCoordinates));</b>
+<b class="fc"><i>485</i>&nbsp;    }</b>
+<i>486</i>&nbsp;
+<i>487</i>&nbsp;    /**
+<i>488</i>&nbsp;     * method that notifies remoteview that one player lose and if there are 3 player in game remove losing player&#39;s workers
+<i>489</i>&nbsp;     */
+<i>490</i>&nbsp;    public void loseGame(){
+<b class="fc"><i>491</i>&nbsp;        if(getNumberOfPlayers()==3 &amp;&amp;!flag){</b>
+<b class="fc"><i>492</i>&nbsp;            setLoseRound(currentRound);</b>
+<b class="fc"><i>493</i>&nbsp;            if(players[currentRound-1].getGod()==God.HERA){</b>
+<b class="fc"><i>494</i>&nbsp;                heraPlayer=-1;</b>
+<b class="fc"><i>495</i>&nbsp;            }</b>
+<b class="fc"><i>496</i>&nbsp;            if(players[currentRound-1].getGod()==God.CHRONUS){</b>
+<b class="fc"><i>497</i>&nbsp;                chronusPlayer=-1;</b>
+<b class="fc"><i>498</i>&nbsp;            }</b>
+<b class="nc"><i>499</i>&nbsp;            flag=true;</b>
+<i>500</i>&nbsp;            int newRound=UpdateRound();
+<b class="fc"><i>501</i>&nbsp;            freeCellFromWorker(players[loseRound-1].getWorker1().getCoordinates());</b>
+<i>502</i>&nbsp;            freeCellFromWorker(players[loseRound-1].getWorker2().getCoordinates());
+<b class="fc"><i>503</i>&nbsp;            notify(new ReturnMessage(17,loseRound,newRound,players[loseRound-1].getWorker1(),players[loseRound-1].getWorker2()));</b>
+<i>504</i>&nbsp;        }else if(getNumberOfPlayers()==3 &amp;&amp; flag){
+<i>505</i>&nbsp;            notify(new ReturnMessage(5,currentRound));
+<i>506</i>&nbsp;        }else{
+<i>507</i>&nbsp;            notify(new ReturnMessage(5,currentRound));
+<i>508</i>&nbsp;        }
+<b class="fc"><i>509</i>&nbsp;    }</b>
+<b class="fc"><i>510</i>&nbsp;</b>
+<i>511</i>&nbsp;    /**
+<i>512</i>&nbsp;     * method that notifies win
+<i>513</i>&nbsp;     */
+<i>514</i>&nbsp;    public void winGame(){
+<i>515</i>&nbsp;        notify(new ReturnMessage(18,currentRound));
+<i>516</i>&nbsp;    }
+<b class="fc"><i>517</i>&nbsp;</b>
+<b class="fc"><i>518</i>&nbsp;    /**</b>
+<i>519</i>&nbsp;     *
+<i>520</i>&nbsp;     * @param currentActiveWorker
+<i>521</i>&nbsp;     */
+<i>522</i>&nbsp;    public void setCurrentActiveWorker(Worker currentActiveWorker) {
+<i>523</i>&nbsp;        this.currentActiveWorker = currentActiveWorker;
+<i>524</i>&nbsp;    }
+<i>525</i>&nbsp;}
+<i>526</i>&nbsp;
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-02 04:02</div>
+</div>
+</body>
+</html>
