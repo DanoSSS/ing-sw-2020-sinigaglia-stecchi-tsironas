@@ -1,0 +1,153 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: RoundAthena</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.controller</a> ]
+</div>
+
+<h1>Coverage Summary for Class: RoundAthena (it.polimi.ingsw.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RoundAthena</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92,6%
+  </span>
+  <span class="absValue">
+    (25/ 27)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.controller;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.model.*;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import java.util.ArrayList;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;public class RoundAthena extends Round {
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;    public RoundAthena(Board board, Player player) {
+<b class="fc"><i>10</i>&nbsp;        super(board, player);</b>
+<b class="fc"><i>11</i>&nbsp;    }</b>
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;    /**
+<i>14</i>&nbsp;     * method that calculate possible cell in wich current worker can move according Athena rules
+<i>15</i>&nbsp;     * @param worker
+<i>16</i>&nbsp;     * @return possibleMovesCoordinate
+<i>17</i>&nbsp;     */
+<i>18</i>&nbsp;    public ArrayList&lt;Coordinates&gt; canMove(Worker worker) {
+<i>19</i>&nbsp;        Coordinates coordinates, newCoordinates;
+<i>20</i>&nbsp;        int x, y;
+<b class="fc"><i>21</i>&nbsp;        ArrayList&lt;Coordinates&gt; possiblesMovesCoordinates = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>22</i>&nbsp;        coordinates = worker.getCoordinates();</b>
+<b class="fc"><i>23</i>&nbsp;        x = coordinates.getX();</b>
+<b class="fc"><i>24</i>&nbsp;        y = coordinates.getY();</b>
+<b class="fc"><i>25</i>&nbsp;        for (int i = x - 1; i &lt;= x + 1; i++) {</b>
+<b class="fc"><i>26</i>&nbsp;            for (int j = y - 1; j &lt;= y + 1; j++) {</b>
+<b class="fc"><i>27</i>&nbsp;                if (i &gt;= 0 &amp;&amp; i &lt;= 4 &amp;&amp; j &gt;= 0 &amp;&amp; j &lt;= 4) {</b>
+<b class="fc"><i>28</i>&nbsp;                    newCoordinates = new Coordinates(i, j);</b>
+<b class="fc"><i>29</i>&nbsp;                    if (!board.isDome(newCoordinates) &amp;&amp; (board.getLevel(newCoordinates) - board.getLevel(coordinates)) &lt;= 1 &amp;&amp; !board.isOccupied(newCoordinates)) {</b>
+<b class="fc"><i>30</i>&nbsp;                        possiblesMovesCoordinates.add(newCoordinates);</b>
+<i>31</i>&nbsp;                    }
+<i>32</i>&nbsp;                }
+<i>33</i>&nbsp;            }
+<i>34</i>&nbsp;        }
+<b class="fc"><i>35</i>&nbsp;        return possiblesMovesCoordinates;</b>
+<i>36</i>&nbsp;    }
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    /**
+<i>39</i>&nbsp;     * method that move worker in moveCoordinates(one from possibleMovesCoordinate found in RoundApollo&#39;s canMove ),
+<i>40</i>&nbsp;     * check if player wins and set board attribute Nround equal to the number of players less 1 if active worker levels up
+<i>41</i>&nbsp;     * @param moveCoordinates
+<i>42</i>&nbsp;     * @param GameOver
+<i>43</i>&nbsp;     * @param activeWorker
+<i>44</i>&nbsp;     * @return GameOver
+<i>45</i>&nbsp;     */
+<i>46</i>&nbsp;    public boolean doMove(Coordinates moveCoordinates,boolean GameOver,Worker activeWorker) {
+<i>47</i>&nbsp;        int count;
+<i>48</i>&nbsp;        Coordinates oldCoordinates;
+<b class="fc"><i>49</i>&nbsp;        int x=activeWorker.getCoordinates().getX();</b>
+<b class="fc"><i>50</i>&nbsp;        int y=activeWorker.getCoordinates().getY();</b>
+<b class="fc"><i>51</i>&nbsp;        oldCoordinates = new Coordinates(x,y);</b>
+<b class="fc"><i>52</i>&nbsp;        if ((board.getLevel(moveCoordinates) - board.getLevel(oldCoordinates)) == 1) {</b>
+<b class="fc"><i>53</i>&nbsp;            count = board.getNumberOfPlayers();</b>
+<b class="fc"><i>54</i>&nbsp;            board.setNround(count);</b>
+<i>55</i>&nbsp;        }
+<b class="fc"><i>56</i>&nbsp;        board.freeCellFromWorker(oldCoordinates);</b>
+<b class="fc"><i>57</i>&nbsp;        board.moveWorker(moveCoordinates, activeWorker);</b>
+<b class="fc"><i>58</i>&nbsp;        if (board.getLevel(moveCoordinates) == 3 &amp;&amp; board.getLevel(oldCoordinates) == 2) {</b>
+<b class="fc"><i>59</i>&nbsp;            if(board.getHeraPlayer()&gt;0){</b>
+<b class="nc"><i>60</i>&nbsp;                if(!heraPower(moveCoordinates)){</b>
+<b class="nc"><i>61</i>&nbsp;                    GameOver = true;</b>
+<i>62</i>&nbsp;                }
+<i>63</i>&nbsp;            }else {
+<b class="fc"><i>64</i>&nbsp;                GameOver = true;</b>
+<i>65</i>&nbsp;            }
+<i>66</i>&nbsp;        }
+<b class="fc"><i>67</i>&nbsp;        return GameOver;</b>
+<i>68</i>&nbsp;    }
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-02 04:02</div>
+</div>
+</body>
+</html>
