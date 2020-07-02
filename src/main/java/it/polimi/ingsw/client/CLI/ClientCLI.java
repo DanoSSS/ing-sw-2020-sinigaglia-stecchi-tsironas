@@ -219,12 +219,34 @@ public class ClientCLI {
                                 }
                                 break;
                             case BUILD_END_TURN:
-                            case ARES_END_TURN:
                                 id = inputObject.getCurrentActiveWorker();
                                 idWorkers= clientController.getIdWorkers();
                                 buildCellMessage(inputObject.getCoordinate().getX() * 2, inputObject.getCoordinate().getY(), inputObject.getLevel(), inputObject.getDome());
                                 playerNames= clientController.getOtherNickname();
                                 int n = inputObject.getnCurrentPlayer();
+                                if (clientController.getIdPlayer() == inputObject.getnCurrentPlayer()) {
+                                    print();
+                                    System.out.println("your worker " + id + " build in\t" + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY() + " level:" + inputObject.getLevel() + " dome:" + inputObject.getDome());
+                                    setClientAction(Action.NOT_YOUR_TURN);
+                                    System.out.println("wait your turn");
+                                } else if (clientController.getIdPlayer() == inputObject.getNextNPlayer() && clientController.getIdPlayer() != loseRound) {
+                                    print();
+                                    System.out.println("player " + playerNames[n-1] + " build with his worker " + id + " in cell:\t" + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY() + " level:" + inputObject.getLevel() + " dome:" + inputObject.getDome());
+                                    setClientAction(Action.SELECT_ACTIVE_WORKER);
+                                    System.out.println("it's your turn!\nselect active worker: "+ idWorkers[0]+ " or " + idWorkers[1]);
+                                } else if (clientController.getIdPlayer() != loseRound) {
+                                    print();
+                                    System.out.println("player " + playerNames[n-1] + " build with his worker " + id + " in cell:\t" + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY() + " level:" + inputObject.getLevel() + " dome:" + inputObject.getDome());
+                                    setClientAction(Action.NOT_YOUR_TURN);
+                                    System.out.println("wait your turn");
+                                }
+                                break;
+                            case ARES_END_TURN:
+                                id = inputObject.getCurrentActiveWorker();
+                                idWorkers= clientController.getIdWorkers();
+                                buildCellMessage(inputObject.getCoordinate().getX() * 2, inputObject.getCoordinate().getY(), inputObject.getLevel(), inputObject.getDome());
+                                playerNames= clientController.getOtherNickname();
+                                n = inputObject.getnCurrentPlayer();
                                 if (clientController.getIdPlayer() == inputObject.getnCurrentPlayer()) {
                                     print();
                                     System.out.println("your worker " + id + " build in\t" + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY() + " level:" + inputObject.getLevel() + " dome:" + inputObject.getDome());
@@ -359,7 +381,7 @@ public class ClientCLI {
                                     System.out.println("wait your turn");
                                 }
                                 break;
-                            case FIRST_BUILD_DEMETER:
+                            /*case FIRST_BUILD_DEMETER:
                                 id = inputObject.getCurrentActiveWorker();
                                 buildCellMessage(inputObject.getCoordinate().getX()*2,inputObject.getCoordinate().getY(),inputObject.getLevel(),inputObject.getDome());
                                 n =inputObject.getnCurrentPlayer();
@@ -378,7 +400,7 @@ public class ClientCLI {
                                     print();
                                     System.out.println("player "+playerNames[n-1]+" moves his worker "+ id + " in cell:\t"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY());
                                 }
-                                break;
+                                break;*/
                             case PROMETHEUS_CHOOSE:
                                 clientController.setCurrentRoundIdPlayer(inputObject.getnCurrentPlayer());
                                 id = inputObject.getCurrentActiveWorker();
@@ -401,7 +423,7 @@ public class ClientCLI {
                                 }
                                 else if(clientController.getIdPlayer() != loseRound){
                                     n=clientController.getCurrentRoundIdPlayer();
-                                    System.out.println("player " + playerNames[n-1] + " select worker "+id);
+                                    System.out.println("player " + n + " select worker "+id);
                                 }
                                 break;
                             case FIRST_BUILD_PROMETHEUS:
@@ -421,9 +443,31 @@ public class ClientCLI {
                                     }
                                 }
                                 else if(clientController.getIdPlayer() != loseRound){
-                                    System.out.println("player " + playerNames[n-1] + " build with his power with his worker " + id + " in cell:\t"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+" level:"+inputObject.getLevel()+" dome:"+inputObject.getDome());
+                                    print();
+                                    System.out.println("player " + n + " build with his power with his worker " + id + " in cell:\t"+inputObject.getCoordinate().getX()+","+inputObject.getCoordinate().getY()+" level:"+inputObject.getLevel()+" dome:"+inputObject.getDome());
                                 }
                                 break;
+                            case FIRST_BUILD_DEMETER:
+                                id = inputObject.getCurrentActiveWorker();
+                                buildCellMessage(inputObject.getCoordinate().getX()*2,inputObject.getCoordinate().getY(),inputObject.getLevel(),inputObject.getDome());
+                                playerNames=clientController.getOtherNickname();
+                                if(clientController.getIdPlayer()==clientController.getCurrentRoundIdPlayer()) {
+                                    setClientAction(a);
+                                    print();
+                                    System.out.println("your worker " + id + " build in\t" + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY() + " level:" + inputObject.getLevel() + " dome:" + inputObject.getDome());
+                                    ArrayList<Coordinates> possibleMoves = inputObject.getCurrentPossibleMoves();
+                                    setPossibleMoves(possibleMoves);
+                                    if (possibleMoves.size() != 0) {
+                                        System.out.println("If you want activate power and build a second time select coordinate among the following otherwise write NO");
+                                        for (Coordinates c : possibleMoves) {
+                                            System.out.println(c.getX() + "," + c.getY());
+                                        }
+                                    } else System.out.println("you cannot activate Ares power\nWrite NO to end turn");
+                                } else if (clientController.getIdPlayer() != loseRound) {
+                                    n = clientController.getCurrentRoundIdPlayer();
+                                    print();
+                                    System.out.println("player " + playerNames[n-1] + " build with his worker " + id + " in cell:\t" + inputObject.getCoordinate().getX() + "," + inputObject.getCoordinate().getY() + " level:" + inputObject.getLevel() + " dome:" + inputObject.getDome());
+                                }
                             case ARES_POWER:
                                 id = inputObject.getCurrentActiveWorker();
                                 buildCellMessage(inputObject.getCoordinate().getX()*2,inputObject.getCoordinate().getY(),inputObject.getLevel(),inputObject.getDome());
