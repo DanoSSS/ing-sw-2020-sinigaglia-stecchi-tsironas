@@ -8,7 +8,7 @@
 - CLI
 - GUI
 - socket
-- 1 FA: advanced gods 
+- 1 FA: advanced gods (ARES, CHRONUS, HERA, HESTIA, ZEUS)
 
 
 ## report coverage
