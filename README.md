@@ -33,3 +33,15 @@ Just download it and use
 java -jar clientCLI.jar YOURIP PORT
 ```
 Where YOURIP is the IP of the computer which is running the server and PORT is the PORT that you can choose (but must be the same for all client and server)
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+GC45
+Fabio Stecchi
+Manuel Tsironas
+Daniele Sinigaglia
